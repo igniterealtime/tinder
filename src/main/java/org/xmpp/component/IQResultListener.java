@@ -10,7 +10,7 @@
  * agreement with Jive.
  */
 
-package org.jivesoftware.openfire;
+package org.xmpp.component;
 
 import org.xmpp.packet.IQ;
 
