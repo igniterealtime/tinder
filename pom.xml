@@ -1,0 +1,85 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.igniterealtime</groupId>
+	<artifactId>tinder</artifactId>
+	<name>Tinder XMPP library</name>
+	<version>1.0.0</version>
+	<description>A basic XMPP implementation.</description>
+	<organization>
+		<name>Ignite Realtime</name>
+		<url>http://www.igniterealtime.org</url>
+	</organization>
+	<url>http://www.igniterealtime.org/projects/tinder/</url>
+	<inceptionYear>2009</inceptionYear>
+	<issueManagement>
+		<system>jira</system>
+		<url>http://www.igniterealtime.org/issues/browse/TINDER</url>
+	</issueManagement>
+	<developers>
+		<developer>
+			<name>Guus der Kinderen</name>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<email>guus.der.kinderen@gmail.com</email>
+			<timezone>+1</timezone>
+			<organization>Ignite Realtime</organization>
+			<organizationUrl>http://www.igniterealtime.org</organizationUrl>
+		</developer>
+		<developer>
+			<name>Matt Tucker</name>
+			<roles>
+				<role>Original author</role>
+			</roles>
+			<email>matt@jivesoftware.com</email>
+			<organization>Jive Software</organization>
+			<organizationUrl>http://www.jivesoftware.com</organizationUrl>
+			<timezone>-8</timezone>
+		</developer>
+	</developers>
+	<scm>
+	    <connection>scm:svn:http://svn.igniterealtime.org/svn/repos/tinder</connection>
+    	<developerConnection>scm:svn:https://svn.igniterealtime.org/svn/repos/tinder</developerConnection>
+		<url>http://www.igniterealtime.org/fisheye/viewrep/svn-org/tinder</url>
+	</scm>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/dom4j.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.jivesoftware</groupId>
+			<artifactId>stringprep</artifactId>
+			<version>1</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/stringprep.jar</systemPath>
+		</dependency>
+	</dependencies>
+
+</project>
