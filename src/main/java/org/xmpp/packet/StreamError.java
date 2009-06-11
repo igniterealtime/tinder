@@ -215,7 +215,7 @@ public class StreamError {
         try {
             writer.write(element);
         }
-        catch (Exception e) { }
+        catch (Exception e) { e.printStackTrace(); }
         return out.toString();
     }
 
