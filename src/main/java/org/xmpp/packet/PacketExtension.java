@@ -36,7 +36,7 @@ public class PacketExtension {
      * Subclasses of PacketExtension should register the element name and namespace that the
      * subclass is using.
      */
-    protected static Map<QName, Class> registeredExtensions = new ConcurrentHashMap<QName, Class>();
+    protected static Map<QName, Class<? extends PacketExtension>> registeredExtensions = new ConcurrentHashMap<QName, Class<? extends PacketExtension>>();
 
     protected Element element;
 
@@ -49,7 +49,7 @@ public class PacketExtension {
      * @param namespace the child element namespace.
      * @return the extension class to use for the specified element name and namespace.
      */
-    public static Class getExtensionClass(String name, String namespace) {
+    public static Class<? extends PacketExtension> getExtensionClass(String name, String namespace) {
         return registeredExtensions.get(QName.get(name, namespace));
     }
 

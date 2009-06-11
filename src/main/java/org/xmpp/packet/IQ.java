@@ -156,15 +156,16 @@ public class IQ extends Packet {
      *
      * @return the child element.
      */
+    @SuppressWarnings("unchecked")
     public Element getChildElement() {
-        List elements = element.elements();
+        List<Element> elements = element.elements();
         if (elements.isEmpty()) {
             return null;
         }
         else {
             // Search for a child element that is in a different namespace.
             for (int i=0; i<elements.size(); i++) {
-                Element element = (Element)elements.get(i);
+                Element element = elements.get(i);
                 String namespace = element.getNamespaceURI();
                 if (!namespace.equals("") && !namespace.equals("jabber:client") &&
                         !namespace.equals("jabber:server"))
@@ -196,9 +197,10 @@ public class IQ extends Packet {
      *
      * @param childElement the child element.
      */
+    @SuppressWarnings("unchecked")
     public void setChildElement(Element childElement) {
-        for (Iterator i=element.elementIterator(); i.hasNext(); ) {
-            element.remove((Element)i.next());
+        for (Iterator<Element> i=element.elementIterator(); i.hasNext(); ) {
+            element.remove(i.next());
         }
         element.add(childElement);
     }
@@ -225,9 +227,10 @@ public class IQ extends Packet {
      * @param namespace the child element namespace.
      * @return the newly created child element.
      */
+    @SuppressWarnings("unchecked")
     public Element setChildElement(String name, String namespace) {
-        for (Iterator i=element.elementIterator(); i.hasNext(); ) {
-            element.remove((Element)i.next());
+        for (Iterator<Element> i=element.elementIterator(); i.hasNext(); ) {
+            element.remove(i.next());
         }
         return element.addElement(name, namespace);
     }
@@ -271,20 +274,21 @@ public class IQ extends Packet {
      * @return a PacketExtension on the first element found in this packet for the specified
      *         name and namespace or <tt>null</tt> if none was found.
      */
+    @SuppressWarnings("unchecked")
     public PacketExtension getExtension(String name, String namespace) {
         Element childElement = getChildElement();
         if (childElement == null) {
             return null;
         }
         // Search for extensions in the child element
-        List extensions = childElement.elements(QName.get(name, namespace));
+        List<Element> extensions = childElement.elements(QName.get(name, namespace));
         if (!extensions.isEmpty()) {
-            Class extensionClass = PacketExtension.getExtensionClass(name, namespace);
+            Class<? extends PacketExtension> extensionClass = PacketExtension.getExtensionClass(name, namespace);
             if (extensionClass != null) {
                 try {
-                    Constructor constructor = extensionClass.getDeclaredConstructor(new Class[]{
+                    Constructor<? extends PacketExtension> constructor = extensionClass.getDeclaredConstructor(new Class[]{
                         Element.class});
-                    return (PacketExtension) constructor.newInstance(new Object[]{
+                    return constructor.newInstance(new Object[]{
                         extensions.get(0)});
                 }
                 catch (Exception e) {

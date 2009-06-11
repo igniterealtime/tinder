@@ -155,10 +155,11 @@ public class DataForm extends PacketExtension {
      *
      * @return an unmodifiable list of instructions that explain how to fill out the form.
      */
+    @SuppressWarnings("unchecked")
     public List<String> getInstructions() {
         List<String> answer = new ArrayList<String>();
-        for (Iterator it = element.elementIterator("instructions"); it.hasNext();) {
-            answer.add(((Element) it.next()).getTextTrim());
+        for (Iterator<Element> it = element.elementIterator("instructions"); it.hasNext();) {
+            answer.add(it.next().getTextTrim());
         }
         return Collections.unmodifiableList(answer);
     }
@@ -177,8 +178,9 @@ public class DataForm extends PacketExtension {
     /**
      * Clears all the stored instructions in this packet extension.
      */
+    @SuppressWarnings("unchecked")
     public void clearInstructions() {
-        for (Iterator it = element.elementIterator("instructions"); it.hasNext();) {
+        for (Iterator<Element> it = element.elementIterator("instructions"); it.hasNext();) {
             it.next();
             it.remove();
         }
@@ -198,10 +200,11 @@ public class DataForm extends PacketExtension {
      *
      * @return fields that are part of the form.
      */
+    @SuppressWarnings("unchecked")
     public List<FormField> getFields() {
         List<FormField> answer = new ArrayList<FormField>();
-        for (Iterator it = element.elementIterator("field"); it.hasNext();) {
-            answer.add(new FormField((Element) it.next()));
+        for (Iterator<Element> it = element.elementIterator("field"); it.hasNext();) {
+            answer.add(new FormField(it.next()));
         }
         return answer;
     }
@@ -212,9 +215,10 @@ public class DataForm extends PacketExtension {
      * @param variable the variable name of the field to search.
      * @return the field whose variable matches the specified variable
      */
+    @SuppressWarnings("unchecked")
     public FormField getField(String variable) {
-        for (Iterator it = element.elementIterator("field"); it.hasNext();) {
-            FormField formField = new FormField((Element) it.next());
+        for (Iterator<Element> it = element.elementIterator("field"); it.hasNext();) {
+            FormField formField = new FormField(it.next());
             if (variable.equals(formField.getVariable())) {
                 return formField;
             }
@@ -228,9 +232,10 @@ public class DataForm extends PacketExtension {
      * @param variable the variable name of the field to remove.
      * @return true if the field was removed.
      */
+    @SuppressWarnings("unchecked")
     public boolean removeField(String variable) {
-        for (Iterator it = element.elementIterator("field"); it.hasNext();) {
-            Element field = (Element) it.next();
+        for (Iterator<Element> it = element.elementIterator("field"); it.hasNext();) {
+            Element field = it.next();
             String fieldVariable = field.attributeValue("var");
             if (variable.equals(fieldVariable)) {
                 return element.remove(field);
@@ -275,6 +280,7 @@ public class DataForm extends PacketExtension {
      *
      * @param fields list of <variable,value> to be added as a new item.
      */
+    @SuppressWarnings("unchecked")
     public void addItemFields(Map<String,Object> fields) {
         Element item = element.addElement("item");
         // Add a field element to the item element for each row in fields

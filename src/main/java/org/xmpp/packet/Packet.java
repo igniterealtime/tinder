@@ -265,15 +265,16 @@ public abstract class Packet {
      * @return a PacketExtension on the first element found in this packet for the specified
      *         name and namespace or null if none was found.
      */
+    @SuppressWarnings("unchecked")
     public PacketExtension getExtension(String name, String namespace) {
-        List extensions = element.elements(QName.get(name, namespace));
+        List<Element> extensions = element.elements(QName.get(name, namespace));
         if (!extensions.isEmpty()) {
-            Class extensionClass = PacketExtension.getExtensionClass(name, namespace);
+            Class<? extends PacketExtension> extensionClass = PacketExtension.getExtensionClass(name, namespace);
             // If a specific PacketExtension implementation has been registered, use that.
             if (extensionClass != null) {
                 try {
-                    Constructor constructor = extensionClass.getDeclaredConstructor(Element.class);
-                    return (PacketExtension)constructor.newInstance(extensions.get(0));
+                    Constructor<? extends PacketExtension> constructor = extensionClass.getDeclaredConstructor(Element.class);
+                    return constructor.newInstance(extensions.get(0));
                 }
                 catch (Exception e) {
                     // Ignore.
@@ -281,7 +282,7 @@ public abstract class Packet {
             }
             // Otherwise, use a normal PacketExtension.
             else {
-                return new PacketExtension((Element)extensions.get(0));
+                return new PacketExtension(extensions.get(0));
             }
         }
         return null;
@@ -300,10 +301,11 @@ public abstract class Packet {
      * @param namespace the child element namespace.
      * @return true if a child element was removed.
      */
-    public boolean deleteExtension(String name, String namespace) {
-        List extensions = element.elements(QName.get(name, namespace));
+    @SuppressWarnings("unchecked")
+	public boolean deleteExtension(String name, String namespace) {
+        List<Element> extensions = element.elements(QName.get(name, namespace));
         if (!extensions.isEmpty()) {
-            element.remove((Element) extensions.get(0));
+            element.remove(extensions.get(0));
             return true;
         }
         return false;

@@ -42,8 +42,9 @@ public class FormField {
     /**
      * Removes all the values of the field.
      */
+    @SuppressWarnings("unchecked")
     public void clearValues() {
-        for (Iterator it = element.elementIterator("value"); it.hasNext();) {
+        for (Iterator<Element> it = element.elementIterator("value"); it.hasNext();) {
             it.next();
             it.remove();
         }
@@ -68,10 +69,11 @@ public class FormField {
      *
      * @return the available options to answer for this question.
      */
+    @SuppressWarnings("unchecked")
     public List<Option> getOptions() {
         List<Option> answer = new ArrayList<Option>();
-        for (Iterator it = element.elementIterator("option"); it.hasNext();) {
-            answer.add(new Option((Element) it.next()));
+        for (Iterator<Element> it = element.elementIterator("option"); it.hasNext();) {
+            answer.add(new Option(it.next()));
         }
         return answer;
     }
@@ -178,10 +180,11 @@ public class FormField {
      *
      * @return an Iterator for the default values or answered values of the question.
      */
+    @SuppressWarnings("unchecked")
     public List<String> getValues() {
         List<String> answer = new ArrayList<String>();
-        for (Iterator it = element.elementIterator("value"); it.hasNext();) {
-            answer.add(((Element) it.next()).getTextTrim());
+        for (Iterator<Element> it = element.elementIterator("value"); it.hasNext();) {
+            answer.add(it.next().getTextTrim());
         }
         return answer;
     }

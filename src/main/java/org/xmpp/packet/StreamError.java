@@ -85,9 +85,10 @@ public class StreamError {
      * @return the error condition.
      * @see Condition
      */
+    @SuppressWarnings("unchecked")
     public Condition getCondition() {
-        for (Iterator i=element.elementIterator(); i.hasNext(); ) {
-            Element el = (Element)i.next();
+        for (Iterator<Element> i=element.elementIterator(); i.hasNext(); ) {
+            Element el = i.next();
             if (el.getNamespaceURI().equals(ERROR_NAMESPACE) &&
                     !el.getName().equals("text"))
             {
@@ -103,13 +104,14 @@ public class StreamError {
      * @param condition the error condition.
      * @see Condition
      */
+    @SuppressWarnings("unchecked")
     public void setCondition(Condition condition) {
         if (condition == null) {
             throw new NullPointerException("Condition cannot be null");
         }
         Element conditionElement = null;
-        for (Iterator i=element.elementIterator(); i.hasNext(); ) {
-            Element el = (Element)i.next();
+        for (Iterator<Element> i=element.elementIterator(); i.hasNext(); ) {
+            Element el = i.next();
             if (el.getNamespaceURI().equals(ERROR_NAMESPACE) &&
                     !el.getName().equals("text"))
             {

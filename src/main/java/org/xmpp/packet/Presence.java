@@ -257,9 +257,10 @@ public class Presence extends Packet {
      * @return the first matching child element, or <tt>null</tt> if there
      *      is no matching child element.
      */
+    @SuppressWarnings("unchecked")
     public Element getChildElement(String name, String namespace) {
-        for (Iterator i=element.elementIterator(name); i.hasNext(); ) {
-            Element element = (Element)i.next();
+        for (Iterator<Element> i=element.elementIterator(name); i.hasNext(); ) {
+            Element element = i.next();
             if (element.getNamespaceURI().equals(namespace)) {
                 return element;
             }
