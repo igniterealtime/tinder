@@ -13,6 +13,7 @@ import org.xmpp.packet.IQ;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * RoomConfiguration is a packet that helps to set the configuration of MUC rooms. RoomConfiguration
@@ -57,10 +58,10 @@ public class RoomConfiguration extends IQ {
         field.addAttribute("var", "FORM_TYPE");
         field.addElement("value").setText("http://jabber.org/protocol/muc#roomconfig");
         // Add the specified fields and their corresponding values
-        for (String variable : fieldValues.keySet()) {
+        for (Entry<String, Collection<String>> entry : fieldValues.entrySet()) {
             field = form.addElement("field");
-            field.addAttribute("var", variable);
-            for (String value : fieldValues.get(variable)) {
+            field.addAttribute("var", entry.getKey());
+            for (String value : entry.getValue()) {
                 field.addElement("value").setText(value);
             }
         }
