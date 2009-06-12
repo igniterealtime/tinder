@@ -126,12 +126,4 @@ public interface ComponentManager {
      * @return true if the managed components are external components.
      */
     public boolean isExternalMode();
-
-    /**
-     * Returns a Log instance, which can be used by components for logging error,
-     * warning, info, and debug messages.
-     *
-     * @return a Log instance.
-     */
-    public Log getLog();
 }
