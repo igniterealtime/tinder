@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.xmpp.packet;
 
 import org.junit.Test;
