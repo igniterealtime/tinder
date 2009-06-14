@@ -17,17 +17,29 @@ package org.jivesoftware.util;
  */
 public class JiveConstants {
 
-    public static final int SYSTEM = 17;
-    public static final int ROSTER = 18;
-    public static final int OFFLINE = 19;
-    public static final int MUC_ROOM = 23;
-    public static final int SECURITY_AUDIT = 25;
-    public static final int MUC_SERVICE = 26;
-
+	/**
+	 * The amount of milliseconds in one second.
+	 */
     public static final long SECOND = 1000;
+
+	/**
+	 * The amount of milliseconds in one minute.
+	 */
     public static final long MINUTE = 60 * SECOND;
+    
+	/**
+	 * The amount of milliseconds in one .
+	 */
     public static final long HOUR = 60 * MINUTE;
+    
+	/**
+	 * The amount of milliseconds in one .
+	 */
     public static final long DAY = 24 * HOUR;
+    
+	/**
+	 * The amount of milliseconds in one .
+	 */
     public static final long WEEK = 7 * DAY;
 
     /**
