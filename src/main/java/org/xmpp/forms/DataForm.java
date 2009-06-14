@@ -176,10 +176,16 @@ public class DataForm extends PacketExtension {
      * Adds a new instruction to the list of instructions that explain how to fill out the form
      * and what the form is about. The dataform could include multiple instructions since each
      * instruction could not contain newlines characters.
+     * <p>
+     * Nothing will be set, if the provided argument is <tt>null</tt> or an empty String.
      *
      * @param instruction the new instruction that explain how to fill out the form.
      */
     public void addInstruction(String instruction) {
+    	if (instruction == null || instruction.isEmpty()) {
+    		return;
+    	}
+    	
         element.addElement("instructions").setText(instruction);
     }
 
@@ -323,10 +329,15 @@ public class DataForm extends PacketExtension {
             Element field = item.addElement("field");
             field.addAttribute("var", entry.getKey());
         	final Object value = entry.getValue();
+        	if (value == null) {
+        		continue;
+        	}
             if (value instanceof Collection) {
                 // Add a value element for each entry in the collection
-                for (Iterator it = ((Collection) value).iterator(); it.hasNext();) {
-                    field.addElement("value").setText(encode(it.next()));
+            	for (Object colValue : (Collection) value) {
+            		if (colValue != null) {
+            			field.addElement("value").setText(encode(colValue));
+            		}
                 }
             }
             else {

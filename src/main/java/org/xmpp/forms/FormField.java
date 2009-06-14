@@ -32,10 +32,15 @@ public class FormField {
     /**
      * Adds a default value to the question if the question is part of a form to fill out.
      * Otherwise, adds an answered value to the question.
-     *
+     * <p>
+     * Nothing will be added if the provided argument is <tt>null</tt>.
+     * 
      * @param value a default value or an answered value of the question.
      */
     public void addValue(Object value) {
+    	if (value == null) {
+    		return;
+    	}
         element.addElement("value").setText(DataForm.encode(value));
     }
 
@@ -53,11 +58,18 @@ public class FormField {
     /**
      * Adds an available option to the question that the user has in order to answer
      * the question.
-     *
-     * @param label a label that represents the option.
+     * <p>
+     * If argument 'value' is <tt>null</tt> or an empty String, no option element 
+     * will be added.
+     * 
+     * @param label a label that represents the option. Optional argument.
      * @param value the value of the option.
      */
     public void addOption(String label, String value) {
+    	if (value == null || value.isEmpty()) {
+    		return;
+    	}
+    	
         Element option = element.addElement("option");
         option.addAttribute("label", label);
         option.addElement("value").setText(value);
@@ -106,20 +118,30 @@ public class FormField {
     /**
      * Sets the attribute that uniquely identifies the field in the context of the form. If the
      * field is of type "fixed" then the variable is optional.
+     * <p>
+     * Nothing will be set, if the provided argument is <tt>null</tt> or an empty String.
      *
      * @param var the unique identifier of the field in the context of the form.
      */
     public void setVariable(String var) {
+    	if (var == null || var.isEmpty()) {
+    		return;
+    	}
         element.addAttribute("var", var);
     }
 
     /**
      * Sets the label of the question which should give enough information to the user to
      * fill out the form.
+     * <p>
+     * Nothing will be set, if the provided argument is <tt>null</tt> or an empty String.
      *
      * @param label the label of the question.
      */
     public void setLabel(String label) {
+    	if (label == null || label.isEmpty()) {
+    		return;
+    	}
         element.addAttribute("label", label);
     }
 
@@ -144,7 +166,10 @@ public class FormField {
      * before the question.<p>
      * <p/>
      * If the question is of type FIXED then the description should remain empty.
-     *
+     * <p>
+     * No new description will be set, if the provided argument is <tt>null</tt> or an empty 
+     * String (although an existing description will be removed).
+     * 
      * @param description provides extra clarification about the question.
      */
     public void setDescription(String description) {
@@ -152,6 +177,11 @@ public class FormField {
         if (element.element("desc") != null) {
             element.remove(element.element("desc"));
         }
+        
+        if (description == null || description.isEmpty()) {
+        	return;
+        }
+        
         element.addElement("desc").setText(description);
     }
 
