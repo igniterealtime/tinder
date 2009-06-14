@@ -95,9 +95,9 @@ public class JIDCreationDomainTest {
 	@Test
 	public void testMaximumSize() throws Exception {
 		// setup
-		final StringBuilder builder = new StringBuilder();
-		for (int i = 0; i + 1 < 1023; i += 2) {
-			builder.append('a');
+		final StringBuilder builder = new StringBuilder("a");
+		for (int i = 0; i + 1 < 1021; i += 4) {
+			builder.append(".a");
 		}
 		final String longestPossibleValue = builder.toString();
 
