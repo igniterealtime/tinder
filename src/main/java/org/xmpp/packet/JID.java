@@ -47,7 +47,9 @@ public class JID implements Comparable<JID>, Externalizable {
     // Stringprep operations are very expensive. Therefore, we cache node, domain and
     // resource values that have already had stringprep applied so that we can check
     // incoming values against the cache.
-    private static Cache<String> stringprepCache = new Cache<String>(10000);
+    private static final Cache<String> NODEPREP_CACHE = new Cache<String>(10000);
+    private static final Cache<String> DOMAINPREP_CACHE = new Cache<String>(500);
+    private static final Cache<String> RESOURCEPREP_CACHE = new Cache<String>(10000);
 
     private String node;
     private String domain;
@@ -199,13 +201,13 @@ public class JID implements Comparable<JID>, Externalizable {
 
     public static String resourceprep(String resource) throws StringprepException {
         String answer = resource;
-        if (!stringprepCache.contains(resource)) {
+        if (!RESOURCEPREP_CACHE.contains(resource)) {
             answer = Stringprep.resourceprep(resource);
             // Validate field is not greater than 1023 bytes. UTF-8 characters use two bytes.
             if (answer != null && answer.length()*2 > 1023) {
                 return answer;
             }
-            stringprepCache.put(answer);
+            RESOURCEPREP_CACHE.put(answer);
         }
         return answer;
     }
@@ -347,14 +349,14 @@ public class JID implements Comparable<JID>, Externalizable {
         }
         // Stringprep (node prep, resourceprep, etc).
         try {
-            if (!stringprepCache.contains(node)) {
+            if (!NODEPREP_CACHE.contains(node)) {
                 this.node = Stringprep.nodeprep(node);
                 // Validate field is not greater than 1023 bytes. UTF-8 characters use two bytes.
                 if (this.node != null && this.node.length()*2 > 1023) {
                     throw new IllegalArgumentException("Node cannot be larger than 1023 bytes. " +
                             "Size is " + (this.node.length() * 2) + " bytes.");
                 }
-                stringprepCache.put(this.node);
+                NODEPREP_CACHE.put(this.node);
             }
             else {
                 this.node = node;
@@ -363,14 +365,14 @@ public class JID implements Comparable<JID>, Externalizable {
             // that they should be run through nameprep before doing any
             // comparisons. We always run the domain through nameprep to
             // make comparisons easier later.
-            if (!stringprepCache.contains(domain)) {
+            if (!DOMAINPREP_CACHE.contains(domain)) {
                 this.domain = Stringprep.nameprep(IDNA.toASCII(domain), false);
                 // Validate field is not greater than 1023 bytes. UTF-8 characters use two bytes.
                 if (this.domain.length()*2 > 1023) {
                     throw new IllegalArgumentException("Domain cannot be larger than 1023 bytes. " +
                             "Size is " + (this.domain.length() * 2) + " bytes.");
                 }
-                stringprepCache.put(this.domain);
+                DOMAINPREP_CACHE.put(this.domain);
             }
             else {
                 this.domain = domain;
