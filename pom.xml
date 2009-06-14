@@ -4,7 +4,7 @@
 	<groupId>org.igniterealtime</groupId>
 	<artifactId>tinder</artifactId>
 	<name>Tinder XMPP library</name>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<description>A basic XMPP implementation.</description>
 	<organization>
 		<name>Ignite Realtime</name>
@@ -27,17 +27,30 @@
 			<organization>Ignite Realtime</organization>
 			<organizationUrl>http://www.igniterealtime.org</organizationUrl>
 		</developer>
-		<developer>
+	</developers>
+	<contributors>
+		<contributor>
 			<name>Matt Tucker</name>
 			<roles>
 				<role>Original author</role>
+				<role>Developer</role>
 			</roles>
 			<email>matt@jivesoftware.com</email>
 			<organization>Jive Software</organization>
 			<organizationUrl>http://www.jivesoftware.com</organizationUrl>
 			<timezone>-8</timezone>
-		</developer>
-	</developers>
+		</contributor>
+		<contributor>
+			<name>Gaston Dombiak</name>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<email>gaston@jivesoftware.com</email>
+			<organization>Jive Software</organization>
+			<organizationUrl>http://www.jivesoftware.com</organizationUrl>
+			<timezone>-8</timezone>
+		</contributor>
+	</contributors>
 	<scm>
 	    <connection>scm:svn:http://svn.igniterealtime.org/svn/repos/tinder</connection>
     	<developerConnection>scm:svn:https://svn.igniterealtime.org/svn/repos/tinder</developerConnection>
