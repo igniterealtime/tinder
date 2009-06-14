@@ -182,7 +182,7 @@ public class DataForm extends PacketExtension {
      * @param instruction the new instruction that explain how to fill out the form.
      */
     public void addInstruction(String instruction) {
-    	if (instruction == null || instruction.isEmpty()) {
+    	if (instruction == null || instruction.trim().length() == 0) {
     		return;
     	}
     	
@@ -221,7 +221,7 @@ public class DataForm extends PacketExtension {
      */
     public FormField addField(String variable, String label, FormField.Type type) {
     	final FormField result = addField();
-    	if (variable != null && !variable.isEmpty()) {
+    	if (variable == null || variable.trim().length() == 0) {
     		result.setVariable(variable);
     	}
     	
@@ -229,7 +229,7 @@ public class DataForm extends PacketExtension {
     		result.setType(type);
     	}
     	
-    	if (label != null && !label.isEmpty()) {
+    	if (label != null && label.trim().length() == 0) {
     		result.setLabel(label);
     	}
     	

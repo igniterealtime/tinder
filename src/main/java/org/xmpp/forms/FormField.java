@@ -66,7 +66,7 @@ public class FormField {
      * @param value the value of the option.
      */
     public void addOption(String label, String value) {
-    	if (value == null || value.isEmpty()) {
+    	if (value == null || value.trim().length() == 0) {
     		return;
     	}
     	
@@ -124,7 +124,7 @@ public class FormField {
      * @param var the unique identifier of the field in the context of the form.
      */
     public void setVariable(String var) {
-    	if (var == null || var.isEmpty()) {
+    	if (var == null || var.trim().length() == 0) {
     		return;
     	}
         element.addAttribute("var", var);
@@ -139,7 +139,7 @@ public class FormField {
      * @param label the label of the question.
      */
     public void setLabel(String label) {
-    	if (label == null || label.isEmpty()) {
+    	if (label == null || label.trim().length() == 0) {
     		return;
     	}
         element.addAttribute("label", label);
@@ -178,7 +178,7 @@ public class FormField {
             element.remove(element.element("desc"));
         }
         
-        if (description == null || description.isEmpty()) {
+        if (description == null || description.trim().length() == 0) {
         	return;
         }
         
