@@ -10,12 +10,12 @@
  * agreement with Jive.
  */
 
-package org.jivesoftware.util;
+package org.xmpp.util;
 
 /**
- * Contains constant values representing various objects in Jive.
+ * Contains constant values representing various objects in Tinder.
  */
-public class JiveConstants {
+public class XMPPConstants {
 
 	/**
 	 * The amount of milliseconds in one second.

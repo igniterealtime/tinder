@@ -23,8 +23,8 @@ import java.util.Map.Entry;
 import org.dom4j.Element;
 import org.dom4j.QName;
 import org.jivesoftware.util.FastDateFormat;
-import org.jivesoftware.util.JiveConstants;
 import org.xmpp.packet.PacketExtension;
+import org.xmpp.util.XMPPConstants;
 
 /**
  * Represents a form that could be use for gathering data as well as for reporting data
@@ -48,9 +48,9 @@ import org.xmpp.packet.PacketExtension;
 public class DataForm extends PacketExtension {
 
     private static final SimpleDateFormat UTC_FORMAT = new SimpleDateFormat(
-            JiveConstants.XMPP_DELAY_DATETIME_FORMAT);
+            XMPPConstants.XMPP_DELAY_DATETIME_FORMAT);
     private static final FastDateFormat FAST_UTC_FORMAT =
-            FastDateFormat.getInstance(JiveConstants.XMPP_DELAY_DATETIME_FORMAT,
+            FastDateFormat.getInstance(XMPPConstants.XMPP_DELAY_DATETIME_FORMAT,
             TimeZone.getTimeZone("UTC"));
 
     /**
