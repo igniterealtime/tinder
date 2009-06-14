@@ -8,15 +8,23 @@
 
 package org.xmpp.forms;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
+import java.util.Map.Entry;
+
 import org.dom4j.Element;
 import org.dom4j.QName;
 import org.jivesoftware.util.FastDateFormat;
 import org.jivesoftware.util.JiveConstants;
 import org.xmpp.packet.PacketExtension;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 /**
  * Represents a form that could be use for gathering data as well as for reporting data
@@ -196,6 +204,33 @@ public class DataForm extends PacketExtension {
     }
 
     /**
+     * Adds a new field as part of the form. The provided arguments are optional 
+     * (they are allowed to be <tt>null</tt>).
+     *
+     * @param variable the unique identifier of the field in the context of the 
+     * 		form. Optional parameter.
+     * @param type an indicative of the format for the data. Optional parameter. 
+     * @param label the label of the question. Optional parameter.
+     * @return the newly created field.
+     */
+    public FormField addField(String variable, String label, FormField.Type type) {
+    	final FormField result = addField();
+    	if (variable != null && !variable.isEmpty()) {
+    		result.setVariable(variable);
+    	}
+    	
+    	if (type != null) {
+    		result.setType(type);
+    	}
+    	
+    	if (label != null && !label.isEmpty()) {
+    		result.setLabel(label);
+    	}
+    	
+    	return result;
+    }
+    
+    /**
      * Returns the fields that are part of the form.
      *
      * @return fields that are part of the form.
@@ -284,10 +319,10 @@ public class DataForm extends PacketExtension {
     public void addItemFields(Map<String,Object> fields) {
         Element item = element.addElement("item");
         // Add a field element to the item element for each row in fields
-        for (String var : fields.keySet()) {
+        for (Entry<String, Object> entry : fields.entrySet()) {
             Element field = item.addElement("field");
-            field.addAttribute("var", var);
-            Object value = fields.get(var);
+            field.addAttribute("var", entry.getKey());
+        	final Object value = entry.getValue();
             if (value instanceof Collection) {
                 // Add a value element for each entry in the collection
                 for (Iterator it = ((Collection) value).iterator(); it.hasNext();) {

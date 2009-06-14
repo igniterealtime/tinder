@@ -189,6 +189,24 @@ public class FormField {
         return answer;
     }
 
+	/**
+	 * Returns the first value from the FormField, or 'null' if no value has
+	 * been set.
+	 * 
+	 * @param formField
+	 *            The field from which to return the first value.
+	 * @return String based value, or 'null' if the FormField has no values.
+	 */
+    @SuppressWarnings("unchecked")
+	public String getFirstValue()
+	{
+        for (Iterator<Element> it = element.elementIterator("value"); it.hasNext();) {
+            return it.next().getTextTrim();
+        }
+        
+        return null;
+	}
+    
     /**
      * Returns an indicative of the format for the data to answer. Valid formats are:
      * <p/>
