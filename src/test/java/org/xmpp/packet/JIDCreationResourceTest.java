@@ -28,7 +28,7 @@ public class JIDCreationResourceTest {
 	 * JID.
 	 */
 	@Test
-	public void testOptinality() throws Exception {
+	public void testOptionality() throws Exception {
 		new JID(DOMAIN);
 		new JID(null, DOMAIN, null);
 		new JID(NODE, DOMAIN, null);

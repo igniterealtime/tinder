@@ -29,7 +29,7 @@ public class JIDCreationDomainTest {
 	 * verifies that node identifiers can be left out of the creation of a JID.
 	 */
 	@Test
-	public void testOptinality() throws Exception {
+	public void testOptionality() throws Exception {
 		try {
 			new JID(null);
 			fail("Domain identifiers should be a required part of "

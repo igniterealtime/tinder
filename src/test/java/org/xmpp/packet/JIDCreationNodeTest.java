@@ -27,7 +27,7 @@ public class JIDCreationNodeTest {
 	 * that node identifiers can be left out of the creation of a JID.
 	 */
 	@Test
-	public void testOptinality() throws Exception {
+	public void testOptionality() throws Exception {
 		new JID(DOMAIN);
 		new JID(null, DOMAIN, null);
 		new JID(null, DOMAIN, RESOURCE);
