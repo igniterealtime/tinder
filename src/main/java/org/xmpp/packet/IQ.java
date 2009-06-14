@@ -315,15 +315,16 @@ public class IQ extends Packet {
      * @param namespace the child element namespace.
      * @return true if a child element was removed.
      */
-    public boolean deleteExtension(String name, String namespace) {
+    @SuppressWarnings("unchecked")
+	public boolean deleteExtension(String name, String namespace) {
         Element childElement = getChildElement();
         if (childElement == null) {
             return false;
         }
         // Delete extensions in the child element
-        List extensions = childElement.elements(QName.get(name, namespace));
+        List<Element> extensions = childElement.elements(QName.get(name, namespace));
         if (!extensions.isEmpty()) {
-            childElement.remove((Element) extensions.get(0));
+            childElement.remove(extensions.get(0));
             return true;
         }
         return false;
