@@ -247,7 +247,16 @@ public class PacketError {
     }
 
     /**
-     * Returns the DOM4J Element that backs the error. The element is the definitive
+     * Sets an application-specific error condition.     *      * @param name the name of the application-specific error condition.     */    public void setApplicationCondition(String name) {        setApplicationCondition(name, null);    }
+        /**     * Sets an application-specific error condition. Optionally, a     * application-specific namespace can be specified to define its     * own application-specific error .     *      * @param name the name of the application-specific error condition.     * @param namespaceURI the namespace of the application.     */    @SuppressWarnings("unchecked")    public void setApplicationCondition(String name, String namespaceURI) {        if (ERROR_NAMESPACE.equals(namespaceURI)) {            throw new IllegalArgumentException();        }
+        Element applicationError = null;        for (Iterator<Element> i=element.elementIterator(); i.hasNext(); ) {
+            Element el = i.next();            if (!el.getNamespaceURI().equals(ERROR_NAMESPACE))            {                applicationError = el;            }        }
+        if (applicationError != null) {            element.remove(applicationError);        }
+        // If name is null, clear the application condition.        if (name == null) {            return;        }
+        if (namespaceURI == null) {            // Set fallback namespace (see XEP-0182)            namespaceURI = "urn:xmpp:errors";        }        applicationError = docFactory.createElement(name, namespaceURI);        element.add(applicationError);    }
+    /**     * Returns the name of the application-specific error condition,     * or <tt>null</tt> if there is no application-specific error.     *     * @return the name of the application-specific error condition, if it exists.     */    @SuppressWarnings("unchecked")    public String getApplicationConditionName() {        for (Iterator<Element> i=element.elementIterator(); i.hasNext(); ) {            Element el = i.next();            if (!el.getNamespaceURI().equals(ERROR_NAMESPACE))            {                return el.getName();            }        }        return null;    }
+        /**     * Returns the namespace of the application-specific error condition,     * or <tt>null</tt> if there is no application-specific error.     *     * @return the namespace of the application-specific error condition, if it exists.     */    @SuppressWarnings("unchecked")    public String getApplicationConditionNamespaceURI() {        for (Iterator<Element> i=element.elementIterator(); i.hasNext(); ) {            Element el = i.next();            if (!el.getNamespaceURI().equals(ERROR_NAMESPACE))            {                return el.getNamespaceURI();            }        }        return null;    }
+    /**     * Returns the DOM4J Element that backs the error. The element is the definitive
      * representation of the error and can be manipulated directly to change
      * error contents.
      *
