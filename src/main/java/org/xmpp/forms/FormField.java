@@ -261,7 +261,7 @@ public class FormField {
     public Type getType() {
         String type = element.attributeValue("type");
         if (type != null) {
-            Type.fromXMPP(type);
+            return Type.fromXMPP(type);
         }
         return null;
     }
