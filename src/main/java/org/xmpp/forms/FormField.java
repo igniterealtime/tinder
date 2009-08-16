@@ -118,30 +118,20 @@ public class FormField {
     /**
      * Sets the attribute that uniquely identifies the field in the context of the form. If the
      * field is of type "fixed" then the variable is optional.
-     * <p>
-     * Nothing will be set, if the provided argument is <tt>null</tt> or an empty String.
      *
      * @param var the unique identifier of the field in the context of the form.
      */
     public void setVariable(String var) {
-    	if (var == null || var.trim().length() == 0) {
-    		return;
-    	}
         element.addAttribute("var", var);
     }
 
     /**
      * Sets the label of the question which should give enough information to the user to
      * fill out the form.
-     * <p>
-     * Nothing will be set, if the provided argument is <tt>null</tt> or an empty String.
      *
      * @param label the label of the question.
      */
     public void setLabel(String label) {
-    	if (label == null || label.trim().length() == 0) {
-    		return;
-    	}
         element.addAttribute("label", label);
     }
 
