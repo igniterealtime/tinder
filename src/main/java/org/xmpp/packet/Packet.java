@@ -8,6 +8,8 @@
 
 package org.xmpp.packet;
 
+import net.jcip.annotations.NotThreadSafe;
+
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.QName;
@@ -33,6 +35,7 @@ import java.util.List;
  *
  * @author Matt Tucker
  */
+@NotThreadSafe
 public abstract class Packet {
 
     protected static DocumentFactory docFactory = DocumentFactory.getInstance();

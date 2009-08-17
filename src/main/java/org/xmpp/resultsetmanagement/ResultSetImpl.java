@@ -12,6 +12,8 @@ package org.xmpp.resultsetmanagement;
 
 import java.util.*;
 
+import net.jcip.annotations.NotThreadSafe;
+
 /**
  * A result set representation as described in XEP-0059. Note that this result
  * 'set' actually makes use of a List implementations, as the Java Set
@@ -41,6 +43,7 @@ import java.util.*;
  * usage of java.util.List#subList(int, int), it does. I'm thinking a
  * immodifiable solution would cause less problems. -Guus
  */
+@NotThreadSafe
 public class ResultSetImpl<E extends Result> extends ResultSet<E> {
 
 	/**

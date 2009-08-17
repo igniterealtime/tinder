@@ -8,12 +8,14 @@
 
 package org.xmpp.packet;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import net.jcip.annotations.NotThreadSafe;
+
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.QName;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A packet extension represents a child element of a Packet for a given qualified name. The
@@ -29,6 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author Gaston Dombiak
  */
+@NotThreadSafe
 public class PacketExtension {
     
     protected static DocumentFactory docFactory = DocumentFactory.getInstance();

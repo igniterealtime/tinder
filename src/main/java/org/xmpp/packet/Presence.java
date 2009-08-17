@@ -8,6 +8,8 @@
 
 package org.xmpp.packet;
 
+import net.jcip.annotations.NotThreadSafe;
+
 import org.dom4j.Element;
 
 import java.util.Iterator;
@@ -22,6 +24,7 @@ import java.util.Iterator;
  *
  * @author Matt Tucker
  */
+@NotThreadSafe
 public class Presence extends Packet {
 
     /**

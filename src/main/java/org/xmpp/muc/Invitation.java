@@ -8,6 +8,8 @@
 
 package org.xmpp.muc;
 
+import net.jcip.annotations.NotThreadSafe;
+
 import org.dom4j.Element;
 import org.xmpp.packet.Message;
 
@@ -29,6 +31,7 @@ import org.xmpp.packet.Message;
  *
  * @author Gaston Dombiak
  */
+@NotThreadSafe
 public class Invitation extends Message {
 
     /**

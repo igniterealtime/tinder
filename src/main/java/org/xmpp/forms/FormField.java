@@ -8,6 +8,8 @@
 
 package org.xmpp.forms;
 
+import net.jcip.annotations.NotThreadSafe;
+
 import org.dom4j.Element;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import java.util.List;
  *
  * @author Gaston Dombiak
  */
+@NotThreadSafe
 public class FormField {
 
     private Element element;

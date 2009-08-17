@@ -1,5 +1,7 @@
 package org.xmpp.packet;
 
+import net.jcip.annotations.NotThreadSafe;
+
 import org.dom4j.Element;
 import org.dom4j.QName;
 
@@ -17,6 +19,7 @@ import java.util.Random;
  * IQ packets can contain a single child element that exists in a extended XML
  * namespace.
  */
+@NotThreadSafe
 public class IQ extends Packet {
 
     // Sequence and random number generator used for creating unique ID's.

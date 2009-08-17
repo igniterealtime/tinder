@@ -20,6 +20,8 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.Map.Entry;
 
+import net.jcip.annotations.NotThreadSafe;
+
 import org.dom4j.Element;
 import org.dom4j.QName;
 import org.jivesoftware.util.FastDateFormat;
@@ -45,6 +47,7 @@ import org.xmpp.util.XMPPConstants;
  *
  * @author Gaston Dombiak
  */
+@NotThreadSafe
 public class DataForm extends PacketExtension {
 
     private static final SimpleDateFormat UTC_FORMAT = new SimpleDateFormat(

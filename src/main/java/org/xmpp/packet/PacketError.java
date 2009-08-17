@@ -8,6 +8,8 @@
 
 package org.xmpp.packet;
 
+import net.jcip.annotations.NotThreadSafe;
+
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.QName;
@@ -23,6 +25,7 @@ import java.util.Iterator;
  *
  * @author Matt Tucker
  */
+@NotThreadSafe
 public class PacketError {
 
     private static final String ERROR_NAMESPACE = "urn:ietf:params:xml:ns:xmpp-stanzas";

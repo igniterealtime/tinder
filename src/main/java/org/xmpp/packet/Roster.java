@@ -8,6 +8,8 @@
 
 package org.xmpp.packet;
 
+import net.jcip.annotations.NotThreadSafe;
+
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
@@ -26,6 +28,7 @@ import java.util.Iterator;
  *
  * @author Matt Tucker
  */
+@NotThreadSafe
 public class Roster extends IQ {
 
     /**

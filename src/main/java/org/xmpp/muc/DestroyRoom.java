@@ -8,6 +8,8 @@
 
 package org.xmpp.muc;
 
+import net.jcip.annotations.NotThreadSafe;
+
 import org.dom4j.Element;
 import org.xmpp.packet.IQ;
 import org.xmpp.packet.JID;
@@ -21,6 +23,7 @@ import org.xmpp.packet.JID;
  * When destroying a room it is possible to provide an alternate room which may be replacing the
  * room about to be destroyed. It is also possible to provide a reason for the room destruction.
  */
+@NotThreadSafe
 public class DestroyRoom extends IQ {
 
     /**

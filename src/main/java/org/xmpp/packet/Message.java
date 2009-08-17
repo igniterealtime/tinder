@@ -8,6 +8,8 @@
 
 package org.xmpp.packet;
 
+import net.jcip.annotations.NotThreadSafe;
+
 import org.dom4j.Element;
 
 import java.util.Iterator;
@@ -28,6 +30,7 @@ import java.util.Iterator;
  * <tr><td><i>error</i></td>   <td>MUST NOT</td><td>MUST NOT</td><td>MUST NOT</td><td>MUST NOT</td><td>MUST</td></tr>
  * </table>
  */
+@NotThreadSafe
 public class Message extends Packet {
 
     /**

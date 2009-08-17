@@ -8,6 +8,8 @@
 
 package org.xmpp.muc;
 
+import net.jcip.annotations.NotThreadSafe;
+
 import org.dom4j.Element;
 import org.xmpp.packet.IQ;
 
@@ -39,6 +41,7 @@ import java.util.Map.Entry;
  *
  * @author Gaston Dombiak
  */
+@NotThreadSafe
 public class RoomConfiguration extends IQ {
 
     /**

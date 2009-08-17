@@ -8,6 +8,8 @@
 
 package org.xmpp.muc;
 
+import net.jcip.annotations.NotThreadSafe;
+
 import org.xmpp.packet.Presence;
 
 /**
@@ -24,6 +26,7 @@ import org.xmpp.packet.Presence;
  *
  * @author Gaston Dombiak
  */
+@NotThreadSafe
 public class JoinRoom extends Presence {
 
     /**
