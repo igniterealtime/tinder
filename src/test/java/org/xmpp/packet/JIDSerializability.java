@@ -93,104 +93,64 @@ public class JIDSerializability {
 		assertEquals(original.getResource(), copy.getResource());
 	}
 
-	// /**
-	// * You usually can't rely on the default serialization format to retain
-	// * file-format compatibility between different versions of a class. You
-	// have
-	// * to customize it in a variety of ways using serialPersistentFields,
-	// * readObject() and writeObject() methods, and/or the transient modifier.
-	// If
-	// * you do make an incompatible change to the serialization format of a
-	// * class, you should also change the serialVersionUID field to indicate
-	// that
-	// * you've done so.
-	// * <p>
-	// * Normally you don't care much about the detailed structure of serialized
-	// * objects. You just care that whatever format you start out with is
-	// * maintained as the class evolves. Once the class is in more-or-less
-	// * complete shape, write some serialized instances of the class and store
-	// * them where you can use them as references going forward. (You probably
-	// do
-	// * want to think at least a little about how you will serialize to ensure
-	// * sufficient flexibility for evolution going forward.)
-	// * <p>
-	// * All you need to do is write a serialized object into a file, and you
-	// only
-	// * do that once. It's the file you want to save, not the code that wrote
-	// it.
-	// * Your test deserializes the object in the file and then compare its
-	// * properties to their expected values.
-	// */
-	// @Test
-	// public void testDeserializeVersionJIDversion1dot0() throws Exception {
-	// // this JID is build from the String values that were also used to build
-	// // the String that's serialized in the file
-	// // "jid-version-tinder1.1.serialized"
-	// final JID original = new JID("abc", "dom4in.com", "@home", true);
-	//		
-	// //deserialize
-	// InputStream in = getClass().getResourceAsStream(
-	// "/jid-version-tinder1.0.serialized" );
-	// ObjectInputStream ois = new ObjectInputStream(in);
-	// Object o = ois.readObject();
-	// JID deserialized = (JID) o;
-	//
-	// // test the result
-	// assertEquals(original.getDomain(), deserialized.getDomain());
-	// assertEquals(original.getResource(), deserialized.getResource());
-	// System.out.println(getHexString(original.getNode().getBytes()));
-	// System.out.println(getHexString(deserialized.getNode().getBytes()));
-	// assertEquals(original.getNode(), deserialized.getNode());
-	// }
-	//	
-	// @Test
-	// public void testDeserializeVersionJIDversion1dot1() throws Exception {
-	// // this JID is build from the String values that were also used to build
-	// // the String that's serialized in the file
-	// // "jid-version-tinder1.1.serialized"
-	// final JID original = new JID("abc", "dom4in.com", "@home", true);
-	//		
-	// //deserialize
-	// InputStream in = getClass().getResourceAsStream(
-	// "/jid-version-tinder1.1.serialized" );
-	// ObjectInputStream ois = new ObjectInputStream(in);
-	// Object o = ois.readObject();
-	// JID deserialized = (JID) o;
-	//
-	// // test the result
-	// assertEquals(original.getDomain(), deserialized.getDomain());
-	// assertEquals(original.getResource(), deserialized.getResource());
-	// System.out.println(getHexString(original.getNode().getBytes()));
-	// System.out.println(getHexString(deserialized.getNode().getBytes()));
-	// assertEquals(original.getNode(), deserialized.getNode());
-	// }
-	//	
-	// public static String getHexString(byte[] b) throws Exception {
-	// String result = "";
-	// for (int i=0; i < b.length; i++) {
-	// result +=
-	// Integer.toString( ( b[i] & 0xff ) + 0x100, 16).substring( 1 );
-	// }
-	// return result;
-	// }
-	//
-	//
+	/**
+	 * You usually can't rely on the default serialization format to retain
+	 * file-format compatibility between different versions of a class. You have
+	 * to customize it in a variety of ways using serialPersistentFields,
+	 * readObject() and writeObject() methods, and/or the transient modifier. If
+	 * you do make an incompatible change to the serialization format of a
+	 * class, you should also change the serialVersionUID field to indicate that
+	 * you've done so.
+	 * <p>
+	 * Normally you don't care much about the detailed structure of serialized
+	 * objects. You just care that whatever format you start out with is
+	 * maintained as the class evolves. Once the class is in more-or-less
+	 * complete shape, write some serialized instances of the class and store
+	 * them where you can use them as references going forward. (You probably do
+	 * want to think at least a little about how you will serialize to ensure
+	 * sufficient flexibility for evolution going forward.)
+	 * <p>
+	 * All you need to do is write a serialized object into a file, and you only
+	 * do that once. It's the file you want to save, not the code that wrote it.
+	 * Your test deserializes the object in the file and then compare its
+	 * properties to their expected values.
+	 */
+	@Test
+	public void testDeserializeVersionJIDversion1dot1() throws Exception {
+		// this JID is build from the String values that were also used to build
+		// the String that's serialized in the file
+		// "jid-version-tinder1.1.serialized"
+		final JID original = new JID("abc", "dom4in.com", "@home", true);
+
+		// deserialize
+		final InputStream in = getClass().getResourceAsStream(
+				"/jid-version-tinder1.1.serialized");
+		final ObjectInputStream ois = new ObjectInputStream(in);
+		final Object o = ois.readObject();
+		final JID deserialized = (JID) o;
+
+		// test the result
+		assertEquals(original.getDomain(), deserialized.getDomain());
+		assertEquals(original.getResource(), deserialized.getResource());
+		assertEquals(original.getNode(), deserialized.getNode());
+	}
+
+	// This code is used to generate serialized JID instances. After every
+	// change of the JID class, a new serialized object should be created. This
+	// object should be added (not replace!) the existing objects in the
+	// /test/resources/ directory, and a new unit test should be written that
+	// verifies that the object can be correctly deserialized. This way,
+	// backwards compatibility of the deserialization implementation is checked.
 	// public static void main(String[] args) throws Exception {
+	// final File file = new File(
+	// "src/test/resources/jid-version-tinder1.CHANGEME.serialized");
+	// final OutputStream fout = new FileOutputStream(file);
 	//
-	// File file = new
-	// File("src/test/resources/jid-version-tinder1.1.serialized");
-	// OutputStream fout = new FileOutputStream(file);
-	//
-	// ObjectOutputStream out = new ObjectOutputStream(fout);
+	// final ObjectOutputStream out = new ObjectOutputStream(fout);
 	//
 	// final JID jid = new JID("abc", "dom4in.com", "@home");
-	// System.out.println(jid);
-	// System.out.println(file.getAbsolutePath());
-	// System.out.println(getHexString(jid.getNode().getBytes()));
 	// out.writeObject(jid);
 	// out.flush();
 	// out.close();
-	//	    
 	// }
-
 }
