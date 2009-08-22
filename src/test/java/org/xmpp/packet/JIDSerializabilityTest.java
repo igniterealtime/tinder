@@ -26,7 +26,7 @@ import org.junit.Test;
  *      href="http://www.ibm.com/developerworks/library/j-serialtest.html"
  *      >Testing object serialization</a>
  */
-public class JIDSerializability {
+public class JIDSerializabilityTest {
 
 	/**
 	 * The first serialization test you usually write is one that verifies
