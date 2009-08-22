@@ -8,19 +8,17 @@
 
 package org.xmpp.packet;
 
-import org.jivesoftware.stringprep.IDNA;
-import org.jivesoftware.stringprep.Stringprep;
-import org.jivesoftware.stringprep.StringprepException;
-import org.jivesoftware.util.cache.ExternalizableUtil;
-
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import net.jcip.annotations.Immutable;
+
+import org.jivesoftware.stringprep.IDNA;
+import org.jivesoftware.stringprep.Stringprep;
+import org.jivesoftware.stringprep.StringprepException;
 
 /**
  * An XMPP address (JID). A JID is made up of a node (generally a username), a domain,
@@ -42,21 +40,24 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  * @author Matt Tucker
  */
-public class JID implements Comparable<JID>, Externalizable {
+@Immutable
+public class JID implements Comparable<JID>, Serializable {
 
-    // Stringprep operations are very expensive. Therefore, we cache node, domain and
+	private static final long serialVersionUID = 8135170608402192877L;
+	
+	// Stringprep operations are very expensive. Therefore, we cache node, domain and
     // resource values that have already had stringprep applied so that we can check
     // incoming values against the cache.
     private static final Cache<String> NODEPREP_CACHE = new Cache<String>(10000);
     private static final Cache<String> DOMAINPREP_CACHE = new Cache<String>(500);
     private static final Cache<String> RESOURCEPREP_CACHE = new Cache<String>(10000);
 
-    private String node;
-    private String domain;
-    private String resource;
+    private final String node;
+    private final String domain;
+    private final String resource;
 
-    private String cachedFullJID;
-    private String cachedBareJID;
+    private final String cachedFullJID;
+    private final String cachedBareJID;
 
     /**
      * Escapes the node portion of a JID according to "JID Escaping" (JEP-0106).
@@ -213,26 +214,34 @@ public class JID implements Comparable<JID>, Externalizable {
     }
 
     /**
-     * Constructor added for Externalizable. Do not use this constructor.
-     */
-    public JID() {
-    }
-
-    /**
      * Constructs a JID from it's String representation.
      *
      * @param jid a valid JID.
      * @throws IllegalArgumentException if the JID is not valid.
      */
     public JID(String jid) {
-        if (jid == null) {
-            throw new NullPointerException("JID cannot be null");
-        }
-        String[] parts = getParts(jid);
-
-        init(parts[0], parts[1], parts[2]);
+    	this(getParts(jid), false);
     }
 
+    /**
+	 * Constructs a JID from it's String representation. This construction
+	 * allows the caller to specify if stringprep should be applied or not.
+	 * 
+	 * @param jid
+	 *            a valid JID.
+	 * @param skipStringprep
+	 *            <tt>true</tt> if stringprep should not be applied.
+	 * @throws IllegalArgumentException
+	 *             if the JID is not valid.
+	 */
+    public JID(String jid, boolean skipStringPrep) {
+    	this(getParts(jid), skipStringPrep);
+    }
+    
+    private JID(String[] parts, boolean skipStringPrep) {
+    	this(parts[0], parts[1], parts[2], skipStringPrep);
+    }
+    
     /**
      * Constructs a JID given a node, domain, and resource.
      *
@@ -242,10 +251,7 @@ public class JID implements Comparable<JID>, Externalizable {
      * @throws IllegalArgumentException if the JID is not valid.
      */
     public JID(String node, String domain, String resource) {
-        if (domain == null) {
-            throw new NullPointerException("Domain cannot be null");
-        }
-        init(node, domain, resource);
+        this(node, domain, resource, false);
     }
 
     /**
@@ -255,7 +261,7 @@ public class JID implements Comparable<JID>, Externalizable {
      * @param node the node.
      * @param domain the domain, which must not be <tt>null</tt>.
      * @param resource the resource.
-     * @param skipStringprep true if stringprep should not be applied.
+     * @param skipStringprep <tt>true</tt> if stringprep should not be applied.
      * @throws IllegalArgumentException if the JID is not valid.
      */
     public JID(String node, String domain, String resource, boolean skipStringprep) {
@@ -266,11 +272,80 @@ public class JID implements Comparable<JID>, Externalizable {
             this.node = node;
             this.domain = domain;
             this.resource = resource;
-            // Cache the bare and full JID String representation
-            updateCache();
         }
         else {
-            init(node, domain, resource);
+            // Set node and resource to null if they are the empty string.
+            if (node != null && node.equals("")) {
+                node = null;
+            }
+            if (resource != null && resource.equals("")) {
+                resource = null;
+            }
+            // Stringprep (node prep, resourceprep, etc).
+            try {
+                if (!NODEPREP_CACHE.contains(node)) {
+                    this.node = Stringprep.nodeprep(node);
+                    // Validate field is not greater than 1023 bytes. UTF-8 characters use two bytes.
+                    if (this.node != null && this.node.length()*2 > 1023) {
+                        throw new IllegalArgumentException("Node cannot be larger than 1023 bytes. " +
+                                "Size is " + (this.node.length() * 2) + " bytes.");
+                    }
+                    NODEPREP_CACHE.put(this.node);
+                }
+                else {
+                    this.node = node;
+                }
+                // XMPP specifies that domains should be run through IDNA and
+                // that they should be run through nameprep before doing any
+                // comparisons. We always run the domain through nameprep to
+                // make comparisons easier later.
+                if (!DOMAINPREP_CACHE.contains(domain)) {
+                    this.domain = Stringprep.nameprep(IDNA.toASCII(domain), false);
+                    // Validate field is not greater than 1023 bytes. UTF-8 characters use two bytes.
+                    if (this.domain.length()*2 > 1023) {
+                        throw new IllegalArgumentException("Domain cannot be larger than 1023 bytes. " +
+                                "Size is " + (this.domain.length() * 2) + " bytes.");
+                    }
+                    DOMAINPREP_CACHE.put(this.domain);
+                }
+                else {
+                    this.domain = domain;
+                }
+                this.resource = resourceprep(resource);
+                // Validate field is not greater than 1023 bytes. UTF-8 characters use two bytes.
+                if (resource != null && resource.length()*2 > 1023) {
+                    throw new IllegalArgumentException("Resource cannot be larger than 1023 bytes. " +
+                            "Size is " + (resource.length() * 2) + " bytes.");
+                }
+            }
+            catch (Exception e) {
+                StringBuilder buf = new StringBuilder();
+                if (node != null) {
+                    buf.append(node).append("@");
+                }
+                buf.append(domain);
+                if (resource != null) {
+                    buf.append("/").append(resource);
+                }
+                throw new IllegalArgumentException("Illegal JID: " + buf.toString(), e);
+            }
+        }
+        
+        // Cache the bare JID
+        StringBuilder buf = new StringBuilder(40);
+        if (node != null) {
+            buf.append(node).append("@");
+        }
+        buf.append(domain);
+        cachedBareJID = buf.toString();
+
+        // Cache the full JID
+        if (resource != null) {
+            buf.append("/").append(resource);
+            cachedFullJID = buf.toString();
+        }
+        else {
+            cachedFullJID = cachedBareJID;
         }
     }
 
@@ -328,94 +403,6 @@ public class JID implements Comparable<JID>, Externalizable {
         parts[1] = domain;
         parts[2] = resource;
         return parts;
-    }
-
-    /**
-     * Transforms the JID parts using the appropriate Stringprep profiles, then
-     * validates them. If they are fully valid, the field values are saved, otherwise
-     * an IllegalArgumentException is thrown.
-     *
-     * @param node the node.
-     * @param domain the domain.
-     * @param resource the resource.
-     */
-    private void init(String node, String domain, String resource) {
-        // Set node and resource to null if they are the empty string.
-        if (node != null && node.equals("")) {
-            node = null;
-        }
-        if (resource != null && resource.equals("")) {
-            resource = null;
-        }
-        // Stringprep (node prep, resourceprep, etc).
-        try {
-            if (!NODEPREP_CACHE.contains(node)) {
-                this.node = Stringprep.nodeprep(node);
-                // Validate field is not greater than 1023 bytes. UTF-8 characters use two bytes.
-                if (this.node != null && this.node.length()*2 > 1023) {
-                    throw new IllegalArgumentException("Node cannot be larger than 1023 bytes. " +
-                            "Size is " + (this.node.length() * 2) + " bytes.");
-                }
-                NODEPREP_CACHE.put(this.node);
-            }
-            else {
-                this.node = node;
-            }
-            // XMPP specifies that domains should be run through IDNA and
-            // that they should be run through nameprep before doing any
-            // comparisons. We always run the domain through nameprep to
-            // make comparisons easier later.
-            if (!DOMAINPREP_CACHE.contains(domain)) {
-                this.domain = Stringprep.nameprep(IDNA.toASCII(domain), false);
-                // Validate field is not greater than 1023 bytes. UTF-8 characters use two bytes.
-                if (this.domain.length()*2 > 1023) {
-                    throw new IllegalArgumentException("Domain cannot be larger than 1023 bytes. " +
-                            "Size is " + (this.domain.length() * 2) + " bytes.");
-                }
-                DOMAINPREP_CACHE.put(this.domain);
-            }
-            else {
-                this.domain = domain;
-            }
-            this.resource = resourceprep(resource);
-            // Validate field is not greater than 1023 bytes. UTF-8 characters use two bytes.
-            if (resource != null && resource.length()*2 > 1023) {
-                throw new IllegalArgumentException("Resource cannot be larger than 1023 bytes. " +
-                        "Size is " + (resource.length() * 2) + " bytes.");
-            }
-            // Cache the bare and full JID String representation
-            updateCache();
-        }
-        catch (Exception e) {
-            StringBuilder buf = new StringBuilder();
-            if (node != null) {
-                buf.append(node).append("@");
-            }
-            buf.append(domain);
-            if (resource != null) {
-                buf.append("/").append(resource);
-            }
-            throw new IllegalArgumentException("Illegal JID: " + buf.toString(), e);
-        }
-    }
-
-    private void updateCache() {
-        // Cache the bare JID
-        StringBuilder buf = new StringBuilder(40);
-        if (node != null) {
-            buf.append(node).append("@");
-        }
-        buf.append(domain);
-        cachedBareJID = buf.toString();
-
-        // Cache the full JID
-        if (resource != null) {
-            buf.append("/").append(resource);
-            cachedFullJID = buf.toString();
-        }
-        else {
-            cachedFullJID = cachedBareJID;
-        }
     }
 
     /**
@@ -610,20 +597,5 @@ public class JID implements Comparable<JID>, Externalizable {
 			// we want to switch to LRU.
 			return cachedValues.containsKey(entry);
 		}
-    }
-
-    public void writeExternal(ObjectOutput out) throws IOException {
-        ExternalizableUtil.getInstance().writeSafeUTF(out, toString());
-    }
-
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        String jid = ExternalizableUtil.getInstance().readSafeUTF(in);
-        String[] parts = getParts(jid);
-
-        this.node = parts[0];
-        this.domain = parts[1];
-        this.resource = parts[2];
-        // Cache the bare and full JID String representation
-        updateCache();
     }
 }
