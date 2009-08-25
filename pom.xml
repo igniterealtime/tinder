@@ -12,6 +12,13 @@
 	</organization>
 	<url>http://www.igniterealtime.org/projects/tinder/</url>
 	<inceptionYear>2009</inceptionYear>
+	<licenses>
+		<license>
+			<name>GNU General Public License, Version 2.0</name>
+			<url>http://www.gnu.org/licenses/gpl-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 	<issueManagement>
 		<system>jira</system>
 		<url>http://www.igniterealtime.org/issues/browse/TINDER</url>
@@ -52,8 +59,8 @@
 		</contributor>
 	</contributors>
 	<scm>
-	    <connection>scm:svn:http://svn.igniterealtime.org/svn/repos/tinder</connection>
-    	<developerConnection>scm:svn:https://svn.igniterealtime.org/svn/repos/tinder</developerConnection>
+		<connection>scm:svn:http://svn.igniterealtime.org/svn/repos/tinder</connection>
+		<developerConnection>scm:svn:https://svn.igniterealtime.org/svn/repos/tinder</developerConnection>
 		<url>http://www.igniterealtime.org/fisheye/viewrep/svn-org/tinder</url>
 	</scm>
 
