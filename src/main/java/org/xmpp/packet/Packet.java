@@ -15,6 +15,8 @@ import org.dom4j.Element;
 import org.dom4j.QName;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.StringWriter;
 import java.lang.reflect.Constructor;
@@ -38,6 +40,8 @@ import java.util.List;
 @NotThreadSafe
 public abstract class Packet {
 
+	private static final Logger Log = LoggerFactory.getLogger(Packet.class);
+	
     protected static DocumentFactory docFactory = DocumentFactory.getInstance();
 
     protected Element element;
@@ -280,7 +284,7 @@ public abstract class Packet {
                     return constructor.newInstance(extensions.get(0));
                 }
                 catch (Exception e) {
-                    // Ignore.
+                    Log.warn("Packet extension (name "+name+", namespace "+namespace+") cannot be found.", e);
                 }
             }
             // Otherwise, use a normal PacketExtension.

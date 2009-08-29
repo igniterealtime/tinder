@@ -4,6 +4,8 @@ import net.jcip.annotations.NotThreadSafe;
 
 import org.dom4j.Element;
 import org.dom4j.QName;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.util.Iterator;
@@ -21,6 +23,8 @@ import java.util.Random;
  */
 @NotThreadSafe
 public class IQ extends Packet {
+
+	private static final Logger Log = LoggerFactory.getLogger(Packet.class);
 
     // Sequence and random number generator used for creating unique ID's.
     private static int sequence = 0;
@@ -295,6 +299,7 @@ public class IQ extends Packet {
                         extensions.get(0)});
                 }
                 catch (Exception e) {
+                    Log.warn("Packet extension (name "+name+", namespace "+namespace+") cannot be found.", e);
                 }
             }
         }
