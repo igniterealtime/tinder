@@ -92,8 +92,6 @@
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
 			<version>1.6.1</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/dom4j.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.jivesoftware</groupId>
