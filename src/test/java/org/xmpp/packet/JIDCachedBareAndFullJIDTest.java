@@ -18,7 +18,7 @@ import org.junit.Test;
  * @see <a href="http://www.igniterealtime.org/issues/browse/TINDER-29">Tinder
  *      bugtracker: TINDER-29</a>
  */
-public class JIDCachedBareAndFullJID {
+public class JIDCachedBareAndFullJIDTest {
 
 	/**
 	 * Verifies that Stringprep mapping results are correctly stored in the
