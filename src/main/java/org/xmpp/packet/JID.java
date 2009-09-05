@@ -329,15 +329,15 @@ public class JID implements Comparable<JID>, Serializable {
         
         // Cache the bare JID
         StringBuilder buf = new StringBuilder(40);
-        if (node != null) {
-            buf.append(node).append("@");
+        if (this.node != null) {
+            buf.append(this.node).append("@");
         }
-        buf.append(domain);
+        buf.append(this.domain);
         cachedBareJID = buf.toString();
 
         // Cache the full JID
-        if (resource != null) {
-            buf.append("/").append(resource);
+        if (this.resource != null) {
+            buf.append("/").append(this.resource);
             cachedFullJID = buf.toString();
         }
         else {
