@@ -94,13 +94,6 @@
 			<version>1.6.1</version>
 		</dependency>
 		<dependency>
-			<groupId>org.jivesoftware</groupId>
-			<artifactId>stringprep</artifactId>
-			<version>1</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/stringprep.jar</systemPath>
-		</dependency>
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.6</version>
@@ -127,6 +120,11 @@
 			<artifactId>slf4j-simple</artifactId>
 			<version>1.5.8</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.gnu.inet</groupId>
+			<artifactId>libidn</artifactId>
+			<version>0.6.5</version>
 		</dependency>
 	</dependencies>
 

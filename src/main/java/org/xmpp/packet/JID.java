@@ -8,6 +8,10 @@
 
 package org.xmpp.packet;
 
+import gnu.inet.encoding.IDNA;
+import gnu.inet.encoding.Stringprep;
+import gnu.inet.encoding.StringprepException;
+
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Queue;
@@ -15,10 +19,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import net.jcip.annotations.Immutable;
-
-import org.jivesoftware.stringprep.IDNA;
-import org.jivesoftware.stringprep.Stringprep;
-import org.jivesoftware.stringprep.StringprepException;
 
 /**
  * An XMPP address (JID). A JID is made up of a node (generally a username), a domain,
