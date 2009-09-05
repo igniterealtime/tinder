@@ -13,12 +13,14 @@ import gnu.inet.encoding.Stringprep;
 import gnu.inet.encoding.StringprepException;
 
 import java.io.Serializable;
-import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import net.jcip.annotations.Immutable;
+
+import org.xmpp.util.ValueWrapper;
+import org.xmpp.util.ValueWrapper.Representation;
+
+import com.reardencommerce.kernel.collections.shared.evictable.ConcurrentLinkedHashMap;
+import com.reardencommerce.kernel.collections.shared.evictable.ConcurrentLinkedHashMap.EvictionPolicy;
 
 /**
  * An XMPP address (JID). A JID is made up of a node (generally a username), a domain,
@@ -48,9 +50,9 @@ public class JID implements Comparable<JID>, Serializable {
 	// Stringprep operations are very expensive. Therefore, we cache node, domain and
     // resource values that have already had stringprep applied so that we can check
     // incoming values against the cache.
-    private static final Cache<String> NODEPREP_CACHE = new Cache<String>(10000);
-    private static final Cache<String> DOMAINPREP_CACHE = new Cache<String>(500);
-    private static final Cache<String> RESOURCEPREP_CACHE = new Cache<String>(10000);
+    private static final ConcurrentLinkedHashMap<String, ValueWrapper<String>> NODEPREP_CACHE = ConcurrentLinkedHashMap.create(EvictionPolicy.SECOND_CHANCE, 10000);
+    private static final ConcurrentLinkedHashMap<String, ValueWrapper<String>> DOMAINPREP_CACHE = ConcurrentLinkedHashMap.create(EvictionPolicy.SECOND_CHANCE, 500);
+    private static final ConcurrentLinkedHashMap<String, ValueWrapper<String>> RESOURCEPREP_CACHE = ConcurrentLinkedHashMap.create(EvictionPolicy.SECOND_CHANCE, 10000);
 
     private final String node;
     private final String domain;
@@ -200,19 +202,229 @@ public class JID implements Comparable<JID>, Serializable {
         return buf.toString();
     }
 
-    public static String resourceprep(String resource) throws StringprepException {
-        String answer = resource;
-        if (!RESOURCEPREP_CACHE.contains(resource)) {
-            answer = Stringprep.resourceprep(resource);
-            // Validate field is not greater than 1023 bytes. UTF-8 characters use two bytes.
-            if (answer != null && answer.length()*2 > 1023) {
-                throw new IllegalArgumentException("Resource cannot be larger than 1023 bytes. " +
-                        "Size is " + (answer.length() * 2) + " bytes.");
-            }
-            RESOURCEPREP_CACHE.put(answer);
-        }
-        return answer;
-    }
+	/**
+	 * Returns a valid representation of a JID node, based on the provided
+	 * input. This method throws an {@link IllegalArgumentException} if the
+	 * provided argument cannot be represented as a valid JID node (e.g. if
+	 * StringPrepping fails).
+	 * 
+	 * @param node
+	 *            The raw node value.
+	 * @return A String based JID node representation
+	 * @throws IllegalArgumentException
+	 *             if <tt>node</tt> is not a valid JID node.
+	 */
+	public static String nodeprep(String node) {
+		if (node == null) {
+			return null;
+		}
+
+		final ValueWrapper<String> cachedResult = NODEPREP_CACHE.get(node);
+
+		final String answer;
+		if (cachedResult == null) {
+			try {
+				answer = Stringprep.nodeprep(node);
+				// Validate field is not greater than 1023 bytes. UTF-8
+				// characters use two bytes.
+				if (answer != null && answer.length() * 2 > 1023) {
+					throw new IllegalArgumentException("Node cannot be larger "
+							+ "than 1023 bytes. Size is "
+							+ (answer.length() * 2) + " bytes.");
+				}
+			} catch (Exception ex) {
+				// register the failure in the cache (TINDER-24)
+				NODEPREP_CACHE.put(node, new ValueWrapper<String>(
+						Representation.ILLEGAL));
+				throw new IllegalArgumentException(
+						"The input is not a valid JID node: " + node, ex);
+			}
+
+			// Add the result to the cache. As most key/value pairs will contain
+			// equal Strings, we use an identifier object to represent this
+			// state.
+			NODEPREP_CACHE.put(answer, new ValueWrapper<String>(
+					Representation.USE_KEY));
+			if (!node.equals(answer)) {
+				// If the input differs from the stringprepped result, include
+				// the raw input as a key too. (TINDER-24)
+				NODEPREP_CACHE.put(node, new ValueWrapper<String>(answer));
+			}
+		} else {
+			switch (cachedResult.getRepresentation()) {
+			case USE_KEY:
+				answer = node;
+				break;
+
+			case USE_VALUE:
+				answer = cachedResult.getValue();
+				break;
+
+			case ILLEGAL:
+				throw new IllegalArgumentException(
+						"The input is not a valid JID node: " + node);
+
+			default:
+				// should not occur
+				throw new IllegalStateException(
+						"The implementation of JID#nodeprep(String) is broken.");
+			}
+		}
+
+		return answer;
+	}
+
+	/**
+	 * Returns a valid representation of a JID domain part, based on the
+	 * provided input. This method throws an {@link IllegalArgumentException} if
+	 * the provided argument cannot be represented as a valid JID domain part
+	 * (e.g. if Stringprepping fails).
+	 * 
+	 * @param domain
+	 *            The raw domain value.
+	 * @return A String based JID domain part representation
+	 * @throws IllegalArgumentException
+	 *             if <tt>domain</tt> is not a valid JID domain part.
+	 */
+	public static String domainprep(String domain) throws StringprepException {
+		if (domain == null) {
+			throw new IllegalArgumentException(
+					"Argument 'domain' cannot be null.");
+		}
+
+		final ValueWrapper<String> cachedResult = DOMAINPREP_CACHE.get(domain);
+
+		final String answer;
+		if (cachedResult == null) {
+			try {
+				answer = Stringprep.nameprep(IDNA.toASCII(domain), false);
+				// Validate field is not greater than 1023 bytes. UTF-8
+				// characters use two bytes.
+				if (answer != null && answer.length() * 2 > 1023) {
+					throw new IllegalArgumentException("Node cannot be larger "
+							+ "than 1023 bytes. Size is "
+							+ (answer.length() * 2) + " bytes.");
+				}
+			} catch (Exception ex) {
+				// register the failure in the cache (TINDER-24)
+				DOMAINPREP_CACHE.put(domain, new ValueWrapper<String>(
+						Representation.ILLEGAL));
+				throw new IllegalArgumentException(
+						"The input is not a valid JID domain part: " + domain,
+						ex);
+			}
+
+			// Add the result to the cache. As most key/value pairs will contain
+			// equal Strings, we use an identifier object to represent this
+			// state.
+			DOMAINPREP_CACHE.put(answer, new ValueWrapper<String>(
+					Representation.USE_KEY));
+			if (!domain.equals(answer)) {
+				// If the input differs from the stringprepped result, include
+				// the raw input as a key too. (TINDER-24)
+				DOMAINPREP_CACHE.put(domain, new ValueWrapper<String>(answer));
+			}
+		} else {
+			switch (cachedResult.getRepresentation()) {
+			case USE_KEY:
+				answer = domain;
+				break;
+
+			case USE_VALUE:
+				answer = cachedResult.getValue();
+				break;
+
+			case ILLEGAL:
+				throw new IllegalArgumentException(
+						"The input is not a valid JID domain part: " + domain);
+
+			default:
+				// should not occur
+				throw new IllegalStateException(
+						"The implementation of JID#domainprep(String) is broken.");
+			}
+		}
+
+		return answer;
+	}
+
+	/**
+	 * Returns a valid representation of a JID resource, based on the provided
+	 * input. This method throws an {@link IllegalArgumentException} if the
+	 * provided argument cannot be represented as a valid JID resource (e.g. if
+	 * StringPrepping fails).
+	 * 
+	 * @param resource
+	 *            The raw resource value.
+	 * @return A String based JID resource representation
+	 * @throws IllegalArgumentException
+	 *             if <tt>resource</tt> is not a valid JID resource.
+	 */
+	public static String resourceprep(String resource)
+			throws StringprepException {
+		if (resource == null) {
+			return null;
+		}
+
+		final ValueWrapper<String> cachedResult = RESOURCEPREP_CACHE
+				.get(resource);
+
+		final String answer;
+		if (cachedResult == null) {
+			try {
+				answer = Stringprep.resourceprep(resource);
+				// Validate field is not greater than 1023 bytes. UTF-8
+				// characters use two bytes.
+				if (answer != null && answer.length() * 2 > 1023) {
+					throw new IllegalArgumentException(
+							"Resource cannot be larger "
+									+ "than 1023 bytes. Size is "
+									+ (answer.length() * 2) + " bytes.");
+				}
+			} catch (Exception ex) {
+				// register the failure in the cache (TINDER-24)
+				RESOURCEPREP_CACHE.put(resource, new ValueWrapper<String>(
+						Representation.ILLEGAL));
+				throw new IllegalArgumentException(
+						"The input is not a valid JID resource: " + resource,
+						ex);
+			}
+
+			// Add the result to the cache. As most key/value pairs will contain
+			// equal Strings, we use an identifier object to represent this
+			// state.
+			RESOURCEPREP_CACHE.put(answer, new ValueWrapper<String>(
+					Representation.USE_KEY));
+			if (!resource.equals(answer)) {
+				// If the input differs from the stringprepped result, include
+				// the raw input as a key too. (TINDER-24)
+				RESOURCEPREP_CACHE.put(resource, new ValueWrapper<String>(
+						answer));
+			}
+		} else {
+			switch (cachedResult.getRepresentation()) {
+			case USE_KEY:
+				answer = resource;
+				break;
+
+			case USE_VALUE:
+				answer = cachedResult.getValue();
+				break;
+
+			case ILLEGAL:
+				throw new IllegalArgumentException(
+						"The input is not a valid JID resource part: "
+								+ resource);
+
+			default:
+				// should not occur
+				throw new IllegalStateException(
+						"The implementation of JID#resourceprep(String) is broken.");
+			}
+		}
+
+		return answer;
+	}
 
     /**
      * Constructs a JID from it's String representation.
@@ -284,34 +496,8 @@ public class JID implements Comparable<JID>, Serializable {
             }
             // Stringprep (node prep, resourceprep, etc).
             try {
-                if (!NODEPREP_CACHE.contains(node)) {
-                    this.node = Stringprep.nodeprep(node);
-                    // Validate field is not greater than 1023 bytes. UTF-8 characters use two bytes.
-                    if (this.node != null && this.node.length()*2 > 1023) {
-                        throw new IllegalArgumentException("Node cannot be larger than 1023 bytes. " +
-                                "Size is " + (this.node.length() * 2) + " bytes.");
-                    }
-                    NODEPREP_CACHE.put(this.node);
-                }
-                else {
-                    this.node = node;
-                }
-                // XMPP specifies that domains should be run through IDNA and
-                // that they should be run through nameprep before doing any
-                // comparisons. We always run the domain through nameprep to
-                // make comparisons easier later.
-                if (!DOMAINPREP_CACHE.contains(domain)) {
-                    this.domain = Stringprep.nameprep(IDNA.toASCII(domain), false);
-                    // Validate field is not greater than 1023 bytes. UTF-8 characters use two bytes.
-                    if (this.domain.length()*2 > 1023) {
-                        throw new IllegalArgumentException("Domain cannot be larger than 1023 bytes. " +
-                                "Size is " + (this.domain.length() * 2) + " bytes.");
-                    }
-                    DOMAINPREP_CACHE.put(this.domain);
-                }
-                else {
-                    this.domain = domain;
-                }
+            	this.node = nodeprep(node);
+            	this.domain = domainprep(domain);
                 this.resource = resourceprep(resource);
             }
             catch (Exception e) {
@@ -439,15 +625,11 @@ public class JID implements Comparable<JID>, Serializable {
     }
 
 	/**
-	 * <p>
 	 * Returns the String representation of the full JID, for example:
 	 * <tt>username@domain.com/mobile</tt>.
-	 * </p>
 	 * 
-	 * <p>
 	 * If no resource has been provided in the constructor of this object, an
 	 * IllegalStateException is thrown.
-	 * </p>
 	 * 
 	 * @return the full JID.
 	 * @throws IllegalStateException
@@ -545,78 +727,5 @@ public class JID implements Comparable<JID>, Serializable {
      */
     public static boolean equals(String jid1, String jid2) {
         return new JID(jid1).equals(new JID(jid2));
-    }
-
-	/**
-	 * A simple cache class with limited functionality. It uses an FIFO 
-	 * eviction policy to keep the cache at a maximum size. This class
-	 * offers acceptable thread safety for the purpose of the parent class.
-	 * 
-	 * @author Guus der Kinderen, guus@nimbuzz.com
-	 */
-    private static class Cache<K> {
-
-		/** Cannot add null values in ConcurrentHashMap... */
-		private final static Object NULL = new Object();
-
-		/** Queue that records insertion order. Used to implement FIFO behavior. */
-		private final Queue<K> fifoQueue = new ConcurrentLinkedQueue<K>();
-
-		/** Values are cached in a hashmap for fast lookup. **/
-		private final Map<K, Object> cachedValues = new ConcurrentHashMap<K, Object>();
-
-		/** Cache capacity */
-		private int maxSize;
-
-		/**
-		 * Constructs a new capacity-bound cache.
-		 * 
-		 * @param maxSize
-		 *            The maximum number of elements that the cache can contain.
-		 */
-		public Cache(int maxSize) {
-			this.maxSize = maxSize;
-		}
-
-		/**
-		 * Adds a new element to the cache. The cache is pruned if the maximum
-		 * capacity has been reached.
-		 * 
-		 * @param entry
-		 *            The element to be added to the cache
-		 */
-		public void put(K entry) {
-			synchronized (entry) {
-				// add value to the cache
-				if (cachedValues.put(entry, NULL) == null) {
-					// ensure that queue doesn't contain duplicates.
-					fifoQueue.offer(entry);
-				}
-			}
-
-			// apply eviction policy if required.
-			while (cachedValues.size() > maxSize) {
-				cachedValues.remove(fifoQueue.poll());
-			}
-		}
-
-		/**
-		 * Checks if the cache contains an element.
-		 * 
-		 * @param entry
-		 *            The element to check for.
-		 * @return <tt>true</tt> if the cache currently contains the entry,
-		 *         <tt>false</tt> otherwise.
-		 */
-		public boolean contains(K entry) {
-			// no need to nodeprep null - it'll result in null.
-			if (entry == null) {
-				return true;
-			}
-
-			// Note that this method will need to record access if
-			// we want to switch to LRU.
-			return cachedValues.containsKey(entry);
-		}
     }
 }
