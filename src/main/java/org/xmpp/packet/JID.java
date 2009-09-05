@@ -430,7 +430,7 @@ public class JID implements Comparable<JID>, Serializable {
 
     /**
      * Returns the String representation of the bare JID, which is the JID with
-     * resource information removed.
+     * resource information removed. For example: <tt>username@domain.com</tt>
      *
      * @return the bare JID.
      */
@@ -438,6 +438,16 @@ public class JID implements Comparable<JID>, Serializable {
         return cachedBareJID;
     }
 
+    /**
+	 * Returns the String representation of the full JID, for example:
+	 * <tt>username@domain.com/mobile</tt>
+	 * 
+	 * @return the full JID.
+	 */
+	public String toFullJID() {
+		return cachedFullJID;
+	}
+    
     /**
      * Returns a String representation of the JID.
      *
