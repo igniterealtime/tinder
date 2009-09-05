@@ -438,13 +438,28 @@ public class JID implements Comparable<JID>, Serializable {
         return cachedBareJID;
     }
 
-    /**
+	/**
+	 * <p>
 	 * Returns the String representation of the full JID, for example:
-	 * <tt>username@domain.com/mobile</tt>
+	 * <tt>username@domain.com/mobile</tt>.
+	 * </p>
+	 * 
+	 * <p>
+	 * If no resource has been provided in the constructor of this object, an
+	 * IllegalStateException is thrown.
+	 * </p>
 	 * 
 	 * @return the full JID.
+	 * @throws IllegalStateException
+	 *             If no resource was provided in the constructor used to create
+	 *             this instance.
 	 */
 	public String toFullJID() {
+		if (this.resource == null) {
+			throw new IllegalStateException("This JID was instantiated "
+					+ "without a resource identifier. A full "
+					+ "JID representation is not available for: " + toString());
+		}
 		return cachedFullJID;
 	}
     
@@ -458,7 +473,7 @@ public class JID implements Comparable<JID>, Serializable {
     }
 
     public int hashCode() {
-        return toString().hashCode();
+        return cachedFullJID.hashCode();
     }
 
     public boolean equals(Object object) {
