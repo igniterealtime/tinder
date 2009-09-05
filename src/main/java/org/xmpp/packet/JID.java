@@ -206,7 +206,8 @@ public class JID implements Comparable<JID>, Serializable {
             answer = Stringprep.resourceprep(resource);
             // Validate field is not greater than 1023 bytes. UTF-8 characters use two bytes.
             if (answer != null && answer.length()*2 > 1023) {
-                return answer;
+                throw new IllegalArgumentException("Resource cannot be larger than 1023 bytes. " +
+                        "Size is " + (answer.length() * 2) + " bytes.");
             }
             RESOURCEPREP_CACHE.put(answer);
         }
@@ -312,11 +313,6 @@ public class JID implements Comparable<JID>, Serializable {
                     this.domain = domain;
                 }
                 this.resource = resourceprep(resource);
-                // Validate field is not greater than 1023 bytes. UTF-8 characters use two bytes.
-                if (resource != null && resource.length()*2 > 1023) {
-                    throw new IllegalArgumentException("Resource cannot be larger than 1023 bytes. " +
-                            "Size is " + (resource.length() * 2) + " bytes.");
-                }
             }
             catch (Exception e) {
                 StringBuilder buf = new StringBuilder();
