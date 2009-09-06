@@ -24,23 +24,28 @@ import com.reardencommerce.kernel.collections.shared.evictable.ConcurrentLinkedH
 import com.reardencommerce.kernel.collections.shared.evictable.ConcurrentLinkedHashMap.EvictionPolicy;
 
 /**
- * An XMPP address (JID). A JID is made up of a node (generally a username), a domain,
- * and a resource. The node and resource are optional; domain is required. In simple
- * ABNF form:
- *
- * <ul><tt>jid = [ node "@" ] domain [ "/" resource ]</tt></ul>
- *
+ * An XMPP address (JID). A JID is made up of a node (generally a username), a
+ * domain, and a resource. The node and resource are optional; domain is
+ * required. In simple ABNF form:
+ * 
+ * <ul>
+ * <tt>jid = [ node "@" ] domain [ "/" resource ]</tt>
+ * </ul>
+ * 
  * Some sample JID's:
  * <ul>
- *      <li><tt>user@example.com</tt></li>
- *      <li><tt>user@example.com/home</tt></li>
- *      <li><tt>example.com</tt></li>
+ * <li><tt>user@example.com</tt></li>
+ * <li><tt>user@example.com/home</tt></li>
+ * <li><tt>example.com</tt></li>
  * </ul>
- *
+ * 
  * Each allowable portion of a JID (node, domain, and resource) must not be more
- * than 1023 bytes in length, resulting in a maximum total size (including the '@'
- * and '/' separators) of 3071 bytes.
- *
+ * than 1023 bytes in length, resulting in a maximum total size (including the
+ * '@' and '/' separators) of 3071 bytes.
+ * 
+ * JID instances are immutable. Multiple threads can act on data represented by
+ * JID objects without concern of the data being changed by other threads.
+ * 
  * @author Matt Tucker
  * @author Guus der Kinderen, guus.der.kinderen@gmail.com
  */
