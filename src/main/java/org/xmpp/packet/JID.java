@@ -13,6 +13,7 @@ import gnu.inet.encoding.Stringprep;
 import gnu.inet.encoding.StringprepException;
 
 import java.io.Serializable;
+import java.util.concurrent.ConcurrentMap;
 
 import net.jcip.annotations.Immutable;
 
@@ -41,6 +42,7 @@ import com.reardencommerce.kernel.collections.shared.evictable.ConcurrentLinkedH
  * and '/' separators) of 3071 bytes.
  *
  * @author Matt Tucker
+ * @author Guus der Kinderen, guus.der.kinderen@gmail.com
  */
 @Immutable
 public class JID implements Comparable<JID>, Serializable {
@@ -50,9 +52,9 @@ public class JID implements Comparable<JID>, Serializable {
 	// Stringprep operations are very expensive. Therefore, we cache node, domain and
     // resource values that have already had stringprep applied so that we can check
     // incoming values against the cache.
-    private static final ConcurrentLinkedHashMap<String, ValueWrapper<String>> NODEPREP_CACHE = ConcurrentLinkedHashMap.create(EvictionPolicy.SECOND_CHANCE, 10000);
-    private static final ConcurrentLinkedHashMap<String, ValueWrapper<String>> DOMAINPREP_CACHE = ConcurrentLinkedHashMap.create(EvictionPolicy.SECOND_CHANCE, 500);
-    private static final ConcurrentLinkedHashMap<String, ValueWrapper<String>> RESOURCEPREP_CACHE = ConcurrentLinkedHashMap.create(EvictionPolicy.SECOND_CHANCE, 10000);
+    private static final ConcurrentMap<String, ValueWrapper<String>> NODEPREP_CACHE = ConcurrentLinkedHashMap.create(EvictionPolicy.SECOND_CHANCE, 10000);
+    private static final ConcurrentMap<String, ValueWrapper<String>> DOMAINPREP_CACHE = ConcurrentLinkedHashMap.create(EvictionPolicy.SECOND_CHANCE, 500);
+    private static final ConcurrentMap<String, ValueWrapper<String>> RESOURCEPREP_CACHE = ConcurrentLinkedHashMap.create(EvictionPolicy.SECOND_CHANCE, 10000);
 
     private final String node;
     private final String domain;
