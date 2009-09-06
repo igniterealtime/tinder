@@ -57,6 +57,14 @@
 			<organizationUrl>http://www.jivesoftware.com</organizationUrl>
 			<timezone>-8</timezone>
 		</contributor>
+		<contributor>
+			<name>Guenther Niess</name>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<email>guenther.niess@web.de</email>
+			<timezone>+1</timezone>
+		</contributor>
 	</contributors>
 	<scm>
 		<connection>scm:svn:http://svn.igniterealtime.org/svn/repos/tinder</connection>
