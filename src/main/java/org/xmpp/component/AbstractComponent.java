@@ -37,17 +37,24 @@ import org.xmpp.packet.PacketError.Condition;
  * the stanza was an IQ request stanza, an IQ error stanza
  * (internal-server-error/wait) will be returned.
  * <p/>
- * This implementation ensures that every consumed IQ of the <tt>get</tt> or
- * <tt>set</tt> type is responded to. If the abstract component cannot formulate
- * a valid response and the extending implementation does not provide a response
- * either, an IQ error response is returned.
+ * By default, instances of this class are guaranteed to return an IQ response
+ * on every consumed IQ of the <tt>get</tt> or <tt>set</tt> type, as required by
+ * the XMPP specification. If the abstract component cannot formulate a valid
+ * response and the extending implementation does not provide a response either
+ * (by returning <tt>null</tt> on invocations of {@link #handleIQGet(IQ)} and
+ * {@link #handleIQSet(IQ)}) an IQ error response is returned.
+ * <p />
+ * The behavior described above can be disabled by setting a corresponding flag
+ * in one of the constructors. If an instance is configured in such a way,
+ * <tt>null</tt> responses provided by the extending implementation are not
+ * translated in an IQ error. This allows the extending implementation to
+ * respond to IQ requests in an asynchrous manner. It will be up to the
+ * extending implementation to ensure that every IQ request is responded to.
  * <p/>
  * Note that instances of this class can be used to implement internal (e.g.
  * Openfire plugins) as well as external components.
  * 
  * @author Guus der Kinderen, guus.der.kinderen@gmail.com
- * @see <a href="http://xmpp.org/extensions/xep-0030.html">XEP-0030</a>
- * @see <a href="http://xmpp.org/extensions/xep-0199.html">XEP-0199</a>
  */
 // TODO define JCIP annotation
 public abstract class AbstractComponent implements Component {
@@ -99,11 +106,17 @@ public abstract class AbstractComponent implements Component {
 	private final int maxQueueSize;
 
 	/**
+	 * if <tt>true</tt>, the component will make sure that every request that is
+	 * received is answered, as specified by the XMPP specification.
+	 */
+	private final boolean enforceIQResult;
+
+	/**
 	 * Instantiates a new AbstractComponent with a maximum thread pool size of
 	 * 17 and a maximum queue size of 1000.
 	 */
 	public AbstractComponent() {
-		this(17, 1000);
+		this(17, 1000, true);
 	}
 
 	/**
@@ -115,10 +128,16 @@ public abstract class AbstractComponent implements Component {
 	 * @param maxQueueSize
 	 *            capacity of the queue that holds tasks that are to be executed
 	 *            by the thread pool.
+	 * @param enforceIQResult
+	 *            if <tt>true</tt>, the component will make sure that every
+	 *            request that is received is answered, as specified by the XMPP
+	 *            specification.
 	 */
-	public AbstractComponent(int maxThreadpoolSize, int maxQueueSize) {
+	public AbstractComponent(int maxThreadpoolSize, int maxQueueSize,
+			boolean enforceIQResult) {
 		this.maxThreadPoolSize = maxThreadpoolSize;
 		this.maxQueueSize = maxQueueSize;
+		this.enforceIQResult = enforceIQResult;
 	}
 
 	/**
@@ -181,7 +200,9 @@ public abstract class AbstractComponent implements Component {
 	 * <li>calls methods to process IQ requests (type <tt>get</tt> and
 	 * <tt>set</tt>). If no response to these request are returned, this method
 	 * will respond to the request with an IQ stanza of type <tt>error</tt>,
-	 * containing an error condition 'feature-not-implemented';</li>
+	 * containing an error condition <tt>feature-not-implemented</tt> (this
+	 * behavior can be disabled by setting the <tt>enforceIQResult</tt> argument
+	 * in the constructor to <tt>false</tt>);</li>
 	 * <li>calls methods to process IQ results (type <tt>result</tt> and
 	 * <tt>error</tt>). No response to these stanzas are expected;</li>
 	 * <li>returns an IQ stanza of type error, condition 'internal-server-error'
@@ -210,14 +231,19 @@ public abstract class AbstractComponent implements Component {
 
 			case get: // intended fall-through
 			case set:
+				// cache the id, to prevent the extending implementation from
+				// modifying it.
+				final String requestID = iq.getID();
 				response = processIQRequest(iq);
 				// validate the response IQ stanza.
 				if (response == null) {
 					// A request (IQ type 'get' or 'set') MUST be responded to.
 					// If no response was generated, create an 'error' type
 					// response.
-					response = IQ.createResultIQ(iq);
-					response.setError(Condition.feature_not_implemented);
+					if (enforceIQResult) {
+						response = IQ.createResultIQ(iq);
+						response.setError(Condition.feature_not_implemented);
+					}
 				} else {
 					// responses MUST be of type 'result' or 'error'. Everything
 					// else is invalid.
@@ -227,6 +253,16 @@ public abstract class AbstractComponent implements Component {
 								+ "only be IQ stanza's of type <tt>error</tt> "
 								+ "or <tt>result</tt>. The response to this "
 								+ "packet was incorrect: " + iq.toXML()
+								+ ". The response was: " + response.toXML());
+					}
+					// responses must have the same packet ID as the request
+					if (!requestID.equals(response.getID())) {
+						throw new IllegalStateException("The response to "
+								+ "an request IQ must have the same packet "
+								+ "ID. If this was done intentionally, "
+								+ "#send(Packet) should have been used "
+								+ "instead. The response to this packet "
+								+ "was incorrect: " + iq.toXML()
 								+ ". The response was: " + response.toXML());
 					}
 				}
@@ -336,8 +372,10 @@ public abstract class AbstractComponent implements Component {
 	 * </ol>
 	 * <p/>
 	 * Note that if this method returns <tt>null</tt>, an IQ stanza of type
-	 * <tt>error</tt>, condition 'feature-not-implemented' will be returned to
-	 * the sender of the original request.
+	 * <tt>error</tt>, condition <tt>feature-not-implemented</tt> will be
+	 * returned to the sender of the original request. This behavior can be
+	 * disabled by setting the <tt>enforceIQResult</tt> argument in the
+	 * constructor to <tt>false</tt>.
 	 * <p/>
 	 * Note that if this method throws an Exception, an IQ stanza of type
 	 * <tt>error</tt>, condition 'internal-server-error' will be returned to the
@@ -451,7 +489,9 @@ public abstract class AbstractComponent implements Component {
 	 * <p/>
 	 * Note that, as any IQ stanza of type <tt>get</tt> must be replied to,
 	 * returning <tt>null</tt> from this method equals returning an IQ error
-	 * stanza of type 'feature-not-implemented'.
+	 * stanza of type 'feature-not-implemented' (this behavior can be disabled
+	 * by setting the <tt>enforceIQResult</tt> argument in the constructor to
+	 * <tt>false</tt>).
 	 * <p/>
 	 * Note that if this method throws an Exception, an IQ stanza of type
 	 * <tt>error</tt>, condition 'internal-server-error' will be returned to the
@@ -478,7 +518,9 @@ public abstract class AbstractComponent implements Component {
 	 * <p/>
 	 * Note that, as any IQ stanza of type <tt>set</tt> must be replied to,
 	 * returning <tt>null</tt> from this method equals returning an IQ error
-	 * stanza of type 'feature-not-implemented'.
+	 * stanza of type 'feature-not-implemented' {this behavior can be disabled
+	 * by setting the <tt>enforceIQResult</tt> argument in the constructor to
+	 * <tt>false</tt>).
 	 * <p/>
 	 * Note that if this method throws an Exception, an IQ stanza of type
 	 * <tt>error</tt>, condition 'internal-server-error' will be returned to the
@@ -526,7 +568,7 @@ public abstract class AbstractComponent implements Component {
 	 * <li>attribute 'type' : the return value of
 	 * {@link #discoInfoIdentityCategoryType()};</li>
 	 * <li>
-	 * attribute 'name' : the name of the Plugin, as returned by getName()
+	 * attribute 'name' : the name of the entity, as returned by getName()
 	 * method of the {@link Component} interface (which this class implements).</li>
 	 * </ul>
 	 * </li>
@@ -689,8 +731,8 @@ public abstract class AbstractComponent implements Component {
 	 * with a IQ <tt>error</tt> response, type 'cancel', condition
 	 * 'not-allowed'.
 	 * <p/>
-	 * Note that by default, this method returns <tt>false</tt>. You can override
-	 * this method to change the behavior.
+	 * Note that by default, this method returns <tt>false</tt>. You can
+	 * override this method to change the behavior.
 	 * 
 	 * @return <tt>true</tt> if this component serves local users only, <tt>
 	 *         false</tt> otherwise.
