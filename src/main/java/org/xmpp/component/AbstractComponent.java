@@ -833,7 +833,7 @@ public abstract class AbstractComponent implements Component {
 	public void start() {
 		preComponentStart();
 
-		if (executor == null) {
+		if (executor == null || executor.isShutdown()) {
 			executor = new ThreadPoolExecutor(maxThreadPoolSize,
 					maxThreadPoolSize, 60L, TimeUnit.SECONDS,
 					new LinkedBlockingQueue<Runnable>(maxQueueSize));
