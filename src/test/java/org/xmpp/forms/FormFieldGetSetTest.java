@@ -5,6 +5,7 @@
  * a copy of which is included in this distribution, or a commercial license
  * agreement with Jive.
  */
+
 package org.xmpp.forms;
 
 import static org.junit.Assert.assertEquals;
