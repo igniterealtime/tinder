@@ -42,7 +42,7 @@ public abstract class Packet {
 
 	private static final Logger Log = LoggerFactory.getLogger(Packet.class);
 	
-    protected static DocumentFactory docFactory = DocumentFactory.getInstance();
+    protected static final DocumentFactory docFactory = DocumentFactory.getInstance();
 
     protected Element element;
 

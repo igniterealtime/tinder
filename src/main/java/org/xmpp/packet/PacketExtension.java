@@ -34,12 +34,12 @@ import org.dom4j.QName;
 @NotThreadSafe
 public class PacketExtension {
     
-    protected static DocumentFactory docFactory = DocumentFactory.getInstance();
+    protected static final DocumentFactory docFactory = DocumentFactory.getInstance();
     /**
      * Subclasses of PacketExtension should register the element name and namespace that the
      * subclass is using.
      */
-    protected static Map<QName, Class<? extends PacketExtension>> registeredExtensions = new ConcurrentHashMap<QName, Class<? extends PacketExtension>>();
+    protected static final Map<QName, Class<? extends PacketExtension>> registeredExtensions = new ConcurrentHashMap<QName, Class<? extends PacketExtension>>();
 
     protected Element element;
 
