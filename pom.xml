@@ -132,7 +132,7 @@
 		<dependency>
 			<groupId>org.gnu.inet</groupId>
 			<artifactId>libidn</artifactId>
-			<version>0.6.5</version>
+			<version>1.15</version>
 		</dependency>
 	</dependencies>
 
