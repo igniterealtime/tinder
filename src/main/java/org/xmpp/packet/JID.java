@@ -13,6 +13,7 @@ import gnu.inet.encoding.Stringprep;
 import gnu.inet.encoding.StringprepException;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.util.concurrent.ConcurrentMap;
 
 import net.jcip.annotations.Immutable;
@@ -218,6 +219,9 @@ public class JID implements Comparable<JID>, Serializable {
 	 * @param node
 	 *            The raw node value.
 	 * @return A String based JID node representation
+	 * @throws IllegalStateException
+	 *             If the UTF-8 charset is not supported by the system. This
+	 *             exception wraps an UnsupportedEncodingException.
 	 * @throws IllegalArgumentException
 	 *             if <tt>node</tt> is not a valid JID node.
 	 */
@@ -233,12 +237,14 @@ public class JID implements Comparable<JID>, Serializable {
 			try {
 				answer = Stringprep.nodeprep(node);
 				// Validate field is not greater than 1023 bytes. UTF-8
-				// characters use two bytes.
-				if (answer != null && answer.length() * 2 > 1023) {
+				// characters use one to four bytes.
+				if (answer != null && answer.getBytes("UTF-8").length > 1023) {
 					throw new IllegalArgumentException("Node cannot be larger "
 							+ "than 1023 bytes. Size is "
-							+ (answer.length() * 2) + " bytes.");
+							+ answer.getBytes("UTF-8").length + " bytes.");
 				}
+			} catch (UnsupportedEncodingException ex) {
+				throw new IllegalStateException("Unable to construct a JID node.", ex);
 			} catch (Exception ex) {
 				// register the failure in the cache (TINDER-24)
 				NODEPREP_CACHE.put(node, new ValueWrapper<String>(
@@ -290,6 +296,9 @@ public class JID implements Comparable<JID>, Serializable {
 	 * @param domain
 	 *            The raw domain value.
 	 * @return A String based JID domain part representation
+	 * @throws IllegalStateException
+	 *             If the UTF-8 charset is not supported by the system. This
+	 *             exception wraps an UnsupportedEncodingException.
 	 * @throws IllegalArgumentException
 	 *             if <tt>domain</tt> is not a valid JID domain part.
 	 */
@@ -306,12 +315,14 @@ public class JID implements Comparable<JID>, Serializable {
 			try {
 				answer = Stringprep.nameprep(IDNA.toASCII(domain), false);
 				// Validate field is not greater than 1023 bytes. UTF-8
-				// characters use two bytes.
-				if (answer != null && answer.length() * 2 > 1023) {
-					throw new IllegalArgumentException("Node cannot be larger "
+				// characters use one to four bytes.
+				if (answer != null && answer.getBytes("UTF-8").length > 1023) {
+					throw new IllegalArgumentException("Domain cannot be larger "
 							+ "than 1023 bytes. Size is "
-							+ (answer.length() * 2) + " bytes.");
+							+ answer.getBytes("UTF-8").length + " bytes.");
 				}
+			} catch (UnsupportedEncodingException ex) {
+				throw new IllegalStateException("Unable to construct a JID domain.", ex);
 			} catch (Exception ex) {
 				// register the failure in the cache (TINDER-24)
 				DOMAINPREP_CACHE.put(domain, new ValueWrapper<String>(
@@ -364,6 +375,9 @@ public class JID implements Comparable<JID>, Serializable {
 	 * @param resource
 	 *            The raw resource value.
 	 * @return A String based JID resource representation
+	 * @throws IllegalStateException
+	 *             If the UTF-8 charset is not supported by the system. This
+	 *             exception wraps an UnsupportedEncodingException.
 	 * @throws IllegalArgumentException
 	 *             if <tt>resource</tt> is not a valid JID resource.
 	 */
@@ -381,13 +395,14 @@ public class JID implements Comparable<JID>, Serializable {
 			try {
 				answer = Stringprep.resourceprep(resource);
 				// Validate field is not greater than 1023 bytes. UTF-8
-				// characters use two bytes.
-				if (answer != null && answer.length() * 2 > 1023) {
-					throw new IllegalArgumentException(
-							"Resource cannot be larger "
-									+ "than 1023 bytes. Size is "
-									+ (answer.length() * 2) + " bytes.");
+				// characters use one to four bytes.
+				if (answer != null && answer.getBytes("UTF-8").length > 1023) {
+					throw new IllegalArgumentException("Resource cannot be larger "
+							+ "than 1023 bytes. Size is "
+							+ answer.getBytes("UTF-8").length + " bytes.");
 				}
+			} catch (UnsupportedEncodingException ex) {
+				throw new IllegalStateException("Unable to construct a JID resource.", ex);
 			} catch (Exception ex) {
 				// register the failure in the cache (TINDER-24)
 				RESOURCEPREP_CACHE.put(resource, new ValueWrapper<String>(
