@@ -58,7 +58,7 @@ public class NodePrepTest {
 	public void testToLong() throws Exception {
 		// setup
 		final StringBuilder builder = new StringBuilder();
-		for (int i = 0; i + 1 < 1023; i += 2) {
+		for (int i = 0; i < 1024; i++) {
 			builder.append('a');
 		}
 		builder.append('a');

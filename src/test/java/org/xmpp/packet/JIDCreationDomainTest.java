@@ -104,7 +104,7 @@ public class JIDCreationDomainTest {
 	public void testMaximumSize() throws Exception {
 		// setup
 		final StringBuilder builder = new StringBuilder("a");
-		for (int i = 0; i + 1 < 1021; i += 4) {
+		for (int i = 0; i < 511; i++) {
 			builder.append(".a");
 		}
 		final String longestPossibleValue = builder.toString();
@@ -121,11 +121,10 @@ public class JIDCreationDomainTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testOverMaximumSize() throws Exception {
 		// setup
-		final StringBuilder builder = new StringBuilder();
-		for (int i = 0; i + 1 < 1023; i += 2) {
-			builder.append('a');
+		final StringBuilder builder = new StringBuilder("a");
+		for (int i = 0; i < 512; i++) {
+			builder.append(".a");
 		}
-		builder.append('a');
 		final String toBig = builder.toString();
 
 		// do magic / verify

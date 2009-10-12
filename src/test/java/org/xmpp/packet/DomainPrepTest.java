@@ -58,10 +58,10 @@ public class DomainPrepTest {
 	public void testToLong() throws Exception {
 		// setup
 		final StringBuilder builder = new StringBuilder();
-		for (int i = 0; i + 1 < 1023; i += 2) {
+		for (int i = 0; i < 1023; i++) {
 			builder.append('a');
 		}
-		builder.append('a');
+		builder.append(".a");
 		final String toBig = builder.toString();
 
 		// do magic / verify

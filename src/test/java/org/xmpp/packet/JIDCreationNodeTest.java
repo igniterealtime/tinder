@@ -49,10 +49,10 @@ public class JIDCreationNodeTest {
 	 * problem.
 	 */
 	@Test
-	public void testMaximumSize() throws Exception {
+	public void testMaximumSizeOneByteChar() throws Exception {
 		// setup
 		final StringBuilder builder = new StringBuilder();
-		for (int i = 0; i + 1 < 1023; i += 2) {
+		for (int i = 0; i < 1023; i++) {
 			builder.append('a');
 		}
 		final String longestPossibleValue = builder.toString();
@@ -67,10 +67,10 @@ public class JIDCreationNodeTest {
 	 * exception to be thrown.
 	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testOverMaximumSize() throws Exception {
+	public void testOverMaximumSizeOneByteChar() throws Exception {
 		// setup
 		final StringBuilder builder = new StringBuilder();
-		for (int i = 0; i + 1 < 1023; i += 2) {
+		for (int i = 0; i < 1024; i++) {
 			builder.append('a');
 		}
 		builder.append('a');
@@ -79,4 +79,59 @@ public class JIDCreationNodeTest {
 		// do magic / verify
 		new JID(toBig, DOMAIN, RESOURCE);
 	}
+
+	/**
+	 * UTF-8 characters use 1 to 4 bytes. The JID implementation should
+	 * correctly identify the length of all UTF-8 characters.
+	 * 
+	 * This issue has been filed as TINDER-32
+	 * 
+	 * @see <a
+	 *      href="http://www.igniterealtime.org/issues/browse/TINDER-32">Tinder
+	 *      bugtracker: TINDER-32</am
+	 */
+	@Test
+	public void testMaximumSizeWithThreeByteChars() throws Exception {
+		// "\u20AC", is a one character, three byte unicode char.
+
+		// setup
+		final String three = "\u20AC";
+		final StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < 341; i++) {
+			// 1023 / 3 = 341
+			builder.append(three);
+		}
+		final String longestPossibleValue = builder.toString();
+
+		// do magic / verify
+		new JID(longestPossibleValue, DOMAIN, RESOURCE);
+	}
+
+	/**
+	 * This test verifies that strings longer than 1023 characters are not
+	 * accepted, if UTF-8 characters are used that are represented with 3 bytes.
+	 * 
+	 * This test is related to issue TINDER-32
+	 * 
+	 * @see <a
+	 *      href="http://www.igniterealtime.org/issues/browse/TINDER-32">Tinder
+	 *      bugtracker: TINDER-32</am
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testOverMaximumSizeWithThreeByteChars() throws Exception {
+		// "\u20AC", is a one character, three byte unicode char.
+
+		// setup
+		final String three = "\u20AC";
+		final StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < 342; i++) {
+			// 1023 / 3 = 341
+			builder.append(three);
+		}
+		final String longestPossibleValue = builder.toString();
+
+		// do magic / verify
+		new JID(longestPossibleValue, DOMAIN, RESOURCE);
+	}
+
 }
