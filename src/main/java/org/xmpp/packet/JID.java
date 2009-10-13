@@ -483,6 +483,7 @@ public class JID implements Comparable<JID>, Serializable {
      * @param node the node.
      * @param domain the domain, which must not be <tt>null</tt>.
      * @param resource the resource.
+     * @throws NullPointerException if domain is <tt>null</tt>.
      * @throws IllegalArgumentException if the JID is not valid.
      */
     public JID(String node, String domain, String resource) {
@@ -497,6 +498,7 @@ public class JID implements Comparable<JID>, Serializable {
      * @param domain the domain, which must not be <tt>null</tt>.
      * @param resource the resource.
      * @param skipStringprep <tt>true</tt> if stringprep should not be applied.
+     * @throws NullPointerException if domain is <tt>null</tt>.
      * @throws IllegalArgumentException if the JID is not valid.
      */
     public JID(String node, String domain, String resource, boolean skipStringprep) {
