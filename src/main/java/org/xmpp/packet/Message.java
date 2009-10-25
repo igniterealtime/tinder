@@ -217,8 +217,8 @@ public class Message extends Packet {
      * of XMPP. Examples include a "user is typing" indicator and invitations to
      * group chat rooms. Although any valid XML can be included in a child element
      * in an extended namespace, many common features have been standardized
-     * as <a href="http://www.jabber.org/jeps">Jabber Enhancement Proposals</a>
-     * (JEPs).
+     * as <a href="http://xmpp.org/extensions/">XMPP Extension Protocols</a>
+     * (XEPs).
      *
      * @param name the element name.
      * @param namespace the element namespace.
@@ -246,8 +246,8 @@ public class Message extends Packet {
      * of XMPP. Examples include a "user is typing" indicator and invitations to
      * group chat rooms. Although any valid XML can be included in a child element
      * in an extended namespace, many common features have been standardized
-     * as <a href="http://www.jabber.org/jeps">Jabber Enhancement Proposals</a>
-     * (JEPs).
+     * as <a href="http://xmpp.org/extensions/">XMPP Extension Protocols</a>
+     * (XEPs).
      *
      * @param name the element name.
      * @param namespace the element namespace.

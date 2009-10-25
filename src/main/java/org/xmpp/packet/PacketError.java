@@ -648,12 +648,13 @@ public class PacketError {
 
         /**
          * Returns the legacy error code associated with the error. Error code mappings
-         * are based on <a href="http://www.jabber.org/jeps/jep-0086.html">JEP-0086</a>.
+         * are based on XEP-0086 'Error Condition Mappings'.
          * Support for legacy error codes is necessary since many "Jabber" clients
          * do not understand XMPP error codes. The {@link #fromLegacyCode(int)} method
          * will convert numeric error codes into Conditions.
          *
          * @return the legacy error code.
+         * @see <a href="http://xmpp.org/extensions/xep-0086.html">XEP-0086: Error Condition Mappings</a>
          */
         public int getLegacyCode() {
             return code;

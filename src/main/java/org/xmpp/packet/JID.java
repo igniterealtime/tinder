@@ -78,7 +78,7 @@ public class JID implements Comparable<JID>, Serializable {
     private final String cachedBareJID;
 
     /**
-     * Escapes the node portion of a JID according to "JID Escaping" (JEP-0106).
+     * Escapes the node portion of a JID according to "JID Escaping" (XEP-0106).
      * Escaping replaces characters prohibited by node-prep with escape sequences,
      * as follows:<p>
      *
@@ -107,6 +107,7 @@ public class JID implements Comparable<JID>, Serializable {
      *
      * @param node the node.
      * @return the escaped version of the node.
+     * @see <a href="http://xmpp.org/extensions/xep-0106.html">XEP-0106: JID Escaping</a>
      */
     public static String escapeNode(String node) {
         if (node == null) {
@@ -139,7 +140,7 @@ public class JID implements Comparable<JID>, Serializable {
     }
 
     /**
-     * Un-escapes the node portion of a JID according to "JID Escaping" (JEP-0106).<p>
+     * Un-escapes the node portion of a JID according to "JID Escaping" (XEP-0106).<p>
      * Escaping replaces characters prohibited by node-prep with escape sequences,
      * as follows:<p>
      *
@@ -168,6 +169,7 @@ public class JID implements Comparable<JID>, Serializable {
      *
      * @param node the escaped version of the node.
      * @return the un-escaped version of the node.
+     * @see <a href="http://xmpp.org/extensions/xep-0106.html">XEP-0106: JID Escaping</a>
      */
     public static String unescapeNode(String node) {
         if (node == null) {

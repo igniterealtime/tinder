@@ -174,8 +174,8 @@ public class IQ extends Packet {
      * An IQ child element in extended namespaces is used to extend the features
      * of XMPP. Although any valid XML can be included in a child element
      * in an extended namespace, many common features have been standardized
-     * as <a href="http://www.jabber.org/jeps">Jabber Enhancement Proposals</a>
-     * (JEPs).
+     * as <a href="http://xmpp.org/extensions/">XMPP Extension Protocols</a>
+     * (XEPs).
      *
      * @return the child element.
      */
@@ -215,8 +215,8 @@ public class IQ extends Packet {
      * An IQ child element in extended namespaces is used to extend the features
      * of XMPP. Although any valid XML can be included in a child element
      * in an extended namespace, many common features have been standardized
-     * as <a href="http://www.jabber.org/jeps">Jabber Enhancement Proposals</a>
-     * (JEPs).
+     * as <a href="http://xmpp.org/extensions/">XMPP Extension Protocols</a>
+     * (XEPs).
      *
      * @param childElement the child element.
      */
