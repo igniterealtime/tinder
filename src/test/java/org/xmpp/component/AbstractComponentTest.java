@@ -97,4 +97,39 @@ public class AbstractComponentTest {
 		assertEquals(Type.result, result.getType());
 		assertEquals(pingRequest.getID(), result.getID());
 	}
+
+	/**
+	 * Verifies that an IQ error is returned if a request is sent to be
+	 * processed by a component that is configured to serve entities on the
+	 * local domain only.
+	 * 
+	 * @see <a href="http://www.igniterealtime.org/issues/browse/TINDER-21">
+	 *      Tinder bugtracker: TINDER-21</a>
+	 */
+	@Test
+	public void testDoesDomainOnly() throws Exception {
+		// setup
+		final DummyAbstractComponent component = new DummyAbstractComponent() {
+			@Override
+			public boolean servesLocalUsersOnly() {
+				return true;
+			}
+		};
+
+		final IQ pingRequest = new IQ(Type.get);
+		pingRequest.setChildElement("ping",
+				AbstractComponent.NAMESPACE_XMPP_PING);
+		pingRequest.setFrom("user@notthesame" + component.getDomain());
+		pingRequest.setTo("sub." + component.getDomain());
+
+		// do magic
+		component.start();
+		component.processPacket(pingRequest);
+
+		// verify
+		final IQ response = (IQ) component.getSentPacket();
+		assertNotNull(response);
+		assertEquals(Type.error, response.getType());
+		assertEquals(pingRequest.getID(), response.getID());
+	}
 }
