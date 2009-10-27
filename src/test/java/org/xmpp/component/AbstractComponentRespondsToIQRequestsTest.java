@@ -62,6 +62,32 @@ public class AbstractComponentRespondsToIQRequestsTest {
 	}
 
 	/**
+	 * If no implementation is provided for a particular IQ request, a response (an error) should be returned.
+	 */
+	@Test
+	public void testNoImplementation() throws Exception
+	{
+		// setup
+		final DummyAbstractComponent component = new DummyAbstractComponent();
+		final IQ request = new IQ(Type.set);
+		request.setChildElement("junit", "test");
+		request.setFrom("from.address");
+		request.setTo("to.address");
+
+		// do magic
+		component.start();
+		component.processPacket(request);
+
+		// verify
+		final IQ result = (IQ) component.getSentPacket();
+		assertNotNull(result);
+		assertTrue(result.isResponse());
+		assertEquals(request.getID(), result.getID());
+		assertEquals(request.getFrom(), result.getTo());
+		assertEquals(request.getTo(), result.getFrom());		
+	}
+	
+	/**
 	 * If an exception is thrown during the processing of an IQ request,
 	 * AbstractComponent should still return a response to the request.
 	 * 
