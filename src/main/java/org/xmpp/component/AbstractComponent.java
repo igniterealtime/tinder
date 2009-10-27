@@ -781,24 +781,24 @@ public abstract class AbstractComponent implements Component {
 		 * from the routing tables. We don't need to worry about new packets to
 		 * arrive - there won't be any.
 		 */
-		final List<Runnable> wasAwatingExecution = executor.shutdownNow();
-		for (final Runnable abortMe : wasAwatingExecution) {
-			final Packet packet = ((PacketProcessor) abortMe).packet;
-			if (packet instanceof IQ) {
-				final IQ iq = (IQ) packet;
-				if (iq.isRequest()) {
-					log.debug("Responding 'service unavailable' to "
-							+ "unprocessed stanza: {}", iq.toXML());
-					final IQ error = IQ.createResultIQ(iq);
-					error.setError(Condition.service_unavailable);
-					send(error);
-				}
-			}
-		}
+		executor.shutdown();
 		try {
 			if (!executor.awaitTermination(2, TimeUnit.SECONDS)) {
-				// this will at least put the status to 'terminated'.
-				executor.shutdown();
+				final List<Runnable> wasAwatingExecution = executor
+						.shutdownNow();
+				for (final Runnable abortMe : wasAwatingExecution) {
+					final Packet packet = ((PacketProcessor) abortMe).packet;
+					if (packet instanceof IQ) {
+						final IQ iq = (IQ) packet;
+						if (iq.isRequest()) {
+							log.debug("Responding 'service unavailable' to "
+									+ "unprocessed stanza: {}", iq.toXML());
+							final IQ error = IQ.createResultIQ(iq);
+							error.setError(Condition.service_unavailable);
+							send(error);
+						}
+					}
+				}
 			}
 		} catch (InterruptedException e) {
 			// ignore, as we're shutting down anyway.
