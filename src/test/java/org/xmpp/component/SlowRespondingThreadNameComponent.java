@@ -41,7 +41,7 @@ import org.xmpp.packet.IQ;
  * </pre>
  * 
  * If the element name is <tt>slowresponse</tt>, an empty response will be
- * generated 2000 milliseconds after the request was delivered to the component.
+ * generated 4000 milliseconds after the request was delivered to the component.
  * 
  * <pre>
  * &lt;iq type='get' id='debug_2'&gt;
@@ -73,9 +73,9 @@ public class SlowRespondingThreadNameComponent extends DummyAbstractComponent {
 		}
 
 		if (ELEMENTNAME_SLOWRESPONSE.equals(element.getName())) {
-			log.debug("Waiting 2000 millis before responding to: {}", request
+			log.debug("Waiting 4000 millis before responding to: {}", request
 					.toXML());
-			Thread.sleep(2000);
+			Thread.sleep(4000);
 			log.debug("Responding to {} now.", request.toXML());
 			return IQ.createResultIQ(request);
 		}

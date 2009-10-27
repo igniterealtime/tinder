@@ -112,7 +112,6 @@ public class AbstractComponentIsConsumerTest {
 
 		// verify
 		final long elapsed = end - start;
-		assertTrue(elapsed < 2000);
-
+		assertTrue(elapsed < 4000);
 	}
 }
