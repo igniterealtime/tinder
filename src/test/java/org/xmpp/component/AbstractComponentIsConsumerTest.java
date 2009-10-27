@@ -32,7 +32,7 @@ import org.xmpp.packet.IQ.Type;
  * pattern are recognizable in the AbstractComponent implementation.
  * 
  * @author Guus der Kinderen, guus.der.kinderen@gmail.com
- * @see <a href="http://www.igniterealtime.org/issues/browse/TINDER-16">Tinder
+ * @see <a href="http://www.igniterealtime.org/issues/browse/TINDER-18">Tinder
  *      bugtracker: TINDER-18</a>
  */
 public class AbstractComponentIsConsumerTest {

@@ -31,6 +31,8 @@ import org.xmpp.packet.IQ.Type;
  * These tests verify that this is true even under exterme circumstances.
  * 
  * @author Guus der Kinderen, guus.der.kinderen@gmail.com
+ * @see <a href="http://www.igniterealtime.org/issues/browse/TINDER-17">Tinder
+ *      bugtracker: TINDER-17</a>
  */
 public class AbstractComponentRespondsToIQRequestsTest {
 
