@@ -187,7 +187,6 @@ public abstract class AbstractComponent implements Component {
 				response.setError(Condition.internal_server_error);
 				send(response);
 			}
-			throw ex;
 		}
 	}
 
