@@ -72,6 +72,7 @@ public class AbstractComponentServiceDiscovery {
 	 * This test verifies that the component has an identity that matches the
 	 * component name and is of category 'component'
 	 */
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testIdentityHasNameAndCategory() throws Exception {
 		assertNotNull(response);
@@ -101,6 +102,7 @@ public class AbstractComponentServiceDiscovery {
 	 * As the component supports XEP-0030, its service discovery response should
 	 * include the disco#info feature.
 	 */
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testHasDiscoInfoFeature() throws Exception {
 		assertNotNull(response);
@@ -124,6 +126,7 @@ public class AbstractComponentServiceDiscovery {
 	 * As the component supports XEP-0199, its service discovery response should
 	 * include the xmpp-ping feature.
 	 */
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testHasPingFeature() throws Exception {
 		assertNotNull(response);
