@@ -20,10 +20,15 @@ import org.xmpp.packet.JID;
 import org.xmpp.packet.Packet;
 
 /**
- * Component enhance the functionality of an XMPP server.
- *
- * Components are JavaBeans and will have their properties exposed as ad-hoc commands.
- *
+ * Components enhance the functionality of an XMPP server. Components receive
+ * all packets addressed to a particular sub-domain. For example,
+ * <tt>test_component.example.com</tt>. So, a packet sent to
+ * <tt>joe@test_component.example.com</tt> would be delivered to the component.
+ * Note that the sub-domains defined as components are unrelated to DNS entries
+ * for sub-domains. All XMPP routing at the socket level is done using the
+ * primary server domain (<tt>example.com</tt> in the example above); sub-domains are
+ * only used for routing within the XMPP server.
+ * 
  * @author Matt Tucker
  */
 public interface Component {
