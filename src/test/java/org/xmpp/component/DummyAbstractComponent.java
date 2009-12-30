@@ -71,16 +71,6 @@ public class DummyAbstractComponent extends AbstractComponent {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.xmpp.component.Component#initialize(org.xmpp.packet.JID,
-	 * org.xmpp.component.ComponentManager)
-	 */
-	public void initialize(JID jid, ComponentManager componentManager)
-			throws ComponentException {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see org.xmpp.component.AbstractComponent#send(org.xmpp.packet.Packet)
 	 */
 	@Override

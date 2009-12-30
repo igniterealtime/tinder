@@ -159,11 +159,11 @@ public abstract class AbstractComponent implements Component {
 	/**
 	 * Initialize the abstract component.
 	 * 
-	 * @see org.xmpp.component.Component#initialize(org.xmpp.packet.JID, String,
+	 * @see org.xmpp.component.Component#initialize(org.xmpp.packet.JID,
 	 *      org.xmpp.component.ComponentManager)
 	 */
-	public final void initialize(final JID jid, final String host,
-			final ComponentManager componentManager) throws ComponentException {
+	public final void initialize(final JID jid, final ComponentManager componentManager)
+			throws ComponentException {
 		compMan = componentManager;
 	}
 
