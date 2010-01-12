@@ -106,6 +106,11 @@ public abstract class AbstractComponent implements Component {
 	protected ComponentManager compMan = null;
 
 	/**
+	 * The JID of the component, set after registration with a Component manager.
+	 */
+	protected JID jid = null;
+	
+	/**
 	 * The pool of threads that will process the queue.
 	 */
 	private ThreadPoolExecutor executor;
@@ -165,6 +170,7 @@ public abstract class AbstractComponent implements Component {
 	public final void initialize(final JID jid, final ComponentManager componentManager)
 			throws ComponentException {
 		compMan = componentManager;
+		this.jid = jid;
 	}
 
 	/**
