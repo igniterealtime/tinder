@@ -163,7 +163,6 @@ public class AbstractComponentTest {
 	@Test
 	public void testDoesNotExposeJIDBeforeInit() throws Exception {
 		// setup
-		final JID jid = new JID("test");
 		final DummyAbstractComponent component = new DummyAbstractComponent();
 
 		// verify
@@ -191,5 +190,20 @@ public class AbstractComponentTest {
 		
 		// verify
 		assertEquals(jid, component.jid);
+	}
+
+	/**
+	 * An AbstractComponent must expose its assigned domain after it has been initialized.
+	 */
+	@Test
+	public void testCorrectJID() throws Exception {
+		// setup
+		final JID jid = new JID("test");
+		final DummyAbstractComponent component = new DummyAbstractComponent();
+		// null component manager might cause problems later!
+		component.initialize(jid, null);
+
+		// verify
+		assertEquals(jid.getDomain(), component.getDomain());
 	}
 }

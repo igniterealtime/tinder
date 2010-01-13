@@ -660,7 +660,9 @@ public abstract class AbstractComponent implements Component {
 	 * 
 	 * @return The XMPP domain name.
 	 */
-	public abstract String getDomain();
+	public String getDomain() {
+		return jid != null ? jid.getDomain() : null;
+	}
 
 	/**
 	 * Returns the category of the Service Discovery Identity of this component

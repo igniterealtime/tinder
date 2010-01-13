@@ -20,7 +20,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-import org.xmpp.packet.JID;
 import org.xmpp.packet.Packet;
 
 /**
@@ -46,16 +45,6 @@ public class DummyAbstractComponent extends AbstractComponent {
 	@Override
 	public String getDescription() {
 		return "An AbstractComponent implementation that's used during the unit tests of the Tinder project.";
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.xmpp.component.AbstractComponent#getDomain()
-	 */
-	@Override
-	public String getDomain() {
-		return "example.com";
 	}
 
 	/*
