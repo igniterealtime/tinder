@@ -146,4 +146,50 @@ public class AbstractComponentServiceDiscovery {
 		fail("The component should have the 'urn:xmpp:ping' feature.");
 	}
 
+	/**
+	 * Verifies that namespaces returned by discoInfoFeatureNamespaces() are in disco info responses.
+	 */
+	@Test
+	@SuppressWarnings("unchecked")
+	public void testHasOtherNamespaces() throws Exception {
+		// setup
+		final String ns1 = "NS1";
+		final String ns2 = "NS2";
+		
+		final DummyAbstractComponent component = new DummyAbstractComponent() {
+			
+			@Override
+			protected String[] discoInfoFeatureNamespaces() {
+				final String[] result = {ns1, ns2}; 
+				return result;
+			}			
+		};
+		
+		// do magic
+		final IQ request = new IQ();
+		request.setType(Type.get);
+		request.setChildElement("query", DISCOINFONS);
+		component.start();
+		component.processPacket(request);
+		response = (IQ) component.getSentPacket();
+		
+		// verify
+		boolean has1 = false;
+		boolean has2 = false;
+		
+		final Element childElement = response.getChildElement();
+		final Iterator<Element> iter = childElement.elementIterator("feature");
+		while (iter.hasNext()) {
+			final Element element = iter.next();
+			final Attribute attr = element.attribute("var");
+			if (attr != null && attr.getValue() == ns1) {
+				has1 = true;
+			} else if (attr != null && attr.getValue() == ns2) {
+				has2 = true;
+			}
+		}
+		
+		assertTrue(has1);
+		assertTrue(has2);
+	}
 }
