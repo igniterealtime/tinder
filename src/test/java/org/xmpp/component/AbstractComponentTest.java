@@ -46,12 +46,13 @@ public class AbstractComponentTest {
 	public void testXmppPing() throws Exception {
 		// setup
 		final DummyAbstractComponent component = new DummyAbstractComponent();
+		component.initialize(new JID("sub.domain"), null);
 
 		final IQ pingRequest = new IQ(Type.get);
 		pingRequest.setChildElement("ping",
 				AbstractComponent.NAMESPACE_XMPP_PING);
 		pingRequest.setFrom("from.address");
-		pingRequest.setTo("to.address");
+		pingRequest.setTo(component.jid);
 
 		// do magic
 		component.start();
@@ -80,12 +81,13 @@ public class AbstractComponentTest {
 	public void testIsRestartable() throws Exception {
 		// setup
 		final DummyAbstractComponent component = new DummyAbstractComponent();
+		component.initialize(new JID("sub.domain"), null);
 
 		final IQ pingRequest = new IQ(Type.get);
 		pingRequest.setChildElement("ping",
 				AbstractComponent.NAMESPACE_XMPP_PING);
 		pingRequest.setFrom("from.address");
-		pingRequest.setTo("to.address");
+		pingRequest.setTo(component.jid);
 
 		// do magic
 		component.start();
@@ -101,15 +103,15 @@ public class AbstractComponentTest {
 	}
 
 	/**
-	 * Verifies that an IQ error is returned if a request is sent to be
-	 * processed by a component that is configured to serve entities on the
-	 * local domain only.
+	 * Verifies that an IQ error is returned if a request is sent from a remote
+	 * entity to be processed by a component that is configured to serve
+	 * entities on the local domain only.
 	 * 
 	 * @see <a
 	 *      href="http://www.igniterealtime.org/issues/browse/TINDER-21">Tinder&nbsp;bugtracker:&nbsp;TINDER-21</a>
 	 */
 	@Test
-	public void testDoesDomainOnly() throws Exception {
+	public void testDomainOnlyRemoteUser() throws Exception {
 		// setup
 		final DummyAbstractComponent component = new DummyAbstractComponent() {
 			@Override
@@ -117,12 +119,13 @@ public class AbstractComponentTest {
 				return true;
 			}
 		};
+		component.initialize(new JID("sub.domain"), null);
 
 		final IQ pingRequest = new IQ(Type.get);
 		pingRequest.setChildElement("ping",
 				AbstractComponent.NAMESPACE_XMPP_PING);
 		pingRequest.setFrom("user@notthesame" + component.getDomain());
-		pingRequest.setTo("sub." + component.getDomain());
+		pingRequest.setTo(component.jid);
 
 		// do magic
 		component.start();
@@ -132,6 +135,114 @@ public class AbstractComponentTest {
 		final IQ response = (IQ) component.getSentPacket();
 		assertNotNull(response);
 		assertEquals(Type.error, response.getType());
+		assertEquals(pingRequest.getID(), response.getID());
+	}
+
+	/**
+	 * Verifies that no IQ error is returned if a request is sent from a local
+	 * entity to be processed by a component that is configured to serve
+	 * entities on the local domain only.
+	 * 
+	 * @see <a
+	 *      href="http://www.igniterealtime.org/issues/browse/TINDER-21">Tinder&nbsp;bugtracker:&nbsp;TINDER-21</a>
+	 */
+	@Test
+	public void testDomainOnlyLocalUser() throws Exception {
+		// setup
+		final DummyAbstractComponent component = new DummyAbstractComponent() {
+			@Override
+			public boolean servesLocalUsersOnly() {
+				return true;
+			}
+		};
+		component.initialize(new JID("sub.domain"), null);
+
+		final IQ pingRequest = new IQ(Type.get);
+		pingRequest.setChildElement("ping",
+				AbstractComponent.NAMESPACE_XMPP_PING);
+		pingRequest.setFrom("user@" + component.getDomain());
+		pingRequest.setTo(component.jid);
+
+		// do magic
+		component.start();
+		component.processPacket(pingRequest);
+
+		// verify
+		final IQ response = (IQ) component.getSentPacket();
+		assertNotNull(response);
+		assertEquals(Type.result, response.getType());
+		assertEquals(pingRequest.getID(), response.getID());
+	}
+
+	/**
+	 * Verifies that no IQ error is returned if a request is sent from a remote
+	 * entity to be processed by a component that is configured to serve
+	 * entities on both the local domain as remote domains.
+	 * 
+	 * @see <a
+	 *      href="http://www.igniterealtime.org/issues/browse/TINDER-21">Tinder&nbsp;bugtracker:&nbsp;TINDER-21</a>
+	 */
+	@Test
+	public void testAllDomainsRemoteUser() throws Exception {
+		// setup
+		final DummyAbstractComponent component = new DummyAbstractComponent() {
+			@Override
+			public boolean servesLocalUsersOnly() {
+				return false;
+			}
+		};
+		component.initialize(new JID("sub.domain"), null);
+
+		final IQ pingRequest = new IQ(Type.get);
+		pingRequest.setChildElement("ping",
+				AbstractComponent.NAMESPACE_XMPP_PING);
+		pingRequest.setFrom("user@notthesame" + component.getDomain());
+		pingRequest.setTo(component.jid);
+
+		// do magic
+		component.start();
+		component.processPacket(pingRequest);
+
+		// verify
+		final IQ response = (IQ) component.getSentPacket();
+		assertNotNull(response);
+		assertEquals(Type.result, response.getType());
+		assertEquals(pingRequest.getID(), response.getID());
+	}
+	
+	/**
+	 * Verifies that no IQ error is returned if a request is sent from a local
+	 * entity to be processed by a component that is configured to serve
+	 * entities on both the local domain as remote domains.
+	 * 
+	 * @see <a
+	 *      href="http://www.igniterealtime.org/issues/browse/TINDER-21">Tinder&nbsp;bugtracker:&nbsp;TINDER-21</a>
+	 */
+	@Test
+	public void testAllDomainsLocalUser() throws Exception {
+		// setup
+		final DummyAbstractComponent component = new DummyAbstractComponent() {
+			@Override
+			public boolean servesLocalUsersOnly() {
+				return false;
+			}
+		};
+		component.initialize(new JID("sub.domain"), null);
+
+		final IQ pingRequest = new IQ(Type.get);
+		pingRequest.setChildElement("ping",
+				AbstractComponent.NAMESPACE_XMPP_PING);
+		pingRequest.setFrom("user@" + component.getDomain());
+		pingRequest.setTo(component.jid);
+
+		// do magic
+		component.start();
+		component.processPacket(pingRequest);
+
+		// verify
+		final IQ response = (IQ) component.getSentPacket();
+		assertNotNull(response);
+		assertEquals(Type.result, response.getType());
 		assertEquals(pingRequest.getID(), response.getID());
 	}
 
