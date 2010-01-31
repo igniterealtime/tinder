@@ -101,6 +101,13 @@ public abstract class AbstractComponent implements Component {
 	public static final String NAMESPACE_XMPP_PING = "urn:xmpp:ping";
 
 	/**
+	 * The 'Last Activity' namespace
+	 * 
+	 * @see <a href="http://xmpp.org/extensions/xep-0012.html">XEP-0012</a>
+	 */
+	public static final String NAMESPACE_LAST_ACTIVITY = "jabber:iq:last";
+	
+	/**
 	 * The component manager to which this Component has been registered.
 	 */
 	protected ComponentManager compMan = null;
@@ -132,6 +139,11 @@ public abstract class AbstractComponent implements Component {
 	 */
 	private final boolean enforceIQResult;
 
+	/**
+	 * The timestamp (in milliseconds) when the component was last (re)started. 
+	 */
+	private long lastStartMillis = System.currentTimeMillis();
+	
 	/**
 	 * Instantiates a new AbstractComponent with a maximum thread pool size of
 	 * 17 and a maximum queue size of 1000.
@@ -461,6 +473,11 @@ public abstract class AbstractComponent implements Component {
 						+ "Calling #handlePing() (packetId {}).", getName(), iq
 						.getID());
 				return handlePing(iq);
+			} else if (NAMESPACE_LAST_ACTIVITY.equals(namespace)) {
+				log.trace("(serving component '{}') "
+						+ "Calling #handleLastActivity() (packetId {}).", getName(), iq
+						.getID());
+				return handleLastActivity(iq);
 			} else {
 				return handleIQGet(iq);
 			}
@@ -620,6 +637,8 @@ public abstract class AbstractComponent implements Component {
 				NAMESPACE_DISCO_INFO);
 		responseElement.addElement("feature").addAttribute("var",
 				NAMESPACE_XMPP_PING);
+		responseElement.addElement("feature").addAttribute("var",
+				NAMESPACE_LAST_ACTIVITY);
 		for (final String feature : discoInfoFeatureNamespaces()) {
 			responseElement.addElement("feature").addAttribute("var", feature);
 		}
@@ -638,7 +657,20 @@ public abstract class AbstractComponent implements Component {
 	protected IQ handlePing(IQ iq) {
 		return IQ.createResultIQ(iq);
 	}
-
+	
+	/**
+	 * Default handler of Last Activity requests (XEP-0012). Unless overridden,
+	 * this method returns a result stanza that specifies how long this
+	 * component has been running since it was last (re)started.
+	 */
+	protected IQ handleLastActivity(IQ iq) {
+		final long uptime = (System.currentTimeMillis() - lastStartMillis) / 1000;
+		final IQ result = IQ.createResultIQ(iq);
+		result.setChildElement("query", NAMESPACE_LAST_ACTIVITY).addAttribute(
+				"seconds", Long.toString(uptime));
+		return result;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -856,6 +888,10 @@ public abstract class AbstractComponent implements Component {
 	public void start() {
 		preComponentStart();
 
+		// reset the 'last activity' timestamp.
+		lastStartMillis = System.currentTimeMillis();
+		
+		// start the executor service.
 		if (executor == null || executor.isShutdown()) {
 			executor = new ThreadPoolExecutor(maxThreadPoolSize,
 					maxThreadPoolSize, 60L, TimeUnit.SECONDS,

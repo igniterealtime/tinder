@@ -317,4 +317,71 @@ public class AbstractComponentTest {
 		// verify
 		assertEquals(jid.getDomain(), component.getDomain());
 	}
+	
+	/**
+	 * This test verifies that the abstract component responds to XMPP Last Activity
+	 * requests correctly.
+	 * 
+	 * @see <a
+	 *      href="http://www.igniterealtime.org/issues/browse/TINDER-38">Tinder&nbsp;bugtracker:&nbsp;TINDER-38</a>
+	 */
+	@Test
+	public void testLastActivity() throws Exception {
+		// setup
+		final DummyAbstractComponent component = new DummyAbstractComponent();
+		component.initialize(new JID("sub.domain"), null);
+
+		final IQ request = new IQ(Type.get);
+		request.setChildElement("ping",
+				AbstractComponent.NAMESPACE_LAST_ACTIVITY);
+		request.setFrom("from.address");
+		request.setTo(component.jid);
+		final int wait = 2;
+		
+		// do magic
+		component.start();
+		Thread.sleep(wait*1000);
+		component.processPacket(request);
+
+		// verify
+		final IQ result = (IQ) component.getSentPacket();
+		assertNotNull(result);
+		assertEquals(Type.result, result.getType());
+		assertEquals(String.valueOf(wait), result.getChildElement().attributeValue("seconds"));
+	}
+	
+	/**
+	 * This test verifies that the abstract component responds to XMPP Last Activity
+	 * requests correctly, after the component has been restarted.
+	 * 
+	 * @see <a
+	 *      href="http://www.igniterealtime.org/issues/browse/TINDER-38">Tinder&nbsp;bugtracker:&nbsp;TINDER-38</a>
+	 */
+	@Test
+	public void testLastActivityAfterRestart() throws Exception {
+		// setup
+		final DummyAbstractComponent component = new DummyAbstractComponent();
+		component.initialize(new JID("sub.domain"), null);
+
+		final IQ request = new IQ(Type.get);
+		request.setChildElement("ping",
+				AbstractComponent.NAMESPACE_LAST_ACTIVITY);
+		request.setFrom("from.address");
+		request.setTo(component.jid);
+		final int wait = 2;
+		
+		// do magic
+		component.start();
+		Thread.sleep(wait*1000);
+		component.shutdown();
+		component.start();
+		Thread.sleep(wait*1000);
+		component.processPacket(request);
+
+		// verify
+		final IQ result = (IQ) component.getSentPacket();
+		assertNotNull(result);
+		assertEquals(Type.result, result.getType());
+		assertEquals(String.valueOf(wait), result.getChildElement().attributeValue("seconds"));
+	}
 }
