@@ -17,11 +17,6 @@ package org.xmpp.packet;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -35,58 +30,251 @@ import org.junit.Test;
 public class JIDNodeEscapingTest {
 
 	/**
-	 * A map that contains the nodes from the JID examples as presented in table
-	 * 3 of XEP-0106. The keys from this map are correspond with the
-	 * "User Input" column from that table. The corresponding values are the
-	 * same values as those in the "Escaped JID" column.
-	 */
-	public static final Map<String, String> EXAMPLES = new HashMap<String, String>();
-
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		EXAMPLES.put("space cadet", "space\\20cadet");
-		EXAMPLES.put("call me \"ishmael\"",
-				"call\\20me\\20\\22ishmael\\22");
-		EXAMPLES.put("at&t guy", "at\\26t\\20guy");
-		EXAMPLES.put("d'artagnan", "d\\27artagnan");
-		EXAMPLES.put("/.fanboy", "\\2f.fanboy");
-		EXAMPLES.put("::foo::", "\\3a\\3afoo\\3a\\3a");
-		EXAMPLES.put("<foo>", "\\3cfoo\\3e");
-		EXAMPLES.put("user@host", "user\\40host");
-		EXAMPLES.put("c:\\net", "c\\3a\\5cnet");
-		EXAMPLES.put("c:\\\\net", "c\\3a\\5c\\5cnet");
-		EXAMPLES.put("c:\\cool stuff", "c\\3a\\5ccool\\20stuff");
-		EXAMPLES.put("c:\\5commas", "c\\3a\\5c5commas");
-	}
-
-	/**
-	 * Verifies correct behavior of 'JID node escaping' by escaping all nodes of
-	 * the JIDs presented in table 3 of XEP-0106 and comparing the result with
-	 * the expected value presented in that table.
-	 */
-	@Test
-	public void testEscapeNodeExamples() throws Exception {
-		for (final Entry<String, String> entry : EXAMPLES.entrySet()) {
-			final String escaped = JID.escapeNode(entry.getKey());
-			assertEquals(entry.getValue(), escaped);
-		}
-	}
-
-	/**
-	 * Verifies correct behavior of 'JID node escaping' by unescaping all nodes
-	 * of the JIDs presented in table 3 of XEP-0106 and comparing the result
+	 * Verifies correct behavior of 'JID node escaping' by escaping the node of
+	 * the first JID presented in table 3 of XEP-0106 and comparing the result
 	 * with the expected value presented in that table.
 	 */
 	@Test
-	public void testUnescapeNodeExamples() throws Exception {
-		for (final Entry<String, String> entry : EXAMPLES.entrySet()) {
-			final String unescaped = JID.unescapeNode(entry.getValue());
-			assertEquals(entry.getKey(), unescaped);
-		}
+	public void testEscapeNodeExample01() throws Exception {
+		assertEquals(JID.escapeNode("space cadet"), "space\\20cadet");
 	}
 
 	/**
-	 * Verifies that the exceptions as listed in XEP-0106, paragraph 4.3, get processed as expected. 
+	 * Verifies correct behavior of 'JID node escaping' by escaping the node of
+	 * the second JID presented in table 3 of XEP-0106 and comparing the result
+	 * with the expected value presented in that table.
+	 */
+	@Test
+	public void testEscapeNodeExample02() throws Exception {
+		assertEquals(JID.escapeNode("call me \"ishmael\""),
+				"call\\20me\\20\\22ishmael\\22");
+	}
+
+	/**
+	 * Verifies correct behavior of 'JID node escaping' by escaping the node of
+	 * the third JID presented in table 3 of XEP-0106 and comparing the result
+	 * with the expected value presented in that table.
+	 */
+	@Test
+	public void testEscapeNodeExample03() throws Exception {
+		assertEquals(JID.escapeNode("at&t guy"), "at\\26t\\20guy");
+	}
+
+	/**
+	 * Verifies correct behavior of 'JID node escaping' by escaping the node of
+	 * the fourth JID presented in table 3 of XEP-0106 and comparing the result
+	 * with the expected value presented in that table.
+	 */
+	@Test
+	public void testEscapeNodeExample04() throws Exception {
+		assertEquals(JID.escapeNode("d'artagnan"), "d\\27artagnan");
+	}
+
+	/**
+	 * Verifies correct behavior of 'JID node escaping' by escaping the node of
+	 * the fifth JID presented in table 3 of XEP-0106 and comparing the result
+	 * with the expected value presented in that table.
+	 */
+	@Test
+	public void testEscapeNodeExample05() throws Exception {
+		assertEquals(JID.escapeNode("/.fanboy"), "\\2f.fanboy");
+	}
+
+	/**
+	 * Verifies correct behavior of 'JID node escaping' by escaping the node of
+	 * the sixth JID presented in table 3 of XEP-0106 and comparing the result
+	 * with the expected value presented in that table.
+	 */
+	@Test
+	public void testEscapeNodeExample06() throws Exception {
+		assertEquals(JID.escapeNode("::foo::"), "\\3a\\3afoo\\3a\\3a");
+	}
+
+	/**
+	 * Verifies correct behavior of 'JID node escaping' by escaping the node of
+	 * the seventh JID presented in table 3 of XEP-0106 and comparing the result
+	 * with the expected value presented in that table.
+	 */
+	@Test
+	public void testEscapeNodeExample07() throws Exception {
+		assertEquals(JID.escapeNode("<foo>"), "\\3cfoo\\3e");
+	}
+
+	/**
+	 * Verifies correct behavior of 'JID node escaping' by escaping the node of
+	 * the eight JID presented in table 3 of XEP-0106 and comparing the result
+	 * with the expected value presented in that table.
+	 */
+	@Test
+	public void testEscapeNodeExample08() throws Exception {
+		assertEquals(JID.escapeNode("user@host"), "user\\40host");
+	}
+
+	/**
+	 * Verifies correct behavior of 'JID node escaping' by escaping the node of
+	 * the ninth JID presented in table 3 of XEP-0106 and comparing the result
+	 * with the expected value presented in that table.
+	 */
+	@Test
+	public void testEscapeNodeExample09() throws Exception {
+		assertEquals(JID.escapeNode("c:\\net"), "c\\3a\\5cnet");
+	}
+
+	/**
+	 * Verifies correct behavior of 'JID node escaping' by escaping the node of
+	 * the tenth JID presented in table 3 of XEP-0106 and comparing the result
+	 * with the expected value presented in that table.
+	 */
+	@Test
+	public void testEscapeNodeExample10() throws Exception {
+		assertEquals(JID.escapeNode("c:\\\\net"), "c\\3a\\5c\\5cnet");
+	}
+
+	/**
+	 * Verifies correct behavior of 'JID node escaping' by escaping the node of
+	 * the eleventh JID presented in table 3 of XEP-0106 and comparing the
+	 * result with the expected value presented in that table.
+	 */
+	@Test
+	public void testEscapeNodeExample11() throws Exception {
+		assertEquals(JID.escapeNode("c:\\cool stuff"), "c\\3a\\5ccool\\20stuff");
+	}
+
+	/**
+	 * Verifies correct behavior of 'JID node escaping' by escaping the node of
+	 * the twelfth JID presented in table 3 of XEP-0106 and comparing the result
+	 * with the expected value presented in that table.
+	 */
+	@Test
+	public void testEscapeNodeExample12() throws Exception {
+		assertEquals(JID.escapeNode("c:\\5commas"), "c\\3a\\5c5commas");
+	}
+
+	/**
+	 * Verifies correct behavior of 'JID node escaping' by unescaping the
+	 * escaped node value of the first JID presented in table 3 of XEP-0106 and
+	 * comparing the result with the expected value presented in that table.
+	 */
+	@Test
+	public void testUnescapeNodeExample01() throws Exception {
+		assertEquals(JID.unescapeNode("space\\20cadet"), "space cadet");
+	}
+
+	/**
+	 * Verifies correct behavior of 'JID node escaping' by unescaping the
+	 * escaped node value of the second JID presented in table 3 of XEP-0106 and
+	 * comparing the result with the expected value presented in that table.
+	 */
+	@Test
+	public void testUnescapeNodeExample02() throws Exception {
+		assertEquals(JID.unescapeNode("call\\20me\\20\\22ishmael\\22"),
+				"call me \"ishmael\"");
+	}
+
+	/**
+	 * Verifies correct behavior of 'JID node escaping' by unescaping the
+	 * escaped node value of the third JID presented in table 3 of XEP-0106 and
+	 * comparing the result with the expected value presented in that table.
+	 */
+	@Test
+	public void testUnescapeNodeExample03() throws Exception {
+		assertEquals(JID.unescapeNode("at\\26t\\20guy"), "at&t guy");
+	}
+
+	/**
+	 * Verifies correct behavior of 'JID node escaping' by unescaping the
+	 * escaped node value of the fourth JID presented in table 3 of XEP-0106 and
+	 * comparing the result with the expected value presented in that table.
+	 */
+	@Test
+	public void testUnescapeNodeExample04() throws Exception {
+		assertEquals(JID.unescapeNode("d\\27artagnan"), "d'artagnan");
+	}
+
+	/**
+	 * Verifies correct behavior of 'JID node escaping' by unescaping the
+	 * escaped node value of the fifth JID presented in table 3 of XEP-0106 and
+	 * comparing the result with the expected value presented in that table.
+	 */
+	@Test
+	public void testUnescapeNodeExample05() throws Exception {
+		assertEquals(JID.unescapeNode("\\2f.fanboy"), "/.fanboy");
+	}
+
+	/**
+	 * Verifies correct behavior of 'JID node escaping' by unescaping the
+	 * escaped node value of the sixth JID presented in table 3 of XEP-0106 and
+	 * comparing the result with the expected value presented in that table.
+	 */
+	@Test
+	public void testUnescapeNodeExample06() throws Exception {
+		assertEquals(JID.unescapeNode("\\3a\\3afoo\\3a\\3a"), "::foo::");
+	}
+
+	/**
+	 * Verifies correct behavior of 'JID node escaping' by unescaping the
+	 * escaped node value of the seventh JID presented in table 3 of XEP-0106
+	 * and comparing the result with the expected value presented in that table.
+	 */
+	@Test
+	public void testUnescapeNodeExample07() throws Exception {
+		assertEquals(JID.unescapeNode("\\3cfoo\\3e"), "<foo>");
+	}
+
+	/**
+	 * Verifies correct behavior of 'JID node escaping' by unescaping the
+	 * escaped node value of the eight JID presented in table 3 of XEP-0106 and
+	 * comparing the result with the expected value presented in that table.
+	 */
+	@Test
+	public void testUnescapeNodeExample08() throws Exception {
+		assertEquals(JID.unescapeNode("user\\40host"), "user@host");
+	}
+
+	/**
+	 * Verifies correct behavior of 'JID node escaping' by unescaping the
+	 * escaped node value of the ninth JID presented in table 3 of XEP-0106 and
+	 * comparing the result with the expected value presented in that table.
+	 */
+	@Test
+	public void testUnescapeNodeExample09() throws Exception {
+		assertEquals(JID.unescapeNode("c\\3a\\5cnet"), "c:\\net");
+	}
+
+	/**
+	 * Verifies correct behavior of 'JID node escaping' by unescaping the
+	 * escaped node value of the tenth JID presented in table 3 of XEP-0106 and
+	 * comparing the result with the expected value presented in that table.
+	 */
+	@Test
+	public void testUnescapeNodeExample10() throws Exception {
+		assertEquals(JID.unescapeNode("c\\3a\\5c\\5cnet"), "c:\\\\net");
+	}
+
+	/**
+	 * Verifies correct behavior of 'JID node escaping' by unescaping the
+	 * escaped node value of the eleventh JID presented in table 3 of XEP-0106
+	 * and comparing the result with the expected value presented in that table.
+	 */
+	@Test
+	public void testUnescapeNodeExample11() throws Exception {
+		assertEquals(JID.unescapeNode("c\\3a\\5ccool\\20stuff"),
+				"c:\\cool stuff");
+	}
+
+	/**
+	 * Verifies correct behavior of 'JID node escaping' by unescaping the
+	 * escaped node value of the twelfth JID presented in table 3 of XEP-0106
+	 * and comparing the result with the expected value presented in that table.
+	 */
+	@Test
+	public void testUnescapeNodeExample12() throws Exception {
+		assertEquals(JID.unescapeNode("c\\3a\\5c5commas"), "c:\\5commas");
+	}
+
+	/**
+	 * Verifies that the exceptions as listed in XEP-0106, paragraph 4.3, get
+	 * processed as expected.
 	 */
 	@Test
 	public void testPartialEscapeException() throws Exception {
@@ -94,7 +282,8 @@ public class JIDNodeEscapingTest {
 	}
 
 	/**
-	 * Verifies that the exceptions as listed in XEP-0106, paragraph 4.3, get processed as expected. 
+	 * Verifies that the exceptions as listed in XEP-0106, paragraph 4.3, get
+	 * processed as expected.
 	 */
 	@Test
 	public void testPartialUnescapeException() throws Exception {
@@ -102,31 +291,35 @@ public class JIDNodeEscapingTest {
 	}
 
 	/**
-	 * Verifies that the exceptions as listed in XEP-0106, paragraph 4.3, get processed as expected. 
+	 * Verifies that the exceptions as listed in XEP-0106, paragraph 4.3, get
+	 * processed as expected.
 	 */
 	@Test
 	public void testInvalidEscapeSequence1Exception() throws Exception {
 		assertEquals("foo\\bar", JID.escapeNode("foo\\bar"));
 	}
-	
+
 	/**
-	 * Verifies that the exceptions as listed in XEP-0106, paragraph 4.3, get processed as expected. 
+	 * Verifies that the exceptions as listed in XEP-0106, paragraph 4.3, get
+	 * processed as expected.
 	 */
 	@Test
 	public void testInvalidUnescapeSequence1Exception() throws Exception {
 		assertEquals("foo\\bar", JID.unescapeNode("foo\\bar"));
 	}
-	
+
 	/**
-	 * Verifies that the exceptions as listed in XEP-0106, paragraph 4.3, get processed as expected. 
+	 * Verifies that the exceptions as listed in XEP-0106, paragraph 4.3, get
+	 * processed as expected.
 	 */
 	@Test
 	public void testInvalidEscapeSequence2Exception() throws Exception {
 		assertEquals("foob\\41r", JID.escapeNode("foob\\41r"));
 	}
-	
+
 	/**
-	 * Verifies that the exceptions as listed in XEP-0106, paragraph 4.3, get processed as expected. 
+	 * Verifies that the exceptions as listed in XEP-0106, paragraph 4.3, get
+	 * processed as expected.
 	 */
 	@Test
 	public void testInvalidUnescapeSequence2Exception() throws Exception {
