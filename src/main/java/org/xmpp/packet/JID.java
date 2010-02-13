@@ -113,9 +113,9 @@ public class JID implements Comparable<JID>, Serializable {
         if (node == null) {
             return null;
         }
-        StringBuilder buf = new StringBuilder(node.length() + 8);
+        final StringBuilder buf = new StringBuilder(node.length() + 8);
         for (int i=0, n=node.length(); i<n; i++) {
-            char c = node.charAt(i);
+            final char c = node.charAt(i);
             switch (c) {
                 case '"': buf.append("\\22"); break;
                 case '&': buf.append("\\26"); break;
@@ -125,7 +125,19 @@ public class JID implements Comparable<JID>, Serializable {
                 case '<': buf.append("\\3c"); break;
                 case '>': buf.append("\\3e"); break;
                 case '@': buf.append("\\40"); break;
-                case '\\': buf.append("\\5c"); break;
+                case '\\':
+                    final int c2 = (i+1 < n) ? node.charAt(i+1) : -1;
+                    final int c3 = (i+2 < n) ? node.charAt(i+2) : -1;
+                    if ((c2 == '2' && (c3 == '0' || c3 == '2' || c3 == '6' || c3 == '7' || c3 == 'f')) ||
+                            (c2 == '3' && (c3 == 'a' || c3 == 'c' || c3 == 'e')) ||
+                            (c2 == '4' && c3 == '0') ||
+                            (c2 == '5' && c3 == 'c')) {
+                        buf.append("\\5c");
+                    }
+                    else {
+                        buf.append(c);
+                    }
+                    break;
                 default: {
                     if (Character.isWhitespace(c)) {
                         buf.append("\\20");

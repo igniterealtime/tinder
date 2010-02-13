@@ -325,4 +325,39 @@ public class JIDNodeEscapingTest {
 	public void testInvalidUnescapeSequence2Exception() throws Exception {
 		assertEquals("foob\\41r", JID.unescapeNode("foob\\41r"));
 	}
+
+	/**
+	 * Verifies that the escaping code works if the characters that are
+	 * (potentially) involved are either the first or last character in a
+	 * string.
+	 * 
+	 * This test verifies that the character '\' does not cause any problems
+	 * when used in either the start or at the end of a string that is being
+	 * processed. The '\' character is the character used to escape, making it a
+	 * likely cause for programming logic errors that this test attempts to
+	 * expose.
+	 */
+	@Test
+	public void testEdgeCaseEscapingSlash() throws Exception {
+		assertEquals("\\", JID.escapeNode("\\"));
+		assertEquals("\\", JID.unescapeNode("\\"));
+	}
+
+	/**
+	 * Verifies that the escaping code works if the characters that are
+	 * (potentially) involved are either the first or last character in a
+	 * string.
+	 * 
+	 * This test verifies that the character '>' does not cause any problems
+	 * when used in either the start or at the end of a string that is being
+	 * processed. The '>' character is one of the character that are to be
+	 * escaped, making it a likely cause for programming logic errors that this
+	 * test attempts to expose.
+	 */
+	@Test
+	public void testEdgeCaseGreaterThan() throws Exception {
+		assertEquals("\\3e", JID.escapeNode(">"));
+		assertEquals(">", JID.unescapeNode("\\3e"));
+	}
+
 }
