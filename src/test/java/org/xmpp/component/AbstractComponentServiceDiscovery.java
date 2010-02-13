@@ -147,6 +147,30 @@ public class AbstractComponentServiceDiscovery {
 	}
 
 	/**
+	 * As the component supports XEP-0012, its service discovery response should
+	 * include the last-activity feature.
+	 */
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testHasLastActivityFeature() throws Exception {
+		assertNotNull(response);
+		assertTrue(response.isResponse());
+
+		final Element childElement = response.getChildElement();
+		final Iterator<Element> iter = childElement.elementIterator("feature");
+		while (iter.hasNext()) {
+			final Element element = iter.next();
+			final Attribute attr = element.attribute("var");
+			if (attr != null && attr.getValue() == "jabber:iq:last") {
+				// succes!
+				return;
+			}
+		}
+
+		fail("The component should have the 'jabber:iq:last' feature.");
+	}
+	
+	/**
 	 * Verifies that namespaces returned by discoInfoFeatureNamespaces() are in disco info responses.
 	 */
 	@Test
