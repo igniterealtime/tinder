@@ -171,6 +171,29 @@ public class AbstractComponentServiceDiscovery {
 	}
 	
 	/**
+	 * As the component supports XEP-0202, its service discovery response should
+	 * include the entity-time feature.
+	 */
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testHasEntityTimeFeature() throws Exception {
+		assertNotNull(response);
+		assertTrue(response.isResponse());
+
+		final Element childElement = response.getChildElement();
+		final Iterator<Element> iter = childElement.elementIterator("feature");
+		while (iter.hasNext()) {
+			final Element element = iter.next();
+			final Attribute attr = element.attribute("var");
+			if (attr != null && attr.getValue() == "urn:xmpp:time") {
+				// succes!
+				return;
+			}
+		}
+
+		fail("The component should have the 'urn:xmpp:time' feature.");
+	}	
+	/**
 	 * Verifies that namespaces returned by discoInfoFeatureNamespaces() are in disco info responses.
 	 */
 	@Test

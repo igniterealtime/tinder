@@ -384,4 +384,31 @@ public class AbstractComponentTest {
 		assertEquals(Type.result, result.getType());
 		assertEquals(String.valueOf(wait), result.getChildElement().attributeValue("seconds"));
 	}
+	
+	/**
+	 * This test verifies that the abstract component responds to XMPP Entity Time requests.
+	 */
+	@Test
+	public void testEntityTime() throws Exception {
+		// setup
+		final DummyAbstractComponent component = new DummyAbstractComponent();
+		component.initialize(new JID("sub.domain"), null);
+
+		final IQ request = new IQ(Type.get);
+		request.setChildElement("ping",
+				AbstractComponent.NAMESPACE_ENTITY_TIME);
+		request.setFrom("from.address");
+		request.setTo(component.jid);
+
+		
+		// do magic
+		component.start();
+		component.processPacket(request);
+		
+		// verify
+		final IQ result = (IQ) component.getSentPacket();
+		assertNotNull(result);
+		assertEquals(Type.result, result.getType());
+		// TODO although this test verifies that a result is produced, it also needs to verify the correctness of the content of the result.
+	}
 }

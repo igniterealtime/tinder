@@ -16,6 +16,8 @@
 
 package org.xmpp.component;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
@@ -32,6 +34,7 @@ import org.xmpp.packet.Packet;
 import org.xmpp.packet.Presence;
 import org.xmpp.packet.IQ.Type;
 import org.xmpp.packet.PacketError.Condition;
+import org.xmpp.util.XMPPConstants;
 
 /**
  * This class provides a default {@link Component} implementation. Most of the
@@ -41,6 +44,8 @@ import org.xmpp.packet.PacketError.Condition;
  * <ul>
  * <li>Service Discovery (XEP-0030)</li>
  * <li>XMPP Ping (XEP-0199)</li>
+ * <li>Last Activity (XEP-0012)</li>
+ * <li>Entity Time(XEP-0202)</li>
  * </ul>
  * <p/>
  * This implementation uses the producer/consumer pattern, in which it takes the
@@ -106,6 +111,13 @@ public abstract class AbstractComponent implements Component {
 	 * @see <a href="http://xmpp.org/extensions/xep-0012.html">XEP-0012</a>
 	 */
 	public static final String NAMESPACE_LAST_ACTIVITY = "jabber:iq:last";
+
+	/**
+	 * The 'Entity Time' namespace
+	 * 
+	 * @see <a href="http://xmpp.org/extensions/xep-0202.html">XEP-0202</a>
+	 */
+	public static final String NAMESPACE_ENTITY_TIME = "urn:xmpp:time";
 	
 	/**
 	 * The component manager to which this Component has been registered.
@@ -478,6 +490,11 @@ public abstract class AbstractComponent implements Component {
 						+ "Calling #handleLastActivity() (packetId {}).", getName(), iq
 						.getID());
 				return handleLastActivity(iq);
+			} else if (NAMESPACE_ENTITY_TIME.equals(namespace)) {
+				log.trace("(serving component '{}') "
+						+ "Calling #handleEntityTime() (packetId {}).", getName(), iq
+						.getID());
+				return handleEntityTime(iq);
 			} else {
 				return handleIQGet(iq);
 			}
@@ -639,6 +656,8 @@ public abstract class AbstractComponent implements Component {
 				NAMESPACE_XMPP_PING);
 		responseElement.addElement("feature").addAttribute("var",
 				NAMESPACE_LAST_ACTIVITY);
+		responseElement.addElement("feature").addAttribute("var",
+				NAMESPACE_ENTITY_TIME);
 		for (final String feature : discoInfoFeatureNamespaces()) {
 			responseElement.addElement("feature").addAttribute("var", feature);
 		}
@@ -651,7 +670,7 @@ public abstract class AbstractComponent implements Component {
 	 * a Ping.
 	 * 
 	 * @param iq
-	 *            The Ping request
+	 *            The Ping request stanza.
 	 * @return The XMPP way of saying 'pong'.
 	 */
 	protected IQ handlePing(IQ iq) {
@@ -662,12 +681,41 @@ public abstract class AbstractComponent implements Component {
 	 * Default handler of Last Activity requests (XEP-0012). Unless overridden,
 	 * this method returns a result stanza that specifies how long this
 	 * component has been running since it was last (re)started.
+	 * 
+	 * @param iq
+	 *            The Last Activity request stanza. 
+	 * @return Last Activity response that reports back the uptime of this
+	 *         component.
 	 */
 	protected IQ handleLastActivity(IQ iq) {
 		final long uptime = (System.currentTimeMillis() - lastStartMillis) / 1000;
 		final IQ result = IQ.createResultIQ(iq);
 		result.setChildElement("query", NAMESPACE_LAST_ACTIVITY).addAttribute(
 				"seconds", Long.toString(uptime));
+		return result;
+	}
+
+	/**
+	 * Default handler of Entity Time requests (XEP-0202). Unless overridden,
+	 * this method returns the current local time as specified by the XEP.
+	 * 
+	 * @param iq
+	 *            Entity Time request stanza.
+	 * @return Result stanza including the local current time.
+	 */
+	protected IQ handleEntityTime(IQ iq) {
+		final Date now = new Date();
+		final SimpleDateFormat sdf = new SimpleDateFormat(XMPPConstants.XMPP_DATETIME_FORMAT);
+		final SimpleDateFormat sdf_timezone = new SimpleDateFormat("Z");
+
+		final String utc = sdf.format(now);
+		final String tz = sdf_timezone.format(new Date());
+		final String tzo = new StringBuilder(tz).insert(3, ':').toString();
+		
+		final IQ result = IQ.createResultIQ(iq);
+		final Element el = result.setChildElement("time", NAMESPACE_ENTITY_TIME);
+		el.addElement("tzo").setText(tzo);
+		el.addElement("utc").setText(utc);
 		return result;
 	}
 	
