@@ -117,7 +117,7 @@ public class JIDNodeEscapingTest {
 	 */
 	@Test
 	public void testEscapeNodeExample09() throws Exception {
-		assertEquals(JID.escapeNode("c:\\net"), "c\\3a\\5cnet");
+		assertEquals(JID.escapeNode("c:\\net"), "c\\3a\\net");
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class JIDNodeEscapingTest {
 	 */
 	@Test
 	public void testEscapeNodeExample10() throws Exception {
-		assertEquals(JID.escapeNode("c:\\\\net"), "c\\3a\\5c\\5cnet");
+		assertEquals(JID.escapeNode("c:\\\\net"), "c\\3a\\\\net");
 	}
 
 	/**
@@ -137,7 +137,8 @@ public class JIDNodeEscapingTest {
 	 */
 	@Test
 	public void testEscapeNodeExample11() throws Exception {
-		assertEquals(JID.escapeNode("c:\\cool stuff"), "c\\3a\\5ccool\\20stuff");
+														
+		assertEquals(JID.escapeNode("c:\\cool stuff"), "c\\3a\\cool\\20stuff");
 	}
 
 	/**
