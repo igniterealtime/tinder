@@ -74,9 +74,6 @@ public class JID implements Comparable<JID>, Serializable {
     private final String domain;
     private final String resource;
 
-    private final String cachedFullJID;
-    private final String cachedBareJID;
-
     /**
      * Escapes the node portion of a JID according to "JID Escaping" (XEP-0106).
      * Escaping replaces characters prohibited by node-prep with escape sequences,
@@ -558,23 +555,6 @@ public class JID implements Comparable<JID>, Serializable {
                 throw new IllegalArgumentException("Illegal JID: " + buf.toString(), e);
             }
         }
-        
-        // Cache the bare JID
-        StringBuilder buf = new StringBuilder(40);
-        if (this.node != null) {
-            buf.append(this.node).append("@");
-        }
-        buf.append(this.domain);
-        cachedBareJID = buf.toString();
-
-        // Cache the full JID
-        if (this.resource != null) {
-            buf.append("/").append(this.resource);
-            cachedFullJID = buf.toString();
-        }
-        else {
-            cachedFullJID = cachedBareJID;
-        }
     }
 
     /**
@@ -667,7 +647,11 @@ public class JID implements Comparable<JID>, Serializable {
      * @return the bare JID.
      */
     public String toBareJID() {
-        return cachedBareJID;
+    	final StringBuilder sb = new StringBuilder();
+    	sb.append(this.node);
+    	sb.append('@');
+    	sb.append(this.domain);
+        return sb.toString();
     }
 
 	/**
@@ -688,7 +672,13 @@ public class JID implements Comparable<JID>, Serializable {
 					+ "without a resource identifier. A full "
 					+ "JID representation is not available for: " + toString());
 		}
-		return cachedFullJID;
+    	final StringBuilder sb = new StringBuilder();
+    	sb.append(this.node);
+    	sb.append('@');
+    	sb.append(this.domain);
+    	sb.append('/');
+    	sb.append(this.resource);
+		return sb.toString();
 	}
     
     /**
@@ -697,11 +687,20 @@ public class JID implements Comparable<JID>, Serializable {
      * @return a String representation of the JID.
      */
     public String toString() {
-        return cachedFullJID;
+    	final StringBuilder sb = new StringBuilder();
+    	sb.append(this.node);
+    	sb.append('@');
+    	sb.append(this.domain);
+    	if (this.resource != null) {
+        	sb.append('/');
+        	sb.append(this.resource);
+    	}
+
+        return sb.toString();
     }
 
     public int hashCode() {
-        return cachedFullJID.hashCode();
+        return toString().hashCode();
     }
 
     public boolean equals(Object object) {
