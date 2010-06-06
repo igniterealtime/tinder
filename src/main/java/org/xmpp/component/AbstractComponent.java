@@ -367,11 +367,13 @@ public abstract class AbstractComponent implements Component {
 	 *            The message stanza to process.
 	 */
 	final private void processMessage(Message message) {
+		log.trace("(serving component '{}') Processing message stanza: {}",
+				getName(), message.toXML());
 		if (servesLocalUsersOnly() && !sentByLocalEntity(message)) {
-			log.info("(serving component '{}') Dropping IQ "
+			log.info("(serving component '{}') Dropping message "
 					+ "stanza sent by a user from another domain: {}",
 					getName(), message.getFrom());
-			log.debug("(serving component '{}') Dropping IQ "
+			log.debug("(serving component '{}') Dropping message "
 					+ "stanza sent by a user from another domain: {}",
 					getName(), message.toXML());
 			return;
@@ -389,11 +391,13 @@ public abstract class AbstractComponent implements Component {
 	 *            The presence stanza to process.
 	 */
 	final private void processPresence(Presence presence) {
+		log.trace("(serving component '{}') Processing presence stanza: {}",
+				getName(), presence.toXML());
 		if (servesLocalUsersOnly() && !sentByLocalEntity(presence)) {
-			log.info("(serving component '{}') Dropping IQ "
+			log.info("(serving component '{}') Dropping presence "
 					+ "stanza sent by a user from another domain: {}",
 					getName(), presence.getFrom());
-			log.debug("(serving component '{}') Dropping IQ "
+			log.debug("(serving component '{}') Dropping presence "
 					+ "stanza sent by a user from another domain: {}",
 					getName(), presence.toXML());
 			return;
@@ -738,10 +742,20 @@ public abstract class AbstractComponent implements Component {
 	 * address of this component should be a subdomain of the domain returned by
 	 * this method.
 	 * 
-	 * @return The XMPP domain name.
+	 * @return The XMPP domain name, or <tt>null</tt> if this component has not been initialized yet.
 	 */
 	public String getDomain() {
 		return jid != null ? jid.getDomain() : null;
+	}
+
+	/**
+	 * Returns the XMPP address / Jabber ID (JID) of this component.
+	 * 
+	 * @return The JID of this component, or <tt>null</tt> if this component has
+	 *         not been initialized yet.
+	 */
+	public JID getJID() {
+		return jid != null ? jid : null;
 	}
 
 	/**
