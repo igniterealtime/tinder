@@ -177,6 +177,8 @@ public abstract class Packet {
         if (to !=  null) {
             toJID = new JID(to);
             to = toJID.toString();
+        } else {
+        	toJID = null;
         }
         element.addAttribute("to", to);
     }
@@ -237,6 +239,8 @@ public abstract class Packet {
         if (from != null) {
             fromJID = new JID(from);
             from = fromJID.toString();
+        } else {
+        	fromJID = null;
         }
         element.addAttribute("from", from);
     }
