@@ -673,12 +673,17 @@ public class JID implements Comparable<JID>, Serializable {
 					+ "JID representation is not available for: " + toString());
 		}
     	final StringBuilder sb = new StringBuilder();
-    	sb.append(this.node);
-    	sb.append('@');
+    	if (this.node != null) {
+    		sb.append(this.node);
+        	sb.append('@');
+    	}
     	sb.append(this.domain);
-    	sb.append('/');
-    	sb.append(this.resource);
-		return sb.toString();
+    	if (this.resource != null) {
+        	sb.append('/');
+        	sb.append(this.resource);
+    	}
+
+        return sb.toString();
 	}
     
     /**
@@ -688,8 +693,10 @@ public class JID implements Comparable<JID>, Serializable {
      */
     public String toString() {
     	final StringBuilder sb = new StringBuilder();
-    	sb.append(this.node);
-    	sb.append('@');
+    	if (this.node != null) {
+    		sb.append(this.node);
+        	sb.append('@');
+    	}
     	sb.append(this.domain);
     	if (this.resource != null) {
         	sb.append('/');

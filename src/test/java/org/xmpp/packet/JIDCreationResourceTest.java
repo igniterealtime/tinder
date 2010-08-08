@@ -16,6 +16,8 @@
 
 package org.xmpp.packet;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 
 /**
@@ -45,10 +47,10 @@ public class JIDCreationResourceTest {
 	 */
 	@Test
 	public void testOptionality() throws Exception {
-		new JID(DOMAIN);
-		new JID(null, DOMAIN, null);
-		new JID(NODE, DOMAIN, null);
-		new JID(NODE, DOMAIN, "");
+		assertEquals(DOMAIN, new JID(DOMAIN).toString());
+		assertEquals(DOMAIN, new JID(null, DOMAIN, null).toString());
+		assertEquals(NODE + '@' + DOMAIN, new JID(NODE, DOMAIN, null).toString());
+		assertEquals(NODE + '@' + DOMAIN, new JID(NODE, DOMAIN, "").toString());
 	}
 
 	/**
