@@ -29,8 +29,8 @@ import net.jcip.annotations.Immutable;
 import org.xmpp.util.ValueWrapper;
 import org.xmpp.util.ValueWrapper.Representation;
 
-import com.reardencommerce.kernel.collections.shared.evictable.ConcurrentLinkedHashMap;
-import com.reardencommerce.kernel.collections.shared.evictable.ConcurrentLinkedHashMap.EvictionPolicy;
+import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap;
+import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap.Builder;
 
 /**
  * An XMPP address (JID). A JID is made up of a node (generally a username), a
@@ -66,9 +66,9 @@ public class JID implements Comparable<JID>, Serializable {
 	// Stringprep operations are very expensive. Therefore, we cache node, domain and
     // resource values that have already had stringprep applied so that we can check
     // incoming values against the cache.
-    private static final ConcurrentMap<String, ValueWrapper<String>> NODEPREP_CACHE = ConcurrentLinkedHashMap.create(EvictionPolicy.SECOND_CHANCE, 10000);
-    private static final ConcurrentMap<String, ValueWrapper<String>> DOMAINPREP_CACHE = ConcurrentLinkedHashMap.create(EvictionPolicy.SECOND_CHANCE, 500);
-    private static final ConcurrentMap<String, ValueWrapper<String>> RESOURCEPREP_CACHE = ConcurrentLinkedHashMap.create(EvictionPolicy.SECOND_CHANCE, 10000);
+    private static final ConcurrentMap<String, ValueWrapper<String>> NODEPREP_CACHE = new Builder<String, ValueWrapper<String>>().maximumWeightedCapacity(10000).build();
+    private static final ConcurrentMap<String, ValueWrapper<String>> DOMAINPREP_CACHE = new Builder<String, ValueWrapper<String>>().maximumWeightedCapacity(500).build();
+    private static final ConcurrentMap<String, ValueWrapper<String>> RESOURCEPREP_CACHE = new Builder<String, ValueWrapper<String>>().maximumWeightedCapacity(10000).build();
 
     private final String node;
     private final String domain;

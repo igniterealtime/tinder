@@ -134,6 +134,11 @@
 			<artifactId>libidn</artifactId>
 			<version>1.15</version>
 		</dependency>
+		<dependency>
+			<groupId>com.googlecode.concurrentlinkedhashmap</groupId>
+			<artifactId>concurrentlinkedhashmap-lru</artifactId>
+			<version>1.0_jdk5</version>
+		</dependency>
 	</dependencies>
 
 </project>
