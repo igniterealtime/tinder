@@ -29,7 +29,6 @@ import net.jcip.annotations.Immutable;
 import org.xmpp.util.ValueWrapper;
 import org.xmpp.util.ValueWrapper.Representation;
 
-import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap;
 import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap.Builder;
 
 /**
