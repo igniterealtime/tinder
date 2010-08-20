@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.igniterealtime</groupId>
 	<artifactId>tinder</artifactId>
 	<name>Tinder XMPP library</name>
-	<version>1.2.2-SNAPSHOT</version>
+	<version>1.2.2</version>
 	<organization>
 		<name>Ignite Realtime</name>
 		<url>http://www.igniterealtime.org</url>
@@ -72,9 +71,9 @@
 		</contributor>
 	</contributors>
 	<scm>
-		<connection>scm:svn:http://svn.igniterealtime.org/svn/repos/tinder/trunk/</connection>
-		<developerConnection>scm:svn:https://svn.igniterealtime.org/svn/repos/tinder/trunk/</developerConnection>
-		<url>http://fisheye.igniterealtime.org/viewrep/tinder/trunk/</url>
+		<connection>scm:svn:http://svn.igniterealtime.org/svn/repos/tinder/tags/tinder_1_2_2</connection>
+		<developerConnection>scm:svn:https://svn.igniterealtime.org/svn/repos/tinder/tags/tinder_1_2_2</developerConnection>
+		<url>http://fisheye.igniterealtime.org/viewrep/tinder/tags/tinder_1_2_2</url>
 	</scm>
 	<build>
 		<plugins>
