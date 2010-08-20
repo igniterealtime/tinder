@@ -195,6 +195,9 @@ public abstract class AbstractComponent implements Component {
 			throws ComponentException {
 		compMan = componentManager;
 		this.jid = jid;
+		
+		// start the executor service.
+		startExecutor();
 	}
 
 	/**
@@ -202,6 +205,10 @@ public abstract class AbstractComponent implements Component {
 	 */
 	final public void processPacket(final Packet packet) {
 		final Packet copy = packet.createCopy();
+		
+		if (executor == null) {
+			
+		}
 		try {
 			executor.execute(new PacketProcessor(copy));
 		} catch (RejectedExecutionException ex) {
@@ -266,8 +273,8 @@ public abstract class AbstractComponent implements Component {
 	 *            The IQ stanza that was received by this component.
 	 */
 	final private void processIQ(final IQ iq) {
-		log.debug("(serving component '{}') Processing IQ (packetId {}).",
-				getName(), iq.getID());
+		log.debug("(serving component '{}') Processing IQ (packetId {}): {}",
+				new Object[] {getName(), iq.getID(), iq.toXML() });
 
 		IQ response = null;
 		final Type type = iq.getType();
@@ -310,6 +317,7 @@ public abstract class AbstractComponent implements Component {
 								+ "was incorrect: " + iq.toXML()
 								+ ". The response was: " + response.toXML());
 					}
+					log.debug("(serving component '{}') Responding to IQ (packetId {}) with: {}", new Object[] { getName(), iq.getID(), response.toXML() }); 
 				}
 				break;
 
@@ -954,15 +962,19 @@ public abstract class AbstractComponent implements Component {
 		lastStartMillis = System.currentTimeMillis();
 		
 		// start the executor service.
+		startExecutor();
+		
+		postComponentStart();
+	}
+
+	private void startExecutor() {
 		if (executor == null || executor.isShutdown()) {
 			executor = new ThreadPoolExecutor(maxThreadPoolSize,
 					maxThreadPoolSize, 60L, TimeUnit.SECONDS,
 					new LinkedBlockingQueue<Runnable>(maxQueueSize));
 		}
-
-		postComponentStart();
 	}
-
+	
 	/**
 	 * This method gets called as part of the Component 'start' routine. This
 	 * method gets called before the other 'start' methods get executed. This
