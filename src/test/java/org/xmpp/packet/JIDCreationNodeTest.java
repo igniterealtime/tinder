@@ -31,10 +31,15 @@ import org.junit.Test;
 public class JIDCreationNodeTest {
 
 	/**
+	 * A node identifier that's RFC 3920 valid.
+	 */
+	public static final String NODE = "node";
+
+	/**
 	 * A domain identifier that's RFC 3920 valid.
 	 */
 	public static final String DOMAIN = "domain";
-
+	
 	/**
 	 * A resource identifier that's RFC 3920 valid.
 	 */
@@ -144,4 +149,19 @@ public class JIDCreationNodeTest {
 		new JID(longestPossibleValue, DOMAIN, RESOURCE);
 	}
 
+	/**
+	 * Verifies that the bare representation of a JID that contains a node and a
+	 * domain name corresponds to the node and domain name combination.
+	 */
+	@Test
+	public void testBareJID() throws Exception {
+		// setup
+		final JID fullJID = new JID(NODE, DOMAIN, null);
+		
+		// do magic
+		final String bareJID = fullJID.toBareJID();
+		
+		// verify 
+		assertEquals(NODE + '@' + DOMAIN, bareJID);
+	}
 }

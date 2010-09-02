@@ -39,6 +39,11 @@ public class JIDCreationResourceTest {
 	 * A domain identifier that's RFC 3920 valid.
 	 */
 	public static final String DOMAIN = "domain";
+	
+	/**
+	 * A resource identifier that's RFC 3920 valid.
+	 */
+	public static final String RESOURCE = "resource";
 
 	/**
 	 * Resource identifiers are an optional part of a JID. This testcase
@@ -143,5 +148,21 @@ public class JIDCreationResourceTest {
 
 		// do magic / verify
 		new JID(NODE, DOMAIN, longestPossibleValue);
+	}
+	
+	/**
+	 * Verifies that the bare representation of a JID that contains a domain
+	 * name and resource identifier corresponds to the domain name only.
+	 */
+	@Test
+	public void testBareJID() throws Exception {
+		// setup
+		final JID fullJID = new JID(null, DOMAIN, RESOURCE);
+		
+		// do magic
+		final String bareJID = fullJID.toBareJID();
+		
+		// verify 
+		assertEquals(DOMAIN, bareJID);
 	}	
 }
