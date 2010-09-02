@@ -647,8 +647,10 @@ public class JID implements Comparable<JID>, Serializable {
      */
     public String toBareJID() {
     	final StringBuilder sb = new StringBuilder();
-    	sb.append(this.node);
-    	sb.append('@');
+    	if (this.node != null) {
+    		sb.append(this.node);
+        	sb.append('@');
+    	}
     	sb.append(this.domain);
         return sb.toString();
     }
