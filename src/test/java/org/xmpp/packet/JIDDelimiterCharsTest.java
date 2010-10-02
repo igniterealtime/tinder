@@ -342,7 +342,7 @@ public class JIDDelimiterCharsTest {
 		final JID jid = new JID("node", "domain.com", "res/ourc/e");
 		assertEquals("node", jid.getNode());
 		assertEquals("domain.com", jid.getDomain());
-		assertEquals("res/our/ce", jid.getResource());
+		assertEquals("res/ourc/e", jid.getResource());
 	}
 
 	@Test
