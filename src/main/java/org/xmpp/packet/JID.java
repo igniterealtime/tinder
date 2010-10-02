@@ -570,10 +570,24 @@ public class JID implements Comparable<JID>, Serializable {
             return parts;
         }
 
-        int atIndex = jid.indexOf("@");
         int slashIndex = jid.indexOf("/");
+        int atIndex = jid.indexOf("@");
+		// Correct for occurrences of 'at' characters that exist in the resource part (TINDER-47)
+		if (atIndex > slashIndex) {
+			atIndex = -1;
+		}
+		
+		if (atIndex == 0) {
+			throw new IllegalArgumentException("Existing at-character at the first character of"
+					+ " the string indicates that an empty node part is provided. This is illegal.");
+		}
 
-        // Node
+		if (slashIndex == jid.length() - 1) {
+			throw new IllegalArgumentException("Existing slash at the very end of the string indicates"
+					+ " that an empty resource part is provided. This is illegal.");
+		}
+
+		// Node
         if (atIndex > 0) {
             node = jid.substring(0, atIndex);
         }
@@ -592,7 +606,7 @@ public class JID implements Comparable<JID>, Serializable {
         }
         else {
             if (slashIndex > 0) {
-                domain = jid.substring(atIndex + 1, slashIndex);
+	                domain = jid.substring(atIndex + 1, slashIndex);
             }
             else {
                 domain = jid.substring(atIndex + 1);
