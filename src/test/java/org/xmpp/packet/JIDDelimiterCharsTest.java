@@ -67,7 +67,7 @@ public class JIDDelimiterCharsTest {
 		assertEquals("/@domain.com/resource", jid.getResource());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testSlashInNode_F() {
 		final JID jid = new JID("no//de@domain.com/resource");
 		assertNull(jid.getNode());
@@ -75,7 +75,7 @@ public class JIDDelimiterCharsTest {
 		assertEquals("/de@domain.com/resource", jid.getResource());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testSlashInNode_G() {
 		final JID jid = new JID("n/o/de@domain.com/resource");
 		assertNull(jid.getNode());
