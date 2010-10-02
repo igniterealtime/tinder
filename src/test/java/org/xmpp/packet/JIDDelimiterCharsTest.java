@@ -595,4 +595,27 @@ public class JIDDelimiterCharsTest {
 		assertEquals("domain.com", jid.getDomain());
 		assertEquals("res@ou@rce", jid.getResource());
 	}
+	
+	/**
+	 * Empty node and resource parts are forbidden.
+	 */
+	@Test(expected= IllegalArgumentException.class)
+	public void testEmptyNode_A() {
+		new JID("@domain.com/resource");
+	}
+	
+	@Test(expected= IllegalArgumentException.class)
+	public void testEmptyNode_B() {
+		new JID("@domain.com");
+	}
+	
+	@Test(expected= IllegalArgumentException.class)
+	public void testEmptyResource_A() {
+		new JID("node@domain.com/");
+	}
+	
+	@Test(expected= IllegalArgumentException.class)
+	public void testEmptyResource_B() {
+		new JID("domain.com/");
+	}
 }
