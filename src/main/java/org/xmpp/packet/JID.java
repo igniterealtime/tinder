@@ -573,7 +573,7 @@ public class JID implements Comparable<JID>, Serializable {
         int slashIndex = jid.indexOf("/");
         int atIndex = jid.indexOf("@");
 		// Correct for occurrences of 'at' characters that exist in the resource part (TINDER-47)
-		if (atIndex > slashIndex) {
+		if (slashIndex > -1 && atIndex > slashIndex) {
 			atIndex = -1;
 		}
 		
