@@ -564,10 +564,8 @@ public class JID implements Comparable<JID>, Serializable {
      * @return a string array with the parsed node, domain and resource.
      */
     static String[] getParts(String jid) {
-        String[] parts = new String[3];
-        String node = null , domain, resource;
         if (jid == null) {
-            return parts;
+            throw new IllegalArgumentException("Argument cannot be null.");
         }
 
         int slashIndex = jid.indexOf("/");
@@ -588,11 +586,13 @@ public class JID implements Comparable<JID>, Serializable {
 		}
 
 		// Node
+        String node = null;
         if (atIndex > 0) {
             node = jid.substring(0, atIndex);
         }
 
         // Domain
+        String domain = null;
         if (atIndex + 1 > jid.length()) {
             throw new IllegalArgumentException("JID with empty domain not valid");
         }
@@ -614,12 +614,15 @@ public class JID implements Comparable<JID>, Serializable {
         }
 
         // Resource
+        String resource = null;
         if (slashIndex + 1 > jid.length() || slashIndex < 0) {
             resource = null;
         }
         else {
             resource = jid.substring(slashIndex + 1);
         }
+        
+        final String[] parts = new String[3];
         parts[0] = node;
         parts[1] = domain;
         parts[2] = resource;

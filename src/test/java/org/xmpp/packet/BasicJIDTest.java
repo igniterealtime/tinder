@@ -27,6 +27,16 @@ import org.junit.Test;
  */
 public class BasicJIDTest {
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testNullArgument() {
+		new JID(null);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testEmptyArgument() {
+		new JID("");
+	}
+		
 	@Test
 	public void testC1FullJID() {
 		// setup
