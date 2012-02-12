@@ -220,6 +220,7 @@ public class StreamError {
         return element.asXML();
     }
 
+    @Override
     public String toString() {
         StringWriter out = new StringWriter();
         XMLWriter writer = new XMLWriter(out, OutputFormat.createPrettyPrint());
