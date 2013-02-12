@@ -258,17 +258,16 @@ public class JID implements Comparable<JID>, Serializable {
 				// characters use one to four bytes.
 				if (answer != null && answer.getBytes("UTF-8").length > 1023) {
 					throw new IllegalArgumentException("Node cannot be larger "
-							+ "than 1023 bytes. Size is "
-							+ answer.getBytes("UTF-8").length + " bytes.");
+							+ "than 1023 bytes (after nodeprepping). Size is "
+							+ answer.getBytes("UTF-8").length + " bytes. Offending value: '" + node + "'");
 				}
 			} catch (UnsupportedEncodingException ex) {
-				throw new IllegalStateException("Unable to construct a JID node.", ex);
+				throw new IllegalStateException("Unable to construct a JID node. Offending value: '" + node + "'", ex);
 			} catch (Exception ex) {
 				// register the failure in the cache (TINDER-24)
 				NODEPREP_CACHE.put(node, new ValueWrapper<String>(
 						Representation.ILLEGAL));
-				throw new IllegalArgumentException(
-						"The input is not a valid JID node: " + node, ex);
+				throw new IllegalArgumentException("The input is not a valid JID node: " + node, ex);
 			}
 
 			// Add the result to the cache. As most key/value pairs will contain
@@ -292,13 +291,11 @@ public class JID implements Comparable<JID>, Serializable {
 				break;
 
 			case ILLEGAL:
-				throw new IllegalArgumentException(
-						"The input is not a valid JID node: " + node);
+				throw new IllegalArgumentException("The input is not a valid JID node: " + node);
 
 			default:
 				// should not occur
-				throw new IllegalStateException(
-						"The implementation of JID#nodeprep(String) is broken.");
+				throw new IllegalStateException("The implementation of JID#nodeprep(String) is broken.");
 			}
 		}
 
@@ -322,8 +319,7 @@ public class JID implements Comparable<JID>, Serializable {
 	 */
 	public static String domainprep(String domain) throws StringprepException {
 		if (domain == null) {
-			throw new IllegalArgumentException(
-					"Argument 'domain' cannot be null.");
+			throw new IllegalArgumentException("Argument 'domain' cannot be null.");
 		}
 
 		final ValueWrapper<String> cachedResult = DOMAINPREP_CACHE.get(domain);
@@ -336,18 +332,16 @@ public class JID implements Comparable<JID>, Serializable {
 				// characters use one to four bytes.
 				if (answer != null && answer.getBytes("UTF-8").length > 1023) {
 					throw new IllegalArgumentException("Domain cannot be larger "
-							+ "than 1023 bytes. Size is "
-							+ answer.getBytes("UTF-8").length + " bytes.");
+							+ "than 1023 bytes (after nameprepping). Size is "
+							+ answer.getBytes("UTF-8").length + " bytes. Offending value: '" + domain + "'");
 				}
 			} catch (UnsupportedEncodingException ex) {
-				throw new IllegalStateException("Unable to construct a JID domain.", ex);
+				throw new IllegalStateException("Unable to construct a JID domain. Offending value: '" + domain + "'", ex);
 			} catch (Exception ex) {
 				// register the failure in the cache (TINDER-24)
 				DOMAINPREP_CACHE.put(domain, new ValueWrapper<String>(
 						Representation.ILLEGAL));
-				throw new IllegalArgumentException(
-						"The input is not a valid JID domain part: " + domain,
-						ex);
+				throw new IllegalArgumentException("The input is not a valid JID domain part: " + domain, ex);
 			}
 
 			// Add the result to the cache. As most key/value pairs will contain
@@ -376,8 +370,7 @@ public class JID implements Comparable<JID>, Serializable {
 
 			default:
 				// should not occur
-				throw new IllegalStateException(
-						"The implementation of JID#domainprep(String) is broken.");
+				throw new IllegalStateException("The implementation of JID#domainprep(String) is broken.");
 			}
 		}
 
@@ -416,18 +409,16 @@ public class JID implements Comparable<JID>, Serializable {
 				// characters use one to four bytes.
 				if (answer != null && answer.getBytes("UTF-8").length > 1023) {
 					throw new IllegalArgumentException("Resource cannot be larger "
-							+ "than 1023 bytes. Size is "
-							+ answer.getBytes("UTF-8").length + " bytes.");
+							+ "than 1023 bytes (after resourceprepping). Size is "
+							+ answer.getBytes("UTF-8").length + " bytes. Offending value: '" + resource + "'");
 				}
 			} catch (UnsupportedEncodingException ex) {
-				throw new IllegalStateException("Unable to construct a JID resource.", ex);
+				throw new IllegalStateException("Unable to construct a JID resource. Offending value: '" + resource + "'", ex);
 			} catch (Exception ex) {
 				// register the failure in the cache (TINDER-24)
 				RESOURCEPREP_CACHE.put(resource, new ValueWrapper<String>(
 						Representation.ILLEGAL));
-				throw new IllegalArgumentException(
-						"The input is not a valid JID resource: " + resource,
-						ex);
+				throw new IllegalArgumentException("The input is not a valid JID resource: " + resource, ex);
 			}
 
 			// Add the result to the cache. As most key/value pairs will contain
@@ -452,14 +443,11 @@ public class JID implements Comparable<JID>, Serializable {
 				break;
 
 			case ILLEGAL:
-				throw new IllegalArgumentException(
-						"The input is not a valid JID resource part: "
-								+ resource);
+				throw new IllegalArgumentException("The input is not a valid JID resource part: " + resource);
 
 			default:
 				// should not occur
-				throw new IllegalStateException(
-						"The implementation of JID#resourceprep(String) is broken.");
+				throw new IllegalStateException("The implementation of JID#resourceprep(String) is broken.");
 			}
 		}
 
@@ -482,7 +470,7 @@ public class JID implements Comparable<JID>, Serializable {
 	 * 
 	 * @param jid
 	 *            a valid JID.
-	 * @param skipStringprep
+	 * @param skipStringPrep
 	 *            <tt>true</tt> if stringprep should not be applied.
 	 * @throws IllegalArgumentException
 	 *             if the JID is not valid.
@@ -577,12 +565,12 @@ public class JID implements Comparable<JID>, Serializable {
 		
 		if (atIndex == 0) {
 			throw new IllegalArgumentException("Existing at-character at the first character of"
-					+ " the string indicates that an empty node part is provided. This is illegal.");
+					+ " the string indicates that an empty node part is provided. This is illegal. Offending value: '" + jid + "'");
 		}
 
 		if (slashIndex == jid.length() - 1) {
 			throw new IllegalArgumentException("Existing slash at the very end of the string indicates"
-					+ " that an empty resource part is provided. This is illegal.");
+					+ " that an empty resource part is provided. This is illegal. Offending value: '" + jid + "'");
 		}
 
 		// Node
@@ -594,7 +582,7 @@ public class JID implements Comparable<JID>, Serializable {
         // Domain
         String domain = null;
         if (atIndex + 1 > jid.length()) {
-            throw new IllegalArgumentException("JID with empty domain not valid");
+            throw new IllegalArgumentException("JID with empty domain not valid. Offending value: '" + jid + "'");
         }
         if (atIndex < 0) {
             if (slashIndex > 0) {
