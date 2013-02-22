@@ -223,9 +223,7 @@ public class FormField {
 	/**
 	 * Returns the first value from the FormField, or 'null' if no value has
 	 * been set.
-	 * 
-	 * @param formField
-	 *            The field from which to return the first value.
+	 *
 	 * @return String based value, or 'null' if the FormField has no values.
 	 */
     @SuppressWarnings("unchecked")
