@@ -660,6 +660,17 @@ public class JID implements Comparable<JID>, Serializable {
         return sb.toString();
     }
 
+    /**
+     * Returns the bare JID representation of this JID, which is the JID with
+     * resource information removed. For example: <tt>username@domain.com</tt>
+     *
+     * @return the bare JID.
+     * @see <a href="http://issues.igniterealtime.org/browse/TINDER-68">TINDER-68</a>
+     */
+    public JID asBareJID() {
+        return new JID( this.node, this.domain, null, true);
+    }
+
 	/**
 	 * Returns the String representation of the full JID, for example:
 	 * <tt>username@domain.com/mobile</tt>.
@@ -691,7 +702,7 @@ public class JID implements Comparable<JID>, Serializable {
 
         return sb.toString();
 	}
-    
+
     /**
      * Returns a String representation of the JID.
      *
