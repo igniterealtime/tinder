@@ -124,4 +124,86 @@ public class BasicJIDTest {
 		assertEquals("domain", jid.getDomain());
 		assertNull(jid.getResource());
 	}
+
+    /**
+     * Verifies that {@link JID#toBareJID()} returns a correct representation of
+     * the JID instance when the original JID was a full JID.
+     */
+    @Test
+    public void testFullJIDToBareJID() throws Exception {
+
+        // setup
+        final String node = "node";
+        final String domain = "domain";
+        final String resource = "resource";
+        final JID jid = new JID(node, domain, resource);
+
+        // do magic
+        final String bare = jid.toBareJID();
+
+        // verify
+        assertEquals(node + "@" + domain, bare);
+    }
+
+    /**
+     * Verifies that {@link JID#toBareJID()} returns a correct representation of
+     * the JID instance when the original JID was a bare JID.
+     */
+    @Test
+    public void testBareJIDToBareJID() throws Exception {
+
+        // setup
+        final String node = "node";
+        final String domain = "domain";
+        final JID jid = new JID(node, domain, null);
+
+        // do magic
+        final String bare = jid.toBareJID();
+
+        // verify
+        assertEquals(node + "@" + domain, bare);
+    }
+
+    /**
+     * Verifies that {@link JID#asBareJID()} returns a correct representation of
+     * the JID instance when the original JID was a full JID.
+     *
+     * @see <a href="http://issues.igniterealtime.org/browse/TINDER-68">TINDER-68</a>
+     */
+    @Test
+    public void testFullJIDAsBareJID() throws Exception {
+
+        // setup
+        final String node = "node";
+        final String domain = "domain";
+        final String resource = "resource";
+        final JID jid = new JID(node, domain, resource);
+
+        // do magic
+        final JID bare = jid.asBareJID();
+
+        // verify
+        assertEquals(node + "@" + domain, bare.toString());
+    }
+
+    /**
+     * Verifies that {@link JID#asBareJID()} returns a correct representation of
+     * the JID instance when the original JID was a bare JID.
+     *
+     * @see <a href="http://issues.igniterealtime.org/browse/TINDER-68">TINDER-68</a>
+     */
+    @Test
+    public void tesBareJIDAsBareJID() throws Exception {
+
+        // setup
+        final String node = "node";
+        final String domain = "domain";
+        final JID jid = new JID(node, domain, null);
+
+        // do magic
+        final JID bare = jid.asBareJID();
+
+        // verify
+        assertEquals(node + "@" + domain, bare.toString());
+    }
 }
