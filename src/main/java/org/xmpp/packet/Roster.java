@@ -18,14 +18,12 @@ package org.xmpp.packet;
 
 import net.jcip.annotations.NotThreadSafe;
 
+import org.dom4j.Attribute;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
+import java.util.*;
 
 
 /**
@@ -164,36 +162,114 @@ public class Roster extends IQ {
         if (subscription == null) {
             throw new NullPointerException("Subscription cannot be null");
         }
+
+        Element item = null;
+        List<Attribute> attributes = null;
+        String bareJID = jid.toBareJID();
         Element query = element.element(new QName("query", Namespace.get("jabber:iq:roster")));
         if (query == null) {
             query = element.addElement("query", "jabber:iq:roster");
-        }
-        Element item = null;
-        for (Iterator<Element> i=query.elementIterator("item"); i.hasNext(); ) {
-            Element el = i.next();
-            if (el.attributeValue("jid").equals(jid.toString())) {
-                item = el;
+        } else {
+            // raw iteration to speed up
+            for (Element node : (List<Element>) query.elements()) {
+                if ("item".equals(node.getName())) {
+                    attributes = node.attributes();
+                    for (Attribute attr : attributes) {
+                        // there was comparing just with jid.toString, so replace with startsWith to
+                        // process both jid format (with and without /resource)
+                        if ("jid".equals(attr.getName())) {
+                            if (attr.getValue() != null && attr.getValue().startsWith(bareJID)) {
+                                item = node; //found!
+                            }
+                            break;
+                        }
+                    }
+                    if (item != null) {
+                        break;
+                    }
+                }
             }
         }
+
+        //Need to do less DOM modifications in groups merge and need to avoid use of very costly DOM operations
+        //such as 'addAttribute', 'elementIterator', 'attributeValue'.
+        //Need to update only value of existed attribute (do not process whole attribute) and
+        //carefully merge item group changes.
+
+        Attribute nameAttr = null;
+        Attribute askAttr = null;
+        Attribute subscriptionAttr = null;
         if (item == null) {
             item = query.addElement("item");
-        }
-        item.addAttribute("jid", jid.toBareJID());
-        item.addAttribute("name", name);
-        if (ask != null) {
-            item.addAttribute("ask", ask.toString());
-        }
-        item.addAttribute("subscription", subscription.toString());
-        // Erase existing groups in case the item previously existed.
-        for (Iterator<Element> i=item.elementIterator("group"); i.hasNext(); ) {
-            item.remove(i.next());
-        }
-        // Add in groups.
-        if (groups != null) {
-            for (String group : groups) {
-                item.addElement("group").setText(group);
+            item.addAttribute("jid", bareJID);
+            // Add in groups, to speed up no need to check existence
+            if (groups != null && !groups.isEmpty()) {
+                for (String group : groups) {
+                    item.addElement("group").setText(group);
+                }
+            }
+        } else {
+            //raw loop through attributes to seed up
+            for (int i = attributes.size() - 1; i >= 0; i--) {
+                Attribute attr = attributes.get(i);
+                if ("name".equals(attr.getName())) {
+                    nameAttr = attr;
+                    //do not remove attr with name if no value
+                    if (name != null) {
+                        attr.setValue(name);
+                    }
+                } else if ("subscription".equals(attr.getName())) {
+                    //null is checked above
+                    subscriptionAttr = attr;
+                    attr.setValue(subscription.toString());
+                } else if ("ask".equals(attr.getName())) {
+                    askAttr = attr;
+                    if (ask != null) {
+                        attr.setValue(ask.toString());
+                    } else {
+                        attributes.remove(i);
+                    }
+                }
+            }
+
+            //synchronize groups to do not create existed and remove duplicates if any
+            List<Element> elements = item.elements();
+            if (groups != null && !groups.isEmpty()) {
+                Set<String> newGroups = new HashSet<String>(groups);
+                for (int i = elements.size() - 1; i >=0 ; i--) {
+                    Element group = elements.get(i);
+                    if ("group".equals(group.getName())) {
+                        String text = group.getText();
+                        if (!newGroups.contains(text)) {
+                            elements.remove(i);
+                        } else {
+                            //to do not add it on more time
+                            newGroups.remove(text);
+                        }
+                    }
+                }
+                //add new
+                for (String group : newGroups) {
+                    item.addElement("group").setText(group);
+                }
+            } else {
+                //remove all groups
+                elements.clear();
             }
         }
+
+        // documentFactory is protected, have to call lib to create new attribute
+        if (nameAttr == null && name != null) {
+            item.addAttribute("name", name);
+        }
+        if (askAttr == null && ask != null) {
+            item.addAttribute("ask", ask.toString());
+        }
+        if (subscriptionAttr == null) {
+            //null is checked above
+            item.addAttribute("subscription", subscription.toString());
+        }
+
         return new Item(jid, name, ask, subscription, groups);
     }
 

@@ -73,6 +73,11 @@ public class JID implements Comparable<JID>, Serializable {
     private final String domain;
     private final String resource;
 
+    // prepared JIDs
+    private final String bareJID;
+    private final String stringJID;
+
+
     /**
      * Escapes the node portion of a JID according to "JID Escaping" (XEP-0106).
      * Escaping replaces characters prohibited by node-prep with escape sequences,
@@ -542,6 +547,10 @@ public class JID implements Comparable<JID>, Serializable {
                 throw new IllegalArgumentException("Illegal JID: " + buf.toString(), e);
             }
         }
+
+        // cache frequent functions
+        bareJID = toBareJID(this);
+        stringJID = toString(this);
     }
 
     /**
@@ -651,12 +660,16 @@ public class JID implements Comparable<JID>, Serializable {
      * @return the bare JID.
      */
     public String toBareJID() {
+        return bareJID;
+    }
+
+    private static String toBareJID(JID jid) {
     	final StringBuilder sb = new StringBuilder();
-    	if (this.node != null) {
-    		sb.append(this.node);
+    	if (jid.node != null) {
+    		sb.append(jid.node);
         	sb.append('@');
     	}
-    	sb.append(this.domain);
+    	sb.append(jid.domain);
         return sb.toString();
     }
 
@@ -687,7 +700,7 @@ public class JID implements Comparable<JID>, Serializable {
 		if (this.resource == null) {
 			throw new IllegalStateException("This JID was instantiated "
 					+ "without a resource identifier. A full "
-					+ "JID representation is not available for: " + toString());
+					+ "JID representation is not available for: " + stringJID);
 		}
     	final StringBuilder sb = new StringBuilder();
     	if (this.node != null) {
@@ -695,10 +708,8 @@ public class JID implements Comparable<JID>, Serializable {
         	sb.append('@');
     	}
     	sb.append(this.domain);
-    	if (this.resource != null) {
         	sb.append('/');
-        	sb.append(this.resource);
-    	}
+        sb.append(this.resource);
 
         return sb.toString();
 	}
@@ -709,15 +720,19 @@ public class JID implements Comparable<JID>, Serializable {
      * @return a String representation of the JID.
      */
     public String toString() {
+        return stringJID;
+    }
+
+    private static String toString(JID jid) {
     	final StringBuilder sb = new StringBuilder();
-    	if (this.node != null) {
-    		sb.append(this.node);
+    	if (jid.node != null) {
+    		sb.append(jid.node);
         	sb.append('@');
     	}
-    	sb.append(this.domain);
-    	if (this.resource != null) {
+    	sb.append(jid.domain);
+    	if (jid.resource != null) {
         	sb.append('/');
-        	sb.append(this.resource);
+        	sb.append(jid.resource);
     	}
 
         return sb.toString();

@@ -69,12 +69,34 @@
 			<email>guenther.niess@web.de</email>
 			<timezone>+1</timezone>
 		</contributor>
+		<contributor>
+			<name>Konstantin Yakimov</name>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<email>kiakimov@gmail.com</email>
+			<timezone>+3</timezone>
+		</contributor>
 	</contributors>
-	<scm>
-		<connection>scm:svn:http://svn.igniterealtime.org/svn/repos/tinder/trunk/</connection>
-		<developerConnection>scm:svn:https://svn.igniterealtime.org/svn/repos/tinder/trunk/</developerConnection>
-		<url>http://fisheye.igniterealtime.org/viewrep/tinder/trunk/</url>
-	</scm>
+
+    <scm>
+        <connection>scm:git:https://github.com/igniterealtime/tinder.git</connection>
+        <developerConnection>scm:git:git@github.com:igniterealtime/tinder.git</developerConnection>
+        <url>https://github.com/igniterealtime/tinder</url>
+        <tag>HEAD</tag>
+    </scm>
+
+	<repositories>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>jcenter</id>
+			<name>jcenter</name>
+			<url>http://jcenter.bintray.com</url>
+		</repository>
+	</repositories>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -95,8 +117,22 @@
 					</descriptorRefs>
 				</configuration>
 			</plugin>
-		</plugins>
-	</build>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip> <!-- a lot of errors -->
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip> <!-- build platform dependency -->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 	<dependencies>
 		<dependency>
@@ -135,7 +171,7 @@
 		<dependency>
 			<groupId>org.gnu.inet</groupId>
 			<artifactId>libidn</artifactId>
-			<version>1.15</version>
+			<version>1.28</version>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.concurrentlinkedhashmap</groupId>
