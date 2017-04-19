@@ -3,7 +3,7 @@
 	<groupId>org.igniterealtime</groupId>
 	<artifactId>tinder</artifactId>
 	<name>Tinder XMPP library</name>
-	<version>1.3.0-SNAPSHOT</version>
+	<version>1.3.0</version>
 	<organization>
 		<name>Ignite Realtime</name>
 		<url>http://www.igniterealtime.org</url>
