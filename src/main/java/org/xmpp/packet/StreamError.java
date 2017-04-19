@@ -302,7 +302,10 @@ public class StreamError {
 
         /**
          * The stream ID or dialback ID is invalid or does not match an ID previously provided.
+         *
+         * @deprecated Removed from XMPP specification in RFC6120.
          */
+        @Deprecated
         invalid_id("invalid-id"),
 
         /**
