@@ -71,9 +71,9 @@
 		</contributor>
 	</contributors>
 	<scm>
-		<connection>scm:svn:http://svn.igniterealtime.org/svn/repos/tinder/trunk/</connection>
-		<developerConnection>scm:svn:https://svn.igniterealtime.org/svn/repos/tinder/trunk/</developerConnection>
-		<url>http://fisheye.igniterealtime.org/viewrep/tinder/trunk/</url>
+		<connection>https://github.com/igniterealtime/tinder.git</connection>
+		<developerConnection>https://github.com/igniterealtime/tinder.git</developerConnection>
+		<url>https://github.com/igniterealtime/tinder</url>
 	</scm>
 	<build>
 		<plugins>
