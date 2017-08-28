@@ -68,15 +68,14 @@ public class SlowRespondingThreadNameComponent extends DummyAbstractComponent {
 	protected IQ handleIQGet(IQ request) throws Exception {
 		final Element element = request.getChildElement();
 		if (!DEBUG_NAMESPACE.equals(element.getNamespaceURI())) {
-			log.debug("Can not process {}", request.toXML());
+			log.debug("Can not process {}", request);
 			return null;
 		}
 
 		if (ELEMENTNAME_SLOWRESPONSE.equals(element.getName())) {
-			log.debug("Waiting 4000 millis before responding to: {}", request
-					.toXML());
+			log.debug("Waiting 4000 millis before responding to: {}", request);
 			Thread.sleep(4000);
-			log.debug("Responding to {} now.", request.toXML());
+			log.debug("Responding to {} now.", request);
 			return IQ.createResultIQ(request);
 		}
 
@@ -85,12 +84,11 @@ public class SlowRespondingThreadNameComponent extends DummyAbstractComponent {
 			final IQ response = IQ.createResultIQ(request);
 			response.setChildElement(ELEMENTNAME_THREADNAME, DEBUG_NAMESPACE)
 					.addText(threadName);
-			log.debug("Responding to {} with {}", request.toXML(), response
-					.toXML());
+			log.debug("Responding to {} with {}", request, response);
 			return response;
 		}
 
-		log.debug("Cannot process {}", request.toXML());
+		log.debug("Cannot process {}", request);
 		return null;
 	}
 }
