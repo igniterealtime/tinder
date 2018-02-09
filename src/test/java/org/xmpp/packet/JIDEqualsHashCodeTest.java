@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2004-2009 Jive Software. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,6 +17,7 @@
 package org.xmpp.packet;
 
 import junitx.extensions.EqualsHashCodeTestCase;
+import org.junit.Assert;
 
 /**
  * Tests functional compliance of {@link JID} with the equals and hashCode
@@ -40,4 +41,39 @@ public class JIDEqualsHashCodeTest extends EqualsHashCodeTestCase {
 		return new JID("edon@niamod/ecrouser");
 	}
 
+	public void testNullResource() throws Exception {
+		// Setup fixture.
+		final JID a = new JID( "node", "domain", null );
+		final JID b = new JID( "node", "domain", "resource" );
+
+		// Execute system under test.
+		final boolean areEqual = a.equals( b );
+
+		// Verify results.
+		Assert.assertFalse( areEqual );
+	}
+
+	public void testNullResources() throws Exception {
+		// Setup fixture.
+		final JID a = new JID( "node", "domain", null );
+		final JID b = new JID( "node", "domain", null );
+
+		// Execute system under test.
+		final boolean areEqual = a.equals( b );
+
+		// Verify results.
+		Assert.assertTrue( areEqual );
+	}
+
+	public void testNullNode() throws Exception {
+		// Setup fixture.
+		final JID a = new JID( null, "domain", null );
+		final JID b = new JID( "node", "domain", null );
+
+		// Execute system under test.
+		final boolean areEqual = a.equals( b );
+
+		// Verify results.
+		Assert.assertFalse( areEqual );
+	}
 }
