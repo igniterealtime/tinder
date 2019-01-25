@@ -785,7 +785,7 @@ public abstract class AbstractComponent implements Component {
 	 *         not been initialized yet.
 	 */
 	public JID getJID() {
-		return jid != null ? jid : null;
+		return jid;
 	}
 
 	/**
