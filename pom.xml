@@ -169,6 +169,11 @@
 			<artifactId>concurrentlinkedhashmap-lru</artifactId>
 			<version>1.0_jdk5</version>
 		</dependency>
+		<dependency>
+			<groupId>rocks.xmpp</groupId>
+			<artifactId>precis</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<distributionManagement>
