@@ -42,11 +42,11 @@ import org.xmpp.util.XMPPConstants;
  * <p/>
  * The form could be of the following types:
  * <ul>
- * <li>form -> Indicates a form to fill out.</li>
- * <li>submit -> The form is filled out, and this is the data that is being returned from
+ * <li>form -&gt; Indicates a form to fill out.</li>
+ * <li>submit -&gt; The form is filled out, and this is the data that is being returned from
  * the form.</li>
- * <li>cancel -> The form was cancelled. Tell the asker that piece of information.</li>
- * <li>result -> Data results being returned from a search, or some other query.</li>
+ * <li>cancel -&gt; The form was cancelled. Tell the asker that piece of information.</li>
+ * <li>result -&gt; Data results being returned from a search, or some other query.</li>
  * </ul>
  * <p/>
  * In case the form represents a search, the report will be structured in columns and rows. Use
@@ -196,7 +196,7 @@ public class DataForm extends PacketExtension {
     	if (instruction == null || instruction.trim().length() == 0) {
     		return;
     	}
-    	
+
         element.addElement("instructions").setText(instruction);
     }
 
@@ -221,12 +221,12 @@ public class DataForm extends PacketExtension {
     }
 
     /**
-     * Adds a new field as part of the form. The provided arguments are optional 
+     * Adds a new field as part of the form. The provided arguments are optional
      * (they are allowed to be <tt>null</tt>).
      *
-     * @param variable the unique identifier of the field in the context of the 
+     * @param variable the unique identifier of the field in the context of the
      * 		form. Optional parameter.
-     * @param type an indicative of the format for the data. Optional parameter. 
+     * @param type an indicative of the format for the data. Optional parameter.
      * @param label the label of the question. Optional parameter.
      * @return the newly created field.
      */
@@ -235,18 +235,18 @@ public class DataForm extends PacketExtension {
     	if (variable != null && variable.trim().length() >= 0) {
     		result.setVariable(variable);
     	}
-    	
+
     	if (type != null) {
     		result.setType(type);
     	}
-    	
+
     	if (label != null && label.trim().length() >= 0) {
     		result.setLabel(label);
     	}
-    	
+
     	return result;
     }
-    
+
     /**
      * Returns the fields that are part of the form.
      *
@@ -330,7 +330,7 @@ public class DataForm extends PacketExtension {
      * is possible to include any type of object as a value. The actual value to include in the
      * data form is the result of the {@link #encode(Object)} method.
      *
-     * @param fields list of <variable,value> to be added as a new item.
+     * @param fields list of &lt;variable,value&gt; to be added as a new item.
      */
     @SuppressWarnings("unchecked")
     public void addItemFields(Map<String,Object> fields) {

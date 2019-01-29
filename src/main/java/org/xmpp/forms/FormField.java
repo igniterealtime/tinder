@@ -45,7 +45,7 @@ public class FormField {
      * Otherwise, adds an answered value to the question.
      * <p>
      * Nothing will be added if the provided argument is <tt>null</tt>.
-     * 
+     *
      * @param value a default value or an answered value of the question.
      */
     public void addValue(Object value) {
@@ -70,9 +70,9 @@ public class FormField {
      * Adds an available option to the question that the user has in order to answer
      * the question.
      * <p>
-     * If argument 'value' is <tt>null</tt> or an empty String, no option element 
+     * If argument 'value' is <tt>null</tt> or an empty String, no option element
      * will be added.
-     * 
+     *
      * @param label a label that represents the option. Optional argument.
      * @param value the value of the option.
      */
@@ -80,7 +80,7 @@ public class FormField {
     	if (value == null || value.trim().length() == 0) {
     		return;
     	}
-    	
+
         Element option = element.addElement("option");
         option.addAttribute("label", label);
         option.addElement("value").setText(value);
@@ -105,19 +105,19 @@ public class FormField {
      * Sets an indicative of the format for the data to answer. Valid formats are:
      * <p/>
      * <ul>
-     * <li>text-single -> single line or word of text
-     * <li>text-private -> instead of showing the user what they typed, you show ***** to
+     * <li>text-single -&gt; single line or word of text
+     * <li>text-private -&gt; instead of showing the user what they typed, you show ***** to
      * protect it
-     * <li>text-multi -> multiple lines of text entry
-     * <li>list-single -> given a list of choices, pick one
-     * <li>list-multi -> given a list of choices, pick one or more
-     * <li>boolean -> 0 or 1, true or false, yes or no. Default value is 0
-     * <li>fixed -> fixed for putting in text to show sections, or just advertise your web
+     * <li>text-multi -&gt; multiple lines of text entry
+     * <li>list-single -&gt; given a list of choices, pick one
+     * <li>list-multi -&gt; given a list of choices, pick one or more
+     * <li>boolean -&gt; 0 or 1, true or false, yes or no. Default value is 0
+     * <li>fixed -&gt; fixed for putting in text to show sections, or just advertise your web
      * site in the middle of the form
-     * <li>hidden -> is not given to the user at all, but returned with the questionnaire
-     * <li>jid-single -> Jabber ID - choosing a JID from your roster, and entering one based
+     * <li>hidden -&gt; is not given to the user at all, but returned with the questionnaire
+     * <li>jid-single -&gt; Jabber ID - choosing a JID from your roster, and entering one based
      * on the rules for a JID.
-     * <li>jid-multi -> multiple entries for JIDs
+     * <li>jid-multi -&gt; multiple entries for JIDs
      * </ul>
      *
      * @param type an indicative of the format for the data to answer.
@@ -168,9 +168,9 @@ public class FormField {
      * <p/>
      * If the question is of type FIXED then the description should remain empty.
      * <p>
-     * No new description will be set, if the provided argument is <tt>null</tt> or an empty 
+     * No new description will be set, if the provided argument is <tt>null</tt> or an empty
      * String (although an existing description will be removed).
-     * 
+     *
      * @param description provides extra clarification about the question.
      */
     public void setDescription(String description) {
@@ -178,11 +178,11 @@ public class FormField {
         if (element.element("desc") != null) {
             element.remove(element.element("desc"));
         }
-        
+
         if (description == null || description.trim().length() == 0) {
         	return;
         }
-        
+
         element.addElement("desc").setText(description);
     }
 
@@ -232,27 +232,27 @@ public class FormField {
         for (Iterator<Element> it = element.elementIterator("value"); it.hasNext();) {
             return it.next().getTextTrim();
         }
-        
+
         return null;
 	}
-    
+
     /**
      * Returns an indicative of the format for the data to answer. Valid formats are:
      * <p/>
      * <ul>
-     * <li>text-single -> single line or word of text
-     * <li>text-private -> instead of showing the user what they typed, you show ***** to
+     * <li>text-single -&gt; single line or word of text
+     * <li>text-private -&gt; instead of showing the user what they typed, you show ***** to
      * protect it
-     * <li>text-multi -> multiple lines of text entry
-     * <li>list-single -> given a list of choices, pick one
-     * <li>list-multi -> given a list of choices, pick one or more
-     * <li>boolean -> 0 or 1, true or false, yes or no. Default value is 0
-     * <li>fixed -> fixed for putting in text to show sections, or just advertise your web
+     * <li>text-multi -&gt; multiple lines of text entry
+     * <li>list-single -&gt; given a list of choices, pick one
+     * <li>list-multi -&gt; given a list of choices, pick one or more
+     * <li>boolean -&gt; 0 or 1, true or false, yes or no. Default value is 0
+     * <li>fixed -&gt; fixed for putting in text to show sections, or just advertise your web
      * site in the middle of the form
-     * <li>hidden -> is not given to the user at all, but returned with the questionnaire
-     * <li>jid-single -> Jabber ID - choosing a JID from your roster, and entering one based
+     * <li>hidden -&gt; is not given to the user at all, but returned with the questionnaire
+     * <li>jid-single -&gt; Jabber ID - choosing a JID from your roster, and entering one based
      * on the rules for a JID.
-     * <li>jid-multi -> multiple entries for JIDs
+     * <li>jid-multi -&gt; multiple entries for JIDs
      * </ul>
      *
      * @return format for the data to answer.
@@ -290,13 +290,13 @@ public class FormField {
 
     /**
      * Creates and returns a new object that is an exact copy of this FormField object.
-     * 
+     *
      * @return an exact copy of this instance.
      */
     public FormField createCopy() {
         return new FormField(this.element.createCopy());
     }
-    
+
     /**
      * Represents the available option of a given FormField.
      *

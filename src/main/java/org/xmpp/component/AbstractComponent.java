@@ -74,7 +74,7 @@ import org.xmpp.util.XMPPConstants;
  * <p/>
  * Note that instances of this class can be used to implement internal (e.g.
  * Openfire plugins) as well as external components.
- * 
+ *
  * @author Guus der Kinderen, guus.der.kinderen@gmail.com
  */
 // TODO define JCIP annotation
@@ -86,39 +86,39 @@ public abstract class AbstractComponent implements Component {
 
 	/**
 	 * The XMPP 'service discovery items' namespace.
-	 * 
+	 *
 	 * @see <a href="http://xmpp.org/extensions/xep-0030.html">XEP-0030</a>
 	 */
 	public static final String NAMESPACE_DISCO_ITEMS = "http://jabber.org/protocol/disco#items";
 
 	/**
 	 * The XMPP 'service discovery info' namespace.
-	 * 
+	 *
 	 * @see <a href="http://xmpp.org/extensions/xep-0030.html">XEP-0030</a>
 	 */
 	public static final String NAMESPACE_DISCO_INFO = "http://jabber.org/protocol/disco#info";
 
 	/**
 	 * The 'XMPP Ping' namespace
-	 * 
+	 *
 	 * @see <a href="http://xmpp.org/extensions/xep-0199.html">XEP-0199</a>
 	 */
 	public static final String NAMESPACE_XMPP_PING = "urn:xmpp:ping";
 
 	/**
 	 * The 'Last Activity' namespace
-	 * 
+	 *
 	 * @see <a href="http://xmpp.org/extensions/xep-0012.html">XEP-0012</a>
 	 */
 	public static final String NAMESPACE_LAST_ACTIVITY = "jabber:iq:last";
 
 	/**
 	 * The 'Entity Time' namespace
-	 * 
+	 *
 	 * @see <a href="http://xmpp.org/extensions/xep-0202.html">XEP-0202</a>
 	 */
 	public static final String NAMESPACE_ENTITY_TIME = "urn:xmpp:time";
-	
+
 	/**
 	 * The component manager to which this Component has been registered.
 	 */
@@ -128,7 +128,7 @@ public abstract class AbstractComponent implements Component {
 	 * The JID of the component, set after registration with a Component manager.
 	 */
 	protected JID jid = null;
-	
+
 	/**
 	 * The pool of threads that will process the queue.
 	 */
@@ -152,10 +152,10 @@ public abstract class AbstractComponent implements Component {
 	private final boolean enforceIQResult;
 
 	/**
-	 * The timestamp (in milliseconds) when the component was last (re)started. 
+	 * The timestamp (in milliseconds) when the component was last (re)started.
 	 */
 	private long lastStartMillis = System.currentTimeMillis();
-	
+
 	/**
 	 * Instantiates a new AbstractComponent with a maximum thread pool size of
 	 * 17 and a maximum queue size of 1000.
@@ -166,7 +166,7 @@ public abstract class AbstractComponent implements Component {
 
 	/**
 	 * Instantiates a new AbstractComponent.
-	 * 
+	 *
 	 * @param maxThreadpoolSize
 	 *            the maximum number of threads that will process work for this
 	 *            component.
@@ -187,7 +187,7 @@ public abstract class AbstractComponent implements Component {
 
 	/**
 	 * Initialize the abstract component.
-	 * 
+	 *
 	 * @see org.xmpp.component.Component#initialize(org.xmpp.packet.JID,
 	 *      org.xmpp.component.ComponentManager)
 	 */
@@ -195,7 +195,7 @@ public abstract class AbstractComponent implements Component {
 			throws ComponentException {
 		compMan = componentManager;
 		this.jid = jid;
-		
+
 		// start the executor service.
 		startExecutor();
 	}
@@ -205,9 +205,9 @@ public abstract class AbstractComponent implements Component {
 	 */
 	final public void processPacket(final Packet packet) {
 		final Packet copy = packet.createCopy();
-		
+
 		if (executor == null) {
-			
+
 		}
 		try {
 			executor.execute(new PacketProcessor(copy));
@@ -230,7 +230,7 @@ public abstract class AbstractComponent implements Component {
 	/**
 	 * Utility method that will start the processing of a stanza. This method
 	 * will defer processing to another method, determined by the stanza type.
-	 * 
+	 *
 	 * @param packet
 	 *            The stanza that will be processed.
 	 */
@@ -268,7 +268,7 @@ public abstract class AbstractComponent implements Component {
 	 * {@link #handleIQSet()}, {@link #handleIQResult(IQ)},
 	 * {@link #handleIQError(IQ)} {@link #handleDiscoInfo(IQ)} and/or
 	 * {@link #handleDiscoItems(IQ)}
-	 * 
+	 *
 	 * @param iq
 	 *            The IQ stanza that was received by this component.
 	 */
@@ -317,7 +317,7 @@ public abstract class AbstractComponent implements Component {
 								+ "was incorrect: " + iq.toXML()
 								+ ". The response was: " + response.toXML());
 					}
-					log.debug("(serving component '{}') Responding to IQ (packetId {}) with: {}", new Object[] { getName(), iq.getID(), response.toXML() }); 
+					log.debug("(serving component '{}') Responding to IQ (packetId {}) with: {}", new Object[] { getName(), iq.getID(), response.toXML() });
 				}
 				break;
 
@@ -370,7 +370,7 @@ public abstract class AbstractComponent implements Component {
 	 * of the messages (see {@link #servesLocalUsersOnly()}. If the stanza is
 	 * found to be legitimate, it is forwarded to
 	 * {@link #handleMessage(Message)}.
-	 * 
+	 *
 	 * @param message
 	 *            The message stanza to process.
 	 */
@@ -394,7 +394,7 @@ public abstract class AbstractComponent implements Component {
 	 * of the messages (see {@link #servesLocalUsersOnly()}. If the stanza is
 	 * found to be legitimate, it is forwarded to
 	 * {@link #handlePresence(Presence)}.
-	 * 
+	 *
 	 * @param message
 	 *            The presence stanza to process.
 	 */
@@ -443,7 +443,7 @@ public abstract class AbstractComponent implements Component {
 	 * override any of these methods: {@link #handleIQGet()},
 	 * {@link #handleIQSet()}, {@link #handleDiscoInfo(IQ)} and/or
 	 * {@link #handleDiscoItems(IQ)}
-	 * 
+	 *
 	 * @param iq
 	 *            The IQ request stanza.
 	 * @return Response to the request, or null to indicate a
@@ -524,7 +524,7 @@ public abstract class AbstractComponent implements Component {
 	 * Override this method to handle the IQ stanzas of type <tt>result</tt>
 	 * that are received by the component. If you do not override this method,
 	 * the stanzas are ignored.
-	 * 
+	 *
 	 * @param iq
 	 *            The IQ stanza of type <tt>result</tt> that was received by
 	 *            this component.
@@ -538,7 +538,7 @@ public abstract class AbstractComponent implements Component {
 	 * Override this method to handle the IQ stanzas of type <tt>error</tt> that
 	 * are received by the component. If you do not override this method, the
 	 * stanzas are ignored.
-	 * 
+	 *
 	 * @param iq
 	 *            The IQ stanza of type <tt>error</tt> that was received by this
 	 *            component.
@@ -566,7 +566,7 @@ public abstract class AbstractComponent implements Component {
 	 * <p/>
 	 * The default implementation of this method returns <tt>null</tt>. It is
 	 * expected that most child classes will override this method.
-	 * 
+	 *
 	 * @param iq
 	 *            The IQ request stanza of type <tt>get</tt> that was received
 	 *            by this component.
@@ -595,7 +595,7 @@ public abstract class AbstractComponent implements Component {
 	 * <p/>
 	 * The default implementation of this method returns <tt>null</tt>. It is
 	 * expected that most child classes will override this method.
-	 * 
+	 *
 	 * @param iq
 	 *            The IQ request stanza of type <tt>set</tt> that was received
 	 *            by this component.
@@ -613,7 +613,7 @@ public abstract class AbstractComponent implements Component {
 	 * this method returns <tt>null</tt>, which will result into a
 	 * 'service-unavailable' response to be returned as a response to the
 	 * original request.
-	 * 
+	 *
 	 * @param iq
 	 *            The Service Discovery Items
 	 * @return Service Discovery Items response.
@@ -646,7 +646,7 @@ public abstract class AbstractComponent implements Component {
 	 * <p/>
 	 * Note that you should include the 'Service Discovery Items' feature if
 	 * {@link #handleDiscoInfo(IQ)} returns a non-null value.
-	 * 
+	 *
 	 * @param iq
 	 *            The Service Discovery 'info' request stanza.
 	 * @return A response to the received Service Discovery 'info' request.
@@ -680,7 +680,7 @@ public abstract class AbstractComponent implements Component {
 	 * Default handler of Ping requests (XEP-0199). Unless overridden, this
 	 * method returns an empty result stanza, which is the expected response to
 	 * a Ping.
-	 * 
+	 *
 	 * @param iq
 	 *            The Ping request stanza.
 	 * @return The XMPP way of saying 'pong'.
@@ -688,14 +688,14 @@ public abstract class AbstractComponent implements Component {
 	protected IQ handlePing(IQ iq) {
 		return IQ.createResultIQ(iq);
 	}
-	
+
 	/**
 	 * Default handler of Last Activity requests (XEP-0012). Unless overridden,
 	 * this method returns a result stanza that specifies how long this
 	 * component has been running since it was last (re)started.
-	 * 
+	 *
 	 * @param iq
-	 *            The Last Activity request stanza. 
+	 *            The Last Activity request stanza.
 	 * @return Last Activity response that reports back the uptime of this
 	 *         component.
 	 */
@@ -710,7 +710,7 @@ public abstract class AbstractComponent implements Component {
 	/**
 	 * Default handler of Entity Time requests (XEP-0202). Unless overridden,
 	 * this method returns the current local time as specified by the XEP.
-	 * 
+	 *
 	 * @param iq
 	 *            Entity Time request stanza.
 	 * @return Result stanza including the local current time.
@@ -723,24 +723,24 @@ public abstract class AbstractComponent implements Component {
 		final String utc = sdf.format(now);
 		final String tz = sdf_timezone.format(new Date());
 		final String tzo = new StringBuilder(tz).insert(3, ':').toString();
-		
+
 		final IQ result = IQ.createResultIQ(iq);
 		final Element el = result.setChildElement("time", NAMESPACE_ENTITY_TIME);
 		el.addElement("tzo").setText(tzo);
 		el.addElement("utc").setText(utc);
 		return result;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.xmpp.component.Component#getDescription()
 	 */
 	public abstract String getDescription();
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.xmpp.component.Component#getName()
 	 */
 	public abstract String getName();
@@ -749,7 +749,7 @@ public abstract class AbstractComponent implements Component {
 	 * Returns the XMPP domain to which this component is registered to. To full
 	 * address of this component should be a subdomain of the domain returned by
 	 * this method.
-	 * 
+	 *
 	 * @return The XMPP domain name, or <tt>null</tt> if this component has not been initialized yet.
 	 */
 	public String getDomain() {
@@ -758,7 +758,7 @@ public abstract class AbstractComponent implements Component {
 
 	/**
 	 * Returns the XMPP address / Jabber ID (JID) of this component.
-	 * 
+	 *
 	 * @return The JID of this component, or <tt>null</tt> if this component has
 	 *         not been initialized yet.
 	 */
@@ -773,7 +773,7 @@ public abstract class AbstractComponent implements Component {
 	 * <p/>
 	 * The default Category of a component, which is used if this method is not
 	 * overridden, is 'component'.
-	 * 
+	 *
 	 * @return the category of the Service Discovery Identity of this component.
 	 * @see <a *
 	 *      href="http://www.xmpp.org/registrar/disco-categories.html">official
@@ -790,7 +790,7 @@ public abstract class AbstractComponent implements Component {
 	 * <p/>
 	 * The default Category type of a component, which is used if this method is
 	 * not overridden, is 'generic'.
-	 * 
+	 *
 	 * @return the type of the Service Discovery Identity of this component.
 	 * @see <a
 	 *      href="http://www.xmpp.org/registrar/disco-categories.html">official
@@ -806,13 +806,13 @@ public abstract class AbstractComponent implements Component {
 	 * included in Service Discovery responses.
 	 * <p/>
 	 * Note that the features that are returned by this method should also be
-	 * implemented in either {@link #handleIQGet()} and/or
-	 * {@link #handleIQSet()} methods. Also note that the default namespaces for
+	 * implemented in either {@link #handleIQGet(IQ)} and/or
+	 * {@link #handleIQSet(IQ)} methods. Also note that the default namespaces for
 	 * service discovery should not be returned by this method.
 	 * <p/>
 	 * The default implementation of this method returns an empty array.
 	 * Override this method to include new namespaces.
-	 * 
+	 *
 	 * @return Namespaces of all features provided by this Component
 	 */
 	protected String[] discoInfoFeatureNamespaces() {
@@ -823,7 +823,7 @@ public abstract class AbstractComponent implements Component {
 	 * Override this method to handle the Message stanzas that are received by
 	 * the component. If you do not override this method, the stanzas are
 	 * ignored.
-	 * 
+	 *
 	 * @param message
 	 *            The Message stanza that was received by this component.
 	 */
@@ -835,7 +835,7 @@ public abstract class AbstractComponent implements Component {
 	 * Override this method to handle the Presence stanzas that are received by
 	 * the component. If you do not override this method, the stanzas are
 	 * ignored.
-	 * 
+	 *
 	 * @param presence
 	 *            The Presence stanza that was received by this component.
 	 */
@@ -858,7 +858,7 @@ public abstract class AbstractComponent implements Component {
 	 * <p/>
 	 * Note that by default, this method returns <tt>false</tt>. You can
 	 * override this method to change the behavior.
-	 * 
+	 *
 	 * @return <tt>true</tt> if this component serves local users only, <tt>
 	 *         false</tt> otherwise.
 	 */
@@ -916,7 +916,7 @@ public abstract class AbstractComponent implements Component {
 
 	/**
 	 * Helper method to send packets.
-	 * 
+	 *
 	 * @param packet
 	 *            The packet to send.
 	 */
@@ -960,10 +960,10 @@ public abstract class AbstractComponent implements Component {
 
 		// reset the 'last activity' timestamp.
 		lastStartMillis = System.currentTimeMillis();
-		
+
 		// start the executor service.
 		startExecutor();
-		
+
 		postComponentStart();
 	}
 
@@ -974,7 +974,7 @@ public abstract class AbstractComponent implements Component {
 					new LinkedBlockingQueue<Runnable>(maxQueueSize));
 		}
 	}
-	
+
 	/**
 	 * This method gets called as part of the Component 'start' routine. This
 	 * method gets called before the other 'start' methods get executed. This
@@ -1004,7 +1004,7 @@ public abstract class AbstractComponent implements Component {
 	 * <p/>
 	 * An entity is considered a local entity if the domain of its JID either
 	 * equals the XMPP domain, or is a subdomain of the XMPP domain.
-	 * 
+	 *
 	 * @param packet
 	 *            The packet for which to send the sender.
 	 * @return <tt>true</tt> if the stanza was sent by something inside the
@@ -1023,7 +1023,7 @@ public abstract class AbstractComponent implements Component {
 	/**
 	 * A wrapper for the packet to be processed. This enables the packet to be
 	 * fed to another thread.
-	 * 
+	 *
 	 * @author Guus der Kinderen, guus.der.kinderen@gmail.com
 	 */
 	private class PacketProcessor implements Runnable {
@@ -1034,7 +1034,7 @@ public abstract class AbstractComponent implements Component {
 
 		/**
 		 * Creates a new wrapper for a Packet.
-		 * 
+		 *
 		 * @param packet
 		 *            the Packet to be processed.
 		 */
@@ -1044,7 +1044,7 @@ public abstract class AbstractComponent implements Component {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see java.lang.Runnable#run()
 		 */
 		public void run() {

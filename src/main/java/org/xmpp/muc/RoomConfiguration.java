@@ -33,7 +33,7 @@ import java.util.Map.Entry;
  * Code example:
  * <pre>
  * // Set the fields and the values.
- * Map<String,Collection<String>> fields = new HashMap<String,Collection<String>>();
+ * Map&lt;String,Collection&lt;String&gt;&gt; fields = new HashMap&lt;String,Collection&lt;String&gt;&gt;();
  * // Make a non-public room
  * List<String> values = new ArrayList<String>();
  * values.add("0");

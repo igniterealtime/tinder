@@ -35,25 +35,25 @@ import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap.Builder;
  * An XMPP address (JID). A JID is made up of a node (generally a username), a
  * domain, and a resource. The node and resource are optional; domain is
  * required. In simple ABNF form:
- * 
+ *
  * <ul>
  * <tt>jid = [ node "@" ] domain [ "/" resource ]</tt>
  * </ul>
- * 
+ *
  * Some sample JID's:
  * <ul>
  * <li><tt>user@example.com</tt></li>
  * <li><tt>user@example.com/home</tt></li>
  * <li><tt>example.com</tt></li>
  * </ul>
- * 
+ *
  * Each allowable portion of a JID (node, domain, and resource) must not be more
  * than 1023 bytes in length, resulting in a maximum total size (including the
  * '@' and '/' separators) of 3071 bytes.
- * 
+ *
  * JID instances are immutable. Multiple threads can act on data represented by
  * JID objects without concern of the data being changed by other threads.
- * 
+ *
  * @author Matt Tucker
  * @author Guus der Kinderen, guus.der.kinderen@gmail.com
  */
@@ -61,7 +61,7 @@ import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap.Builder;
 public class JID implements Comparable<JID>, Serializable {
 
 	private static final long serialVersionUID = 8135170608402192877L;
-	
+
 	// Stringprep operations are very expensive. Therefore, we cache node, domain and
     // resource values that have already had stringprep applied so that we can check
     // incoming values against the cache.
@@ -82,7 +82,7 @@ public class JID implements Comparable<JID>, Serializable {
      * <tr><td><b>Unescaped Character</b></td><td><b>Encoded Sequence</b></td></tr>
      * <tr><td>&lt;space&gt;</td><td>\20</td></tr>
      * <tr><td>"</td><td>\22</td></tr>
-     * <tr><td>&</td><td>\26</td></tr>
+     * <tr><td>&amp;</td><td>\26</td></tr>
      * <tr><td>'</td><td>\27</td></tr>
      * <tr><td>/</td><td>\2f</td></tr>
      * <tr><td>:</td><td>\3a</td></tr>
@@ -156,7 +156,7 @@ public class JID implements Comparable<JID>, Serializable {
      * <tr><td><b>Unescaped Character</b></td><td><b>Encoded Sequence</b></td></tr>
      * <tr><td>&lt;space&gt;</td><td>\20</td></tr>
      * <tr><td>"</td><td>\22</td></tr>
-     * <tr><td>&</td><td>\26</td></tr>
+     * <tr><td>&amp;</td><td>\26</td></tr>
      * <tr><td>'</td><td>\27</td></tr>
      * <tr><td>/</td><td>\2f</td></tr>
      * <tr><td>:</td><td>\3a</td></tr>
@@ -233,7 +233,7 @@ public class JID implements Comparable<JID>, Serializable {
 	 * input. This method throws an {@link IllegalArgumentException} if the
 	 * provided argument cannot be represented as a valid JID node (e.g. if
 	 * StringPrepping fails).
-	 * 
+	 *
 	 * @param node
 	 *            The raw node value.
 	 * @return A String based JID node representation
@@ -307,7 +307,7 @@ public class JID implements Comparable<JID>, Serializable {
 	 * provided input. This method throws an {@link IllegalArgumentException} if
 	 * the provided argument cannot be represented as a valid JID domain part
 	 * (e.g. if Stringprepping fails).
-	 * 
+	 *
 	 * @param domain
 	 *            The raw domain value.
 	 * @return A String based JID domain part representation
@@ -382,7 +382,7 @@ public class JID implements Comparable<JID>, Serializable {
 	 * input. This method throws an {@link IllegalArgumentException} if the
 	 * provided argument cannot be represented as a valid JID resource (e.g. if
 	 * StringPrepping fails).
-	 * 
+	 *
 	 * @param resource
 	 *            The raw resource value.
 	 * @return A String based JID resource representation
@@ -467,7 +467,7 @@ public class JID implements Comparable<JID>, Serializable {
     /**
 	 * Constructs a JID from it's String representation. This construction
 	 * allows the caller to specify if stringprep should be applied or not.
-	 * 
+	 *
 	 * @param jid
 	 *            a valid JID.
 	 * @param skipStringPrep
@@ -478,11 +478,11 @@ public class JID implements Comparable<JID>, Serializable {
     public JID(String jid, boolean skipStringPrep) {
     	this(getParts(jid), skipStringPrep);
     }
-    
+
     private JID(String[] parts, boolean skipStringPrep) {
     	this(parts[0], parts[1], parts[2], skipStringPrep);
     }
-    
+
     /**
      * Constructs a JID given a node, domain, and resource.
      *
@@ -562,7 +562,7 @@ public class JID implements Comparable<JID>, Serializable {
 		if (slashIndex > -1 && atIndex > slashIndex) {
 			atIndex = -1;
 		}
-		
+
 		if (atIndex == 0) {
 			throw new IllegalArgumentException("Existing at-character at the first character of"
 					+ " the string indicates that an empty node part is provided. This is illegal. Offending value: '" + jid + "'");
@@ -609,7 +609,7 @@ public class JID implements Comparable<JID>, Serializable {
         else {
             resource = jid.substring(slashIndex + 1);
         }
-        
+
         final String[] parts = new String[3];
         parts[0] = node;
         parts[1] = domain;
@@ -674,10 +674,10 @@ public class JID implements Comparable<JID>, Serializable {
 	/**
 	 * Returns the String representation of the full JID, for example:
 	 * <tt>username@domain.com/mobile</tt>.
-	 * 
+	 *
 	 * If no resource has been provided in the constructor of this object, an
 	 * IllegalStateException is thrown.
-	 * 
+	 *
 	 * @return the full JID.
 	 * @throws IllegalStateException
 	 *             If no resource was provided in the constructor used to create
