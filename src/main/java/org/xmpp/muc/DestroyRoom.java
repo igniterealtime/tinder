@@ -27,7 +27,7 @@ import org.xmpp.packet.JID;
  * destroy must be specified in the TO attribute of the IQ packet. The server will send a presence
  * unavailable together with the alternate room and reason for the destruction to all the room
  * occupants before destroying the room.<p>
- * 
+ *
  * When destroying a room it is possible to provide an alternate room which may be replacing the
  * room about to be destroyed. It is also possible to provide a reason for the room destruction.
  */

@@ -75,7 +75,9 @@ import java.text.SimpleDateFormat;
  * @author Brian S O'Neill
  */
 public class FastDateFormat {
-    /** Style pattern */
+    /**
+     * Style pattern
+     */
     public static final Object
         FULL = new Integer(SimpleDateFormat.FULL),
         LONG = new Integer(SimpleDateFormat.LONG),
@@ -102,70 +104,64 @@ public class FastDateFormat {
      * @param pattern {@link java.text.SimpleDateFormat} compatible pattern
      */
     public static FastDateFormat getInstance(String pattern)
-        throws IllegalArgumentException
-    {
+        throws IllegalArgumentException {
         return getInstance(pattern, null, null, null);
     }
 
     /**
-     * @param pattern {@link java.text.SimpleDateFormat} compatible pattern
+     * @param pattern  {@link java.text.SimpleDateFormat} compatible pattern
      * @param timeZone optional time zone, overrides time zone of formatted
-     * date
+     *                 date
      */
     public static FastDateFormat getInstance
-        (String pattern, TimeZone timeZone) throws IllegalArgumentException
-    {
+    (String pattern, TimeZone timeZone) throws IllegalArgumentException {
         return getInstance(pattern, timeZone, null, null);
     }
 
     /**
      * @param pattern {@link java.text.SimpleDateFormat} compatible pattern
-     * @param locale optional locale, overrides system locale
+     * @param locale  optional locale, overrides system locale
      */
     public static FastDateFormat getInstance
-        (String pattern, Locale locale) throws IllegalArgumentException
-    {
+    (String pattern, Locale locale) throws IllegalArgumentException {
         return getInstance(pattern, null, locale, null);
     }
 
     /**
      * @param pattern {@link java.text.SimpleDateFormat} compatible pattern
      * @param symbols optional date format symbols, overrides symbols for
-     * system locale
+     *                system locale
      */
     public static FastDateFormat getInstance
-        (String pattern, DateFormatSymbols symbols)
-        throws IllegalArgumentException
-    {
+    (String pattern, DateFormatSymbols symbols)
+        throws IllegalArgumentException {
         return getInstance(pattern, null, null, symbols);
     }
 
     /**
-     * @param pattern {@link java.text.SimpleDateFormat} compatible pattern
+     * @param pattern  {@link java.text.SimpleDateFormat} compatible pattern
      * @param timeZone optional time zone, overrides time zone of formatted
-     * date
-     * @param locale optional locale, overrides system locale
+     *                 date
+     * @param locale   optional locale, overrides system locale
      */
     public static FastDateFormat getInstance
-        (String pattern, TimeZone timeZone, Locale locale)
-        throws IllegalArgumentException
-    {
+    (String pattern, TimeZone timeZone, Locale locale)
+        throws IllegalArgumentException {
         return getInstance(pattern, timeZone, locale, null);
     }
 
     /**
-     * @param pattern {@link java.text.SimpleDateFormat} compatible pattern
+     * @param pattern  {@link java.text.SimpleDateFormat} compatible pattern
      * @param timeZone optional time zone, overrides time zone of formatted
-     * date
-     * @param locale optional locale, overrides system locale
-     * @param symbols optional date format symbols, overrides symbols for
-     * provided locale
+     *                 date
+     * @param locale   optional locale, overrides system locale
+     * @param symbols  optional date format symbols, overrides symbols for
+     *                 provided locale
      */
     public static synchronized FastDateFormat getInstance
-        (String pattern, TimeZone timeZone, Locale locale,
-         DateFormatSymbols symbols)
-        throws IllegalArgumentException
-    {
+    (String pattern, TimeZone timeZone, Locale locale,
+     DateFormatSymbols symbols)
+        throws IllegalArgumentException {
         Object key = pattern;
 
         if (timeZone != null) {
@@ -178,7 +174,7 @@ public class FastDateFormat {
             key = new Pair(key, symbols);
         }
 
-        FastDateFormat format = (FastDateFormat)cInstanceCache.get(key);
+        FastDateFormat format = (FastDateFormat) cInstanceCache.get(key);
         if (format == null) {
             if (locale == null) {
                 locale = Locale.getDefault();
@@ -193,15 +189,14 @@ public class FastDateFormat {
     }
 
     /**
-     * @param style date style: FULL, LONG, MEDIUM, or SHORT
+     * @param style    date style: FULL, LONG, MEDIUM, or SHORT
      * @param timeZone optional time zone, overrides time zone of formatted
-     * date
-     * @param locale optional locale, overrides system locale
+     *                 date
+     * @param locale   optional locale, overrides system locale
      */
     public static synchronized FastDateFormat getDateInstance
-        (Object style, TimeZone timeZone, Locale locale)
-        throws IllegalArgumentException
-    {
+    (Object style, TimeZone timeZone, Locale locale)
+        throws IllegalArgumentException {
         Object key = style;
 
         if (timeZone != null) {
@@ -211,14 +206,13 @@ public class FastDateFormat {
             key = new Pair(key, locale);
         }
 
-        FastDateFormat format = (FastDateFormat)cDateInstanceCache.get(key);
+        FastDateFormat format = (FastDateFormat) cDateInstanceCache.get(key);
 
         if (format == null) {
             int ds;
             try {
-                ds = ((Integer)style).intValue();
-            }
-            catch (ClassCastException e) {
+                ds = ((Integer) style).intValue();
+            } catch (ClassCastException e) {
                 throw new IllegalArgumentException
                     ("Illegal date style: " + style);
             }
@@ -228,11 +222,10 @@ public class FastDateFormat {
             }
 
             try {
-                String pattern = ((SimpleDateFormat)DateFormat.getDateInstance(ds, locale)).toPattern();
+                String pattern = ((SimpleDateFormat) DateFormat.getDateInstance(ds, locale)).toPattern();
                 format = getInstance(pattern, timeZone, locale);
                 cDateInstanceCache.put(key, format);
-            }
-            catch (ClassCastException e) {
+            } catch (ClassCastException e) {
                 throw new IllegalArgumentException
                     ("No date pattern for locale: " + locale);
             }
@@ -242,15 +235,14 @@ public class FastDateFormat {
     }
 
     /**
-     * @param style time style: FULL, LONG, MEDIUM, or SHORT
+     * @param style    time style: FULL, LONG, MEDIUM, or SHORT
      * @param timeZone optional time zone, overrides time zone of formatted
-     * date
-     * @param locale optional locale, overrides system locale
+     *                 date
+     * @param locale   optional locale, overrides system locale
      */
     public static synchronized FastDateFormat getTimeInstance
-        (Object style, TimeZone timeZone, Locale locale)
-        throws IllegalArgumentException
-    {
+    (Object style, TimeZone timeZone, Locale locale)
+        throws IllegalArgumentException {
         Object key = style;
 
         if (timeZone != null) {
@@ -260,14 +252,13 @@ public class FastDateFormat {
             key = new Pair(key, locale);
         }
 
-        FastDateFormat format = (FastDateFormat)cTimeInstanceCache.get(key);
+        FastDateFormat format = (FastDateFormat) cTimeInstanceCache.get(key);
 
         if (format == null) {
             int ts;
             try {
-                ts = ((Integer)style).intValue();
-            }
-            catch (ClassCastException e) {
+                ts = ((Integer) style).intValue();
+            } catch (ClassCastException e) {
                 throw new IllegalArgumentException
                     ("Illegal time style: " + style);
             }
@@ -277,11 +268,10 @@ public class FastDateFormat {
             }
 
             try {
-                String pattern = ((SimpleDateFormat)DateFormat.getTimeInstance(ts, locale)).toPattern();
+                String pattern = ((SimpleDateFormat) DateFormat.getTimeInstance(ts, locale)).toPattern();
                 format = getInstance(pattern, timeZone, locale);
                 cTimeInstanceCache.put(key, format);
-            }
-            catch (ClassCastException e) {
+            } catch (ClassCastException e) {
                 throw new IllegalArgumentException
                     ("No date pattern for locale: " + locale);
             }
@@ -293,14 +283,13 @@ public class FastDateFormat {
     /**
      * @param dateStyle date style: FULL, LONG, MEDIUM, or SHORT
      * @param timeStyle time style: FULL, LONG, MEDIUM, or SHORT
-     * @param timeZone optional time zone, overrides time zone of formatted
-     * date
-     * @param locale optional locale, overrides system locale
+     * @param timeZone  optional time zone, overrides time zone of formatted
+     *                  date
+     * @param locale    optional locale, overrides system locale
      */
     public static synchronized FastDateFormat getDateTimeInstance
-        (Object dateStyle, Object timeStyle, TimeZone timeZone, Locale locale)
-        throws IllegalArgumentException
-    {
+    (Object dateStyle, Object timeStyle, TimeZone timeZone, Locale locale)
+        throws IllegalArgumentException {
         Object key = new Pair(dateStyle, timeStyle);
 
         if (timeZone != null) {
@@ -311,23 +300,21 @@ public class FastDateFormat {
         }
 
         FastDateFormat format =
-            (FastDateFormat)cDateTimeInstanceCache.get(key);
+            (FastDateFormat) cDateTimeInstanceCache.get(key);
 
         if (format == null) {
             int ds;
             try {
-                ds = ((Integer)dateStyle).intValue();
-            }
-            catch (ClassCastException e) {
+                ds = ((Integer) dateStyle).intValue();
+            } catch (ClassCastException e) {
                 throw new IllegalArgumentException
                     ("Illegal date style: " + dateStyle);
             }
 
             int ts;
             try {
-                ts = ((Integer)timeStyle).intValue();
-            }
-            catch (ClassCastException e) {
+                ts = ((Integer) timeStyle).intValue();
+            } catch (ClassCastException e) {
                 throw new IllegalArgumentException
                     ("Illegal time style: " + timeStyle);
             }
@@ -337,11 +324,10 @@ public class FastDateFormat {
             }
 
             try {
-                String pattern = ((SimpleDateFormat)DateFormat.getDateTimeInstance(ds, ts, locale)).toPattern();
+                String pattern = ((SimpleDateFormat) DateFormat.getDateTimeInstance(ds, ts, locale)).toPattern();
                 format = getInstance(pattern, timeZone, locale);
                 cDateTimeInstanceCache.put(key, format);
-            }
-            catch (ClassCastException e) {
+            } catch (ClassCastException e) {
                 throw new IllegalArgumentException
                     ("No date time pattern for locale: " + locale);
             }
@@ -355,7 +341,7 @@ public class FastDateFormat {
                                                   int style,
                                                   Locale locale) {
         Object key = new TimeZoneDisplayKey(tz, daylight, style, locale);
-        String value = (String)cTimeZoneDisplayCache.get(key);
+        String value = (String) cTimeZoneDisplayCache.get(key);
         if (value == null) {
             // This is a very slow call, so cache the results.
             value = tz.getDisplayName(daylight, style, locale);
@@ -388,7 +374,7 @@ public class FastDateFormat {
         int length = pattern.length();
         int[] indexRef = new int[1];
 
-        for (int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             indexRef[0] = i;
             String token = parseToken(pattern, indexRef);
             i = indexRef[0];
@@ -402,98 +388,92 @@ public class FastDateFormat {
             char c = token.charAt(0);
 
             switch (c) {
-            case 'G': // era designator (text)
-                rule = new TextField(Calendar.ERA, ERAs);
-                break;
-            case 'y': // year (number)
-                if (tokenLen >= 4) {
-                    rule = new UnpaddedNumberField(Calendar.YEAR);
-                }
-                else {
-                    rule = new TwoDigitYearField();
-                }
-                break;
-            case 'M': // month in year (text and number)
-                if (tokenLen >= 4) {
-                    rule = new TextField(Calendar.MONTH, months);
-                }
-                else if (tokenLen == 3) {
-                    rule = new TextField(Calendar.MONTH, shortMonths);
-                }
-                else if (tokenLen == 2) {
-                    rule = new TwoDigitMonthField();
-                }
-                else {
-                    rule = new UnpaddedMonthField();
-                }
-                break;
-            case 'd': // day in month (number)
-                rule = selectNumberRule(Calendar.DAY_OF_MONTH, tokenLen);
-                break;
-            case 'h': // hour in am/pm (number, 1..12)
-                rule = new TwelveHourField
-                    (selectNumberRule(Calendar.HOUR, tokenLen));
-                break;
-            case 'H': // hour in day (number, 0..23)
-                rule = selectNumberRule(Calendar.HOUR_OF_DAY, tokenLen);
-                break;
-            case 'm': // minute in hour (number)
-                rule = selectNumberRule(Calendar.MINUTE, tokenLen);
-                break;
-            case 's': // second in minute (number)
-                rule = selectNumberRule(Calendar.SECOND, tokenLen);
-                break;
-            case 'S': // millisecond (number)
-                rule = selectNumberRule(Calendar.MILLISECOND, tokenLen);
-                break;
-            case 'E': // day in week (text)
-                rule = new TextField
-                    (Calendar.DAY_OF_WEEK,
-                     tokenLen < 4 ? shortWeekdays : weekdays);
-                break;
-            case 'D': // day in year (number)
-                rule = selectNumberRule(Calendar.DAY_OF_YEAR, tokenLen);
-                break;
-            case 'F': // day of week in month (number)
-                rule = selectNumberRule
-                    (Calendar.DAY_OF_WEEK_IN_MONTH, tokenLen);
-                break;
-            case 'w': // week in year (number)
-                rule = selectNumberRule(Calendar.WEEK_OF_YEAR, tokenLen);
-                break;
-            case 'W': // week in month (number)
-                rule = selectNumberRule(Calendar.WEEK_OF_MONTH, tokenLen);
-                break;
-            case 'a': // am/pm marker (text)
-                rule = new TextField(Calendar.AM_PM, AmPmStrings);
-                break;
-            case 'k': // hour in day (1..24)
-                rule = new TwentyFourHourField
-                    (selectNumberRule(Calendar.HOUR_OF_DAY, tokenLen));
-                break;
-            case 'K': // hour in am/pm (0..11)
-                rule = selectNumberRule(Calendar.HOUR, tokenLen);
-                break;
-            case 'z': // time zone (text)
-                if (tokenLen >= 4) {
-                    rule = new TimeZoneRule(timeZone, locale, TimeZone.LONG);
-                }
-                else {
-                    rule = new TimeZoneRule(timeZone, locale, TimeZone.SHORT);
-                }
-                break;
-            case '\'': // literal text
-                String sub = token.substring(1);
-                if (sub.length() == 1) {
-                    rule = new CharacterLiteral(sub.charAt(0));
-                }
-                else {
-                    rule = new StringLiteral(new String(sub));
-                }
-                break;
-            default:
-                throw new IllegalArgumentException
-                    ("Illegal pattern component: " + token);
+                case 'G': // era designator (text)
+                    rule = new TextField(Calendar.ERA, ERAs);
+                    break;
+                case 'y': // year (number)
+                    if (tokenLen >= 4) {
+                        rule = new UnpaddedNumberField(Calendar.YEAR);
+                    } else {
+                        rule = new TwoDigitYearField();
+                    }
+                    break;
+                case 'M': // month in year (text and number)
+                    if (tokenLen >= 4) {
+                        rule = new TextField(Calendar.MONTH, months);
+                    } else if (tokenLen == 3) {
+                        rule = new TextField(Calendar.MONTH, shortMonths);
+                    } else if (tokenLen == 2) {
+                        rule = new TwoDigitMonthField();
+                    } else {
+                        rule = new UnpaddedMonthField();
+                    }
+                    break;
+                case 'd': // day in month (number)
+                    rule = selectNumberRule(Calendar.DAY_OF_MONTH, tokenLen);
+                    break;
+                case 'h': // hour in am/pm (number, 1..12)
+                    rule = new TwelveHourField
+                        (selectNumberRule(Calendar.HOUR, tokenLen));
+                    break;
+                case 'H': // hour in day (number, 0..23)
+                    rule = selectNumberRule(Calendar.HOUR_OF_DAY, tokenLen);
+                    break;
+                case 'm': // minute in hour (number)
+                    rule = selectNumberRule(Calendar.MINUTE, tokenLen);
+                    break;
+                case 's': // second in minute (number)
+                    rule = selectNumberRule(Calendar.SECOND, tokenLen);
+                    break;
+                case 'S': // millisecond (number)
+                    rule = selectNumberRule(Calendar.MILLISECOND, tokenLen);
+                    break;
+                case 'E': // day in week (text)
+                    rule = new TextField
+                        (Calendar.DAY_OF_WEEK,
+                            tokenLen < 4 ? shortWeekdays : weekdays);
+                    break;
+                case 'D': // day in year (number)
+                    rule = selectNumberRule(Calendar.DAY_OF_YEAR, tokenLen);
+                    break;
+                case 'F': // day of week in month (number)
+                    rule = selectNumberRule
+                        (Calendar.DAY_OF_WEEK_IN_MONTH, tokenLen);
+                    break;
+                case 'w': // week in year (number)
+                    rule = selectNumberRule(Calendar.WEEK_OF_YEAR, tokenLen);
+                    break;
+                case 'W': // week in month (number)
+                    rule = selectNumberRule(Calendar.WEEK_OF_MONTH, tokenLen);
+                    break;
+                case 'a': // am/pm marker (text)
+                    rule = new TextField(Calendar.AM_PM, AmPmStrings);
+                    break;
+                case 'k': // hour in day (1..24)
+                    rule = new TwentyFourHourField
+                        (selectNumberRule(Calendar.HOUR_OF_DAY, tokenLen));
+                    break;
+                case 'K': // hour in am/pm (0..11)
+                    rule = selectNumberRule(Calendar.HOUR, tokenLen);
+                    break;
+                case 'z': // time zone (text)
+                    if (tokenLen >= 4) {
+                        rule = new TimeZoneRule(timeZone, locale, TimeZone.LONG);
+                    } else {
+                        rule = new TimeZoneRule(timeZone, locale, TimeZone.SHORT);
+                    }
+                    break;
+                case '\'': // literal text
+                    String sub = token.substring(1);
+                    if (sub.length() == 1) {
+                        rule = new CharacterLiteral(sub.charAt(0));
+                    } else {
+                        rule = new StringLiteral(new String(sub));
+                    }
+                    break;
+                default:
+                    throw new IllegalArgumentException
+                        ("Illegal pattern component: " + token);
             }
 
             rules.add(rule);
@@ -519,13 +499,11 @@ public class FastDateFormat {
                 if (peek == c) {
                     buf.append(c);
                     i++;
-                }
-                else {
+                } else {
                     break;
                 }
             }
-        }
-        else {
+        } else {
             // This will identify token as text.
             buf.append('\'');
 
@@ -539,17 +517,14 @@ public class FastDateFormat {
                         // '' is treated as escaped '
                         i++;
                         buf.append(c);
-                    }
-                    else {
+                    } else {
                         inLiteral = !inLiteral;
                     }
-                }
-                else if (!inLiteral &&
-                         (c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z')) {
+                } else if (!inLiteral &&
+                    (c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z')) {
                     i--;
                     break;
-                }
-                else {
+                } else {
                     buf.append(c);
                 }
             }
@@ -561,12 +536,12 @@ public class FastDateFormat {
 
     private static NumberRule selectNumberRule(int field, int padding) {
         switch (padding) {
-        case 1:
-            return new UnpaddedNumberField(field);
-        case 2:
-            return new TwoDigitNumberField(field);
-        default:
-            return new PaddedNumberField(field, padding);
+            case 1:
+                return new UnpaddedNumberField(field);
+            case 2:
+                return new TwoDigitNumberField(field);
+            default:
+                return new PaddedNumberField(field, padding);
         }
     }
 
@@ -588,61 +563,56 @@ public class FastDateFormat {
     }
 
     /**
-     * @param pattern {@link java.text.SimpleDateFormat} compatible pattern
+     * @param pattern  {@link java.text.SimpleDateFormat} compatible pattern
      * @param timeZone optional time zone, overrides time zone of formatted
-     * date
+     *                 date
      */
     private FastDateFormat(String pattern, TimeZone timeZone)
-        throws IllegalArgumentException
-    {
+        throws IllegalArgumentException {
         this(pattern, timeZone, null, null);
     }
 
     /**
      * @param pattern {@link java.text.SimpleDateFormat} compatible pattern
-     * @param locale optional locale, overrides system locale
+     * @param locale  optional locale, overrides system locale
      */
     private FastDateFormat(String pattern, Locale locale)
-        throws IllegalArgumentException
-    {
+        throws IllegalArgumentException {
         this(pattern, null, locale, null);
     }
 
     /**
      * @param pattern {@link java.text.SimpleDateFormat} compatible pattern
      * @param symbols optional date format symbols, overrides symbols for
-     * system locale
+     *                system locale
      */
     private FastDateFormat(String pattern, DateFormatSymbols symbols)
-        throws IllegalArgumentException
-    {
+        throws IllegalArgumentException {
         this(pattern, null, null, symbols);
     }
 
     /**
-     * @param pattern {@link java.text.SimpleDateFormat} compatible pattern
+     * @param pattern  {@link java.text.SimpleDateFormat} compatible pattern
      * @param timeZone optional time zone, overrides time zone of formatted
-     * date
-     * @param locale optional locale, overrides system locale
+     *                 date
+     * @param locale   optional locale, overrides system locale
      */
     private FastDateFormat(String pattern, TimeZone timeZone, Locale locale)
-        throws IllegalArgumentException
-    {
+        throws IllegalArgumentException {
         this(pattern, timeZone, locale, null);
     }
 
     /**
-     * @param pattern {@link java.text.SimpleDateFormat} compatible pattern
+     * @param pattern  {@link java.text.SimpleDateFormat} compatible pattern
      * @param timeZone optional time zone, overrides time zone of formatted
-     * date
-     * @param locale optional locale, overrides system locale
-     * @param symbols optional date format symbols, overrides symbols for
-     * provided locale
+     *                 date
+     * @param locale   optional locale, overrides system locale
+     * @param symbols  optional date format symbols, overrides symbols for
+     *                 provided locale
      */
     private FastDateFormat(String pattern, TimeZone timeZone, Locale locale,
                            DateFormatSymbols symbols)
-        throws IllegalArgumentException
-    {
+        throws IllegalArgumentException {
         if (locale == null) {
             locale = Locale.getDefault();
         }
@@ -656,10 +626,10 @@ public class FastDateFormat {
         }
 
         List rulesList = parse(pattern, timeZone, locale, symbols);
-        mRules = (Rule[])rulesList.toArray(new Rule[rulesList.size()]);
+        mRules = (Rule[]) rulesList.toArray(new Rule[rulesList.size()]);
 
         int len = 0;
-        for (int i=mRules.length; --i >= 0; ) {
+        for (int i = mRules.length; --i >= 0; ) {
             len += mRules[i].estimateLength();
         }
 
@@ -691,7 +661,7 @@ public class FastDateFormat {
 
     public StringBuffer format(Calendar calendar, StringBuffer buf) {
         if (mTimeZone != null) {
-            calendar = (Calendar)calendar.clone();
+            calendar = (Calendar) calendar.clone();
             calendar.setTimeZone(mTimeZone);
         }
         return applyRules(calendar, buf);
@@ -700,7 +670,7 @@ public class FastDateFormat {
     private StringBuffer applyRules(Calendar calendar, StringBuffer buf) {
         Rule[] rules = mRules;
         int len = mRules.length;
-        for (int i=0; i<len; i++) {
+        for (int i = 0; i < len; i++) {
             rules[i].appendTo(buf, calendar);
         }
         return buf;
@@ -784,7 +754,7 @@ public class FastDateFormat {
 
         public int estimateLength() {
             int max = 0;
-            for (int i=mValues.length; --i >= 0; ) {
+            for (int i = mValues.length; --i >= 0; ) {
                 int len = mValues[i].length();
                 if (len > max) {
                     max = len;
@@ -815,13 +785,11 @@ public class FastDateFormat {
 
         public final void appendTo(StringBuffer buffer, int value) {
             if (value < 10) {
-                buffer.append((char)(value + '0'));
-            }
-            else if (value < 100) {
-                buffer.append((char)(value / 10 + '0'));
-                buffer.append((char)(value % 10 + '0'));
-            }
-            else {
+                buffer.append((char) (value + '0'));
+            } else if (value < 100) {
+                buffer.append((char) (value / 10 + '0'));
+                buffer.append((char) (value % 10 + '0'));
+            } else {
                 buffer.append(Integer.toString(value));
             }
         }
@@ -841,11 +809,10 @@ public class FastDateFormat {
 
         public final void appendTo(StringBuffer buffer, int value) {
             if (value < 10) {
-                buffer.append((char)(value + '0'));
-            }
-            else {
-                buffer.append((char)(value / 10 + '0'));
-                buffer.append((char)(value % 10 + '0'));
+                buffer.append((char) (value + '0'));
+            } else {
+                buffer.append((char) (value / 10 + '0'));
+                buffer.append((char) (value % 10 + '0'));
             }
         }
     }
@@ -876,16 +843,14 @@ public class FastDateFormat {
                 for (int i = mSize; --i >= 2; ) {
                     buffer.append('0');
                 }
-                buffer.append((char)(value / 10 + '0'));
-                buffer.append((char)(value % 10 + '0'));
-            }
-            else {
+                buffer.append((char) (value / 10 + '0'));
+                buffer.append((char) (value % 10 + '0'));
+            } else {
                 int digits;
                 if (value < 1000) {
                     digits = 3;
-                }
-                else {
-                    digits = (int)(Math.log(value) / LOG_10) + 1;
+                } else {
+                    digits = (int) (Math.log(value) / LOG_10) + 1;
                 }
                 for (int i = mSize; --i >= digits; ) {
                     buffer.append('0');
@@ -912,10 +877,9 @@ public class FastDateFormat {
 
         public final void appendTo(StringBuffer buffer, int value) {
             if (value < 100) {
-                buffer.append((char)(value / 10 + '0'));
-                buffer.append((char)(value % 10 + '0'));
-            }
-            else {
+                buffer.append((char) (value / 10 + '0'));
+                buffer.append((char) (value % 10 + '0'));
+            } else {
                 buffer.append(Integer.toString(value));
             }
         }
@@ -934,8 +898,8 @@ public class FastDateFormat {
         }
 
         public final void appendTo(StringBuffer buffer, int value) {
-            buffer.append((char)(value / 10 + '0'));
-            buffer.append((char)(value % 10 + '0'));
+            buffer.append((char) (value / 10 + '0'));
+            buffer.append((char) (value % 10 + '0'));
         }
     }
 
@@ -952,8 +916,8 @@ public class FastDateFormat {
         }
 
         public final void appendTo(StringBuffer buffer, int value) {
-            buffer.append((char)(value / 10 + '0'));
-            buffer.append((char)(value % 10 + '0'));
+            buffer.append((char) (value / 10 + '0'));
+            buffer.append((char) (value % 10 + '0'));
         }
     }
 
@@ -1020,8 +984,7 @@ public class FastDateFormat {
             if (timeZone != null) {
                 mStandard = getTimeZoneDisplay(timeZone, false, style, locale);
                 mDaylight = getTimeZoneDisplay(timeZone, true, style, locale);
-            }
-            else {
+            } else {
                 mStandard = null;
                 mDaylight = null;
             }
@@ -1030,11 +993,9 @@ public class FastDateFormat {
         public int estimateLength() {
             if (mTimeZone != null) {
                 return Math.max(mStandard.length(), mDaylight.length());
-            }
-            else if (mStyle == TimeZone.SHORT) {
+            } else if (mStyle == TimeZone.SHORT) {
                 return 4;
-            }
-            else {
+            } else {
                 return 40;
             }
         }
@@ -1046,22 +1007,19 @@ public class FastDateFormat {
                     calendar.get(Calendar.DST_OFFSET) != 0) {
 
                     buffer.append(mDaylight);
-                }
-                else {
+                } else {
                     buffer.append(mStandard);
                 }
-            }
-            else {
+            } else {
                 timeZone = calendar.getTimeZone();
                 if (timeZone.useDaylightTime() &&
                     calendar.get(Calendar.DST_OFFSET) != 0) {
 
                     buffer.append(getTimeZoneDisplay
-                                  (timeZone, true, mStyle, mLocale));
-                }
-                else {
+                        (timeZone, true, mStyle, mLocale));
+                } else {
                     buffer.append(getTimeZoneDisplay
-                                  (timeZone, false, mStyle, mLocale));
+                        (timeZone, false, mStyle, mLocale));
                 }
             }
         }
@@ -1091,11 +1049,11 @@ public class FastDateFormat {
                 return true;
             }
             if (obj instanceof TimeZoneDisplayKey) {
-                TimeZoneDisplayKey other = (TimeZoneDisplayKey)obj;
+                TimeZoneDisplayKey other = (TimeZoneDisplayKey) obj;
                 return
                     mTimeZone.equals(other.mTimeZone) &&
-                    mStyle == other.mStyle &&
-                    mLocale.equals(other.mLocale);
+                        mStyle == other.mStyle &&
+                        mLocale.equals(other.mLocale);
             }
             return false;
         }
@@ -1115,26 +1073,26 @@ public class FastDateFormat {
                 return 0;
             }
 
-            Pair other = (Pair)obj;
+            Pair other = (Pair) obj;
 
             Object a = mObj1;
             Object b = other.mObj1;
 
-            firstTest: {
+            firstTest:
+            {
                 if (a == null) {
                     if (b != null) {
                         return 1;
                     }
                     // Both a and b are null.
                     break firstTest;
-                }
-                else {
+                } else {
                     if (b == null) {
                         return -1;
                     }
                 }
 
-                int result = ((Comparable)a).compareTo(b);
+                int result = ((Comparable) a).compareTo(b);
 
                 if (result != 0) {
                     return result;
@@ -1150,14 +1108,13 @@ public class FastDateFormat {
                 }
                 // Both a and b are null.
                 return 0;
-            }
-            else {
+            } else {
                 if (b == null) {
                     return -1;
                 }
             }
 
-            return ((Comparable)a).compareTo(b);
+            return ((Comparable) a).compareTo(b);
         }
 
         public boolean equals(Object obj) {
@@ -1169,19 +1126,19 @@ public class FastDateFormat {
                 return false;
             }
 
-            Pair key = (Pair)obj;
+            Pair key = (Pair) obj;
 
             return
                 (mObj1 == null ?
-                 key.mObj1 == null : mObj1.equals(key.mObj1)) &&
-                (mObj2 == null ?
-                 key.mObj2 == null : mObj2.equals(key.mObj2));
+                    key.mObj1 == null : mObj1.equals(key.mObj1)) &&
+                    (mObj2 == null ?
+                        key.mObj2 == null : mObj2.equals(key.mObj2));
         }
 
         public int hashCode() {
             return
                 (mObj1 == null ? 0 : mObj1.hashCode()) +
-                (mObj2 == null ? 0 : mObj2.hashCode());
+                    (mObj2 == null ? 0 : mObj2.hashCode());
         }
 
         public String toString() {

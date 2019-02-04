@@ -48,7 +48,7 @@ public class Message extends Packet {
         this.element = docFactory.createDocument().addElement("message");
     }
 
-     /**
+    /**
      * Constructs a new Message using an existing Element. This is useful
      * for parsing incoming message Elements into Message objects.
      *
@@ -96,8 +96,7 @@ public class Message extends Packet {
         String type = element.attributeValue("type");
         if (type != null) {
             return Type.valueOf(type);
-        }
-        else {
+        } else {
             return Type.normal;
         }
     }
@@ -109,7 +108,7 @@ public class Message extends Packet {
      * @see Type
      */
     public void setType(Type type) {
-        element.addAttribute("type", type==null?null:type.toString());
+        element.addAttribute("type", type == null ? null : type.toString());
     }
 
     /**
@@ -227,7 +226,7 @@ public class Message extends Packet {
      */
     @SuppressWarnings("unchecked")
     public Element getChildElement(String name, String namespace) {
-        for (Iterator<Element> i=element.elementIterator(name); i.hasNext(); ) {
+        for (Iterator<Element> i = element.elementIterator(name); i.hasNext(); ) {
             Element element = i.next();
             if (element.getNamespaceURI().equals(namespace)) {
                 return element;

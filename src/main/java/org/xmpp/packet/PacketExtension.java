@@ -35,13 +35,13 @@ import org.dom4j.QName;
  * with a given qualified name (ie. element name and namespace). This information will be used by
  * {@link Packet#getExtension(String, String)} for locating the corresponding PacketExtension
  * subclass to return for the requested qualified name. Each PacketExtension must have a public
- * constructor that takes an Element instance as an argument. 
+ * constructor that takes an Element instance as an argument.
  *
  * @author Gaston Dombiak
  */
 @NotThreadSafe
 public class PacketExtension {
-    
+
     protected static final DocumentFactory docFactory = DocumentFactory.getInstance();
     /**
      * Subclasses of PacketExtension should register the element name and namespace that the

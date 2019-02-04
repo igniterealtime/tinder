@@ -58,7 +58,7 @@ public class RoomConfiguration extends IQ {
      *
      * @param fieldValues the list of fields associated with the list of values.
      */
-    public RoomConfiguration(Map<String,Collection<String>> fieldValues) {
+    public RoomConfiguration(Map<String, Collection<String>> fieldValues) {
         super();
         setType(Type.set);
         Element query = setChildElement("query", "http://jabber.org/protocol/muc#owner");

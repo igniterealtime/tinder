@@ -48,8 +48,8 @@ import java.util.List;
 @NotThreadSafe
 public abstract class Packet {
 
-	private static final Logger Log = LoggerFactory.getLogger(Packet.class);
-	
+    private static final Logger Log = LoggerFactory.getLogger(Packet.class);
+
     protected static final DocumentFactory docFactory = DocumentFactory.getInstance();
 
     protected Element element;
@@ -75,7 +75,7 @@ public abstract class Packet {
      * validated. When validation can be skipped then stringprep operations will not be performed
      * on the JIDs to verify that addresses are well-formed. However, when validation cannot be
      * skipped then <tt>only</tt> the TO address will be verified. The FROM address is assigned by
-     * the server so there is no need to verify it. 
+     * the server so there is no need to verify it.
      *
      * @param element the XML Element that contains the packet contents.
      * @param skipValidation true if stringprep should not be applied to the TO address.
@@ -88,8 +88,7 @@ public abstract class Packet {
             if (to.length() == 0) {
                 // Remove empty TO values
                 element.addAttribute("to", null);
-            }
-            else {
+            } else {
                 String[] parts = JID.getParts(to);
                 toJID = new JID(parts[0], parts[1], parts[2], skipValidation);
                 element.addAttribute("to", toJID.toString());
@@ -100,8 +99,7 @@ public abstract class Packet {
             if (from.length() == 0) {
                 // Remove empty FROM values
                 element.addAttribute("from", null);
-            }
-            else {
+            } else {
                 String[] parts = JID.getParts(from);
                 fromJID = new JID(parts[0], parts[1], parts[2], true);
                 element.addAttribute("from", fromJID.toString());
@@ -149,12 +147,10 @@ public abstract class Packet {
         String to = element.attributeValue("to");
         if (to == null || to.length() == 0) {
             return null;
-        }
-        else {
+        } else {
             if (toJID != null && to.equals(toJID.toString())) {
                 return toJID;
-            }
-            else {
+            } else {
                 // Return a new JID that bypasses stringprep profile checking.
                 // This improves speed and is safe as long as the user doesn't
                 // directly manipulate the attributes of the underlying Element
@@ -174,11 +170,11 @@ public abstract class Packet {
      */
     public void setTo(String to) {
         // Apply stringprep profiles to value.
-        if (to !=  null) {
+        if (to != null) {
             toJID = new JID(to);
             to = toJID.toString();
         } else {
-        	toJID = null;
+            toJID = null;
         }
         element.addAttribute("to", to);
     }
@@ -193,8 +189,7 @@ public abstract class Packet {
         toJID = to;
         if (to == null) {
             element.addAttribute("to", null);
-        }
-        else {
+        } else {
             element.addAttribute("to", to.toString());
         }
     }
@@ -211,12 +206,10 @@ public abstract class Packet {
         String from = element.attributeValue("from");
         if (from == null || from.length() == 0) {
             return null;
-        }
-        else {
+        } else {
             if (fromJID != null && from.equals(fromJID.toString())) {
                 return fromJID;
-            }
-            else {
+            } else {
                 // Return a new JID that bypasses stringprep profile checking.
                 // This improves speed and is safe as long as the user doesn't
                 // directly manipulate the attributes of the underlying Element
@@ -240,7 +233,7 @@ public abstract class Packet {
             fromJID = new JID(from);
             from = fromJID.toString();
         } else {
-        	fromJID = null;
+            fromJID = null;
         }
         element.addAttribute("from", from);
     }
@@ -255,8 +248,7 @@ public abstract class Packet {
         fromJID = from;
         if (from == null) {
             element.addAttribute("from", null);
-        }
-        else {
+        } else {
             element.addAttribute("from", from.toString());
         }
     }
@@ -294,9 +286,8 @@ public abstract class Packet {
                 try {
                     Constructor<? extends PacketExtension> constructor = extensionClass.getDeclaredConstructor(Element.class);
                     return constructor.newInstance(extensions.get(0));
-                }
-                catch (Exception e) {
-                    Log.warn("Packet extension (name "+name+", namespace "+namespace+") cannot be found.", e);
+                } catch (Exception e) {
+                    Log.warn("Packet extension (name " + name + ", namespace " + namespace + ") cannot be found.", e);
                 }
             }
             // Otherwise, use a normal PacketExtension.
@@ -321,7 +312,7 @@ public abstract class Packet {
      * @return true if a child element was removed.
      */
     @SuppressWarnings("unchecked")
-	public boolean deleteExtension(String name, String namespace) {
+    public boolean deleteExtension(String name, String namespace) {
         List<Element> extensions = element.elements(QName.get(name, namespace));
         if (!extensions.isEmpty()) {
             element.remove(extensions.get(0));
@@ -373,7 +364,7 @@ public abstract class Packet {
      * @param condition the error condition.
      */
     public void setError(PacketError.Condition condition) {
-       setError(new PacketError(condition));
+        setError(new PacketError(condition));
     }
 
     /**
@@ -408,8 +399,7 @@ public abstract class Packet {
         XMLWriter writer = new XMLWriter(out, OutputFormat.createPrettyPrint());
         try {
             writer.write(element);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             // Ignore.
         }
         return out.toString();

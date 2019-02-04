@@ -128,7 +128,7 @@ public class Roster extends IQ {
      * @param subscription the subscription type.
      * @return the newly created item.
      */
-    public Item addItem(JID jid, Subscription subscription)  {
+    public Item addItem(JID jid, Subscription subscription) {
         if (getType() != IQ.Type.result && getType() != IQ.Type.set) {
             throw new IllegalStateException("IQ type must be 'result' or 'set'");
         }
@@ -156,8 +156,7 @@ public class Roster extends IQ {
      */
     @SuppressWarnings("unchecked")
     public Item addItem(JID jid, String name, Ask ask, Subscription subscription,
-                        Collection<String> groups)
-    {
+                        Collection<String> groups) {
         if (jid == null) {
             throw new NullPointerException("JID cannot be null");
         }
@@ -169,7 +168,7 @@ public class Roster extends IQ {
             query = element.addElement("query", "jabber:iq:roster");
         }
         Element item = null;
-        for (Iterator<Element> i=query.elementIterator("item"); i.hasNext(); ) {
+        for (Iterator<Element> i = query.elementIterator("item"); i.hasNext(); ) {
             Element el = i.next();
             if (el.attributeValue("jid").equals(jid.toString())) {
                 item = el;
@@ -185,7 +184,7 @@ public class Roster extends IQ {
         }
         item.addAttribute("subscription", subscription.toString());
         // Erase existing groups in case the item previously existed.
-        for (Iterator<Element> i=item.elementIterator("group"); i.hasNext(); ) {
+        for (Iterator<Element> i = item.elementIterator("group"); i.hasNext(); ) {
             item.remove(i.next());
         }
         // Add in groups.
@@ -206,7 +205,7 @@ public class Roster extends IQ {
     public void removeItem(JID jid) {
         Element query = element.element(new QName("query", Namespace.get("jabber:iq:roster")));
         if (query != null) {
-            for (Iterator<Element> i=query.elementIterator("item"); i.hasNext(); ) {
+            for (Iterator<Element> i = query.elementIterator("item"); i.hasNext(); ) {
                 Element item = i.next();
                 if (item.attributeValue("jid").equals(jid.toString())) {
                     query.remove(item);
@@ -226,20 +225,20 @@ public class Roster extends IQ {
         Collection<Item> items = new ArrayList<Item>();
         Element query = element.element(new QName("query", Namespace.get("jabber:iq:roster")));
         if (query != null) {
-            for (Iterator<Element> i=query.elementIterator("item"); i.hasNext(); ) {
+            for (Iterator<Element> i = query.elementIterator("item"); i.hasNext(); ) {
                 Element item = i.next();
                 String jid = item.attributeValue("jid");
                 String name = item.attributeValue("name");
                 String ask = item.attributeValue("ask");
                 String subscription = item.attributeValue("subscription");
                 Collection<String> groups = new ArrayList<String>();
-                for (Iterator<Element> j=item.elementIterator("group"); j.hasNext(); ) {
+                for (Iterator<Element> j = item.elementIterator("group"); j.hasNext(); ) {
                     Element group = j.next();
                     groups.add(group.getText().trim());
                 }
                 Ask askStatus = ask == null ? null : Ask.valueOf(ask);
                 Subscription subStatus = subscription == null ?
-                        null : Subscription.valueOf(subscription);
+                    null : Subscription.valueOf(subscription);
                 items.add(new Item(new JID(jid), name, askStatus, subStatus, groups));
             }
         }
@@ -348,8 +347,7 @@ public class Roster extends IQ {
             buf.append(" subscrption=\"").append(subscription).append("\"");
             if (groups == null || groups.isEmpty()) {
                 buf.append("/>");
-            }
-            else {
+            } else {
                 buf.append(">\n");
                 for (String group : groups) {
                     buf.append("  <group>").append(group).append("</group>\n");

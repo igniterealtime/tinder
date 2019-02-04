@@ -45,13 +45,13 @@ public class FormField {
      * Otherwise, adds an answered value to the question.
      * <p>
      * Nothing will be added if the provided argument is <tt>null</tt>.
-     * 
+     *
      * @param value a default value or an answered value of the question.
      */
     public void addValue(Object value) {
-    	if (value == null) {
-    		return;
-    	}
+        if (value == null) {
+            return;
+        }
         element.addElement("value").setText(DataForm.encode(value));
     }
 
@@ -60,7 +60,7 @@ public class FormField {
      */
     @SuppressWarnings("unchecked")
     public void clearValues() {
-        for (Iterator<Element> it = element.elementIterator("value"); it.hasNext();) {
+        for (Iterator<Element> it = element.elementIterator("value"); it.hasNext(); ) {
             it.next();
             it.remove();
         }
@@ -70,17 +70,17 @@ public class FormField {
      * Adds an available option to the question that the user has in order to answer
      * the question.
      * <p>
-     * If argument 'value' is <tt>null</tt> or an empty String, no option element 
+     * If argument 'value' is <tt>null</tt> or an empty String, no option element
      * will be added.
-     * 
+     *
      * @param label a label that represents the option. Optional argument.
      * @param value the value of the option.
      */
     public void addOption(String label, String value) {
-    	if (value == null || value.trim().length() == 0) {
-    		return;
-    	}
-    	
+        if (value == null || value.trim().length() == 0) {
+            return;
+        }
+
         Element option = element.addElement("option");
         option.addAttribute("label", label);
         option.addElement("value").setText(value);
@@ -95,7 +95,7 @@ public class FormField {
     @SuppressWarnings("unchecked")
     public List<Option> getOptions() {
         List<Option> answer = new ArrayList<Option>();
-        for (Iterator<Element> it = element.elementIterator("option"); it.hasNext();) {
+        for (Iterator<Element> it = element.elementIterator("option"); it.hasNext(); ) {
             answer.add(new Option(it.next()));
         }
         return answer;
@@ -123,7 +123,7 @@ public class FormField {
      * @param type an indicative of the format for the data to answer.
      */
     public void setType(Type type) {
-        element.addAttribute("type", type==null?null:type.toXMPP());
+        element.addAttribute("type", type == null ? null : type.toXMPP());
     }
 
     /**
@@ -168,9 +168,9 @@ public class FormField {
      * <p/>
      * If the question is of type FIXED then the description should remain empty.
      * <p>
-     * No new description will be set, if the provided argument is <tt>null</tt> or an empty 
+     * No new description will be set, if the provided argument is <tt>null</tt> or an empty
      * String (although an existing description will be removed).
-     * 
+     *
      * @param description provides extra clarification about the question.
      */
     public void setDescription(String description) {
@@ -178,11 +178,11 @@ public class FormField {
         if (element.element("desc") != null) {
             element.remove(element.element("desc"));
         }
-        
+
         if (description == null || description.trim().length() == 0) {
-        	return;
+            return;
         }
-        
+
         element.addElement("desc").setText(description);
     }
 
@@ -214,28 +214,27 @@ public class FormField {
     @SuppressWarnings("unchecked")
     public List<String> getValues() {
         List<String> answer = new ArrayList<String>();
-        for (Iterator<Element> it = element.elementIterator("value"); it.hasNext();) {
+        for (Iterator<Element> it = element.elementIterator("value"); it.hasNext(); ) {
             answer.add(it.next().getTextTrim());
         }
         return answer;
     }
 
-	/**
-	 * Returns the first value from the FormField, or 'null' if no value has
-	 * been set.
-	 *
-	 * @return String based value, or 'null' if the FormField has no values.
-	 */
+    /**
+     * Returns the first value from the FormField, or 'null' if no value has
+     * been set.
+     *
+     * @return String based value, or 'null' if the FormField has no values.
+     */
     @SuppressWarnings("unchecked")
-	public String getFirstValue()
-	{
-        for (Iterator<Element> it = element.elementIterator("value"); it.hasNext();) {
+    public String getFirstValue() {
+        for (Iterator<Element> it = element.elementIterator("value"); it.hasNext(); ) {
             return it.next().getTextTrim();
         }
-        
+
         return null;
-	}
-    
+    }
+
     /**
      * Returns an indicative of the format for the data to answer. Valid formats are:
      * <p/>
@@ -290,13 +289,13 @@ public class FormField {
 
     /**
      * Creates and returns a new object that is an exact copy of this FormField object.
-     * 
+     *
      * @return an exact copy of this instance.
      */
     public FormField createCopy() {
         return new FormField(this.element.createCopy());
     }
-    
+
     /**
      * Represents the available option of a given FormField.
      *
@@ -412,35 +411,25 @@ public class FormField {
             type = type.toLowerCase();
             if (boolean_type.toXMPP().equals(type)) {
                 return boolean_type;
-            }
-            else if (fixed.toXMPP().equals(type)) {
+            } else if (fixed.toXMPP().equals(type)) {
                 return fixed;
-            }
-            else if (hidden.toXMPP().equals(type)) {
+            } else if (hidden.toXMPP().equals(type)) {
                 return hidden;
-            }
-            else if (jid_multi.toXMPP().equals(type)) {
+            } else if (jid_multi.toXMPP().equals(type)) {
                 return jid_multi;
-            }
-            else if (jid_single.toXMPP().equals(type)) {
+            } else if (jid_single.toXMPP().equals(type)) {
                 return jid_single;
-            }
-            else if (list_multi.toXMPP().equals(type)) {
+            } else if (list_multi.toXMPP().equals(type)) {
                 return list_multi;
-            }
-            else if (list_single.toXMPP().equals(type)) {
+            } else if (list_single.toXMPP().equals(type)) {
                 return list_single;
-            }
-            else if (text_multi.toXMPP().equals(type)) {
+            } else if (text_multi.toXMPP().equals(type)) {
                 return text_multi;
-            }
-            else if (text_private.toXMPP().equals(type)) {
+            } else if (text_private.toXMPP().equals(type)) {
                 return text_private;
-            }
-            else if (text_single.toXMPP().equals(type)) {
+            } else if (text_single.toXMPP().equals(type)) {
                 return text_single;
-            }
-            else {
+            } else {
                 throw new IllegalArgumentException("Type invalid:" + type);
             }
         }

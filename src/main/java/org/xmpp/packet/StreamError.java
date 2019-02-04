@@ -49,7 +49,7 @@ public class StreamError {
      */
     public StreamError(Condition condition) {
         this.element = docFactory.createElement(docFactory.createQName("error", "stream",
-                "http://etherx.jabber.org/streams"));
+            "http://etherx.jabber.org/streams"));
         setCondition(condition);
     }
 
@@ -61,7 +61,7 @@ public class StreamError {
      */
     public StreamError(Condition condition, String text) {
         this.element = docFactory.createElement(docFactory.createQName("error", "stream",
-                "http://etherx.jabber.org/streams"));
+            "http://etherx.jabber.org/streams"));
         setCondition(condition);
         setText(text, null);
     }
@@ -75,7 +75,7 @@ public class StreamError {
      */
     public StreamError(Condition condition, String text, String language) {
         this.element = docFactory.createElement(docFactory.createQName("error", "stream",
-                "http://etherx.jabber.org/streams"));
+            "http://etherx.jabber.org/streams"));
         setCondition(condition);
         setText(text, language);
     }
@@ -98,11 +98,10 @@ public class StreamError {
      */
     @SuppressWarnings("unchecked")
     public Condition getCondition() {
-        for (Iterator<Element> i=element.elementIterator(); i.hasNext(); ) {
+        for (Iterator<Element> i = element.elementIterator(); i.hasNext(); ) {
             Element el = i.next();
             if (el.getNamespaceURI().equals(ERROR_NAMESPACE) &&
-                    !el.getName().equals("text"))
-            {
+                !el.getName().equals("text")) {
                 return Condition.fromXMPP(el.getName());
             }
         }
@@ -121,11 +120,10 @@ public class StreamError {
             throw new NullPointerException("Condition cannot be null");
         }
         Element conditionElement = null;
-        for (Iterator<Element> i=element.elementIterator(); i.hasNext(); ) {
+        for (Iterator<Element> i = element.elementIterator(); i.hasNext(); ) {
             Element el = i.next();
             if (el.getNamespaceURI().equals(ERROR_NAMESPACE) &&
-                    !el.getName().equals("text"))
-            {
+                !el.getName().equals("text")) {
                 conditionElement = el;
             }
         }
@@ -178,7 +176,7 @@ public class StreamError {
             textElement = docFactory.createElement("text", ERROR_NAMESPACE);
             if (language != null) {
                 textElement.addAttribute(QName.get("lang", "xml",
-                        "http://www.w3.org/XML/1998/namespace"), language);
+                    "http://www.w3.org/XML/1998/namespace"), language);
             }
             element.add(textElement);
         }
@@ -195,7 +193,7 @@ public class StreamError {
         Element textElement = element.element("text");
         if (textElement != null) {
             return textElement.attributeValue(QName.get("lang", "xml",
-                        "http://www.w3.org/XML/1998/namespace"));
+                "http://www.w3.org/XML/1998/namespace"));
         }
         return null;
     }
@@ -226,8 +224,9 @@ public class StreamError {
         XMLWriter writer = new XMLWriter(out, OutputFormat.createPrettyPrint());
         try {
             writer.write(element);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        catch (Exception e) { e.printStackTrace(); }
         return out.toString();
     }
 
@@ -392,18 +391,18 @@ public class StreamError {
 
         /**
          * The initiating entity has sent XML that is not well-formed.
-         * 
-         * @deprecated Deprecated by RFC6120 in favor of "not_well_formed" 
+         *
+         * @deprecated Deprecated by RFC6120 in favor of "not_well_formed"
          * @see http://xmpp.org/rfcs/rfc6120.html#streams-error-conditions-not-well-formed
          */
         @Deprecated
         xml_not_well_formed("xml-not-well-formed"),
-        
+
         /**
          * The initiating entity has sent XML that is not well-formed.
          */
         not_well_formed("not-well-formed");
-        
+
         /**
          * Converts a String value into its Condition representation.
          *
@@ -417,80 +416,55 @@ public class StreamError {
             condition = condition.toLowerCase();
             if (bad_format.toXMPP().equals(condition)) {
                 return bad_format;
-            }
-            else if (bad_namespace_prefix.toXMPP().equals(condition)) {
+            } else if (bad_namespace_prefix.toXMPP().equals(condition)) {
                 return bad_namespace_prefix;
-            }
-            else if (conflict.toXMPP().equals(condition)) {
+            } else if (conflict.toXMPP().equals(condition)) {
                 return conflict;
-            }
-            else if (connection_timeout.toXMPP().equals(condition)) {
+            } else if (connection_timeout.toXMPP().equals(condition)) {
                 return connection_timeout;
-            }
-            else if (host_gone.toXMPP().equals(condition)) {
+            } else if (host_gone.toXMPP().equals(condition)) {
                 return host_gone;
-            }
-            else if (host_unknown.toXMPP().equals(condition)) {
+            } else if (host_unknown.toXMPP().equals(condition)) {
                 return host_unknown;
-            }
-            else if (improper_addressing.toXMPP().equals(condition)) {
+            } else if (improper_addressing.toXMPP().equals(condition)) {
                 return improper_addressing;
-            }
-            else if (internal_server_error.toXMPP().equals(condition)) {
+            } else if (internal_server_error.toXMPP().equals(condition)) {
                 return internal_server_error;
-            }
-            else if (invalid_from.toXMPP().equals(condition)) {
+            } else if (invalid_from.toXMPP().equals(condition)) {
                 return invalid_from;
-            }
-            else if (invalid_id.toXMPP().equals(condition)) {
+            } else if (invalid_id.toXMPP().equals(condition)) {
                 return invalid_id;
-            }
-            else if (invalid_namespace.toXMPP().equals(condition)) {
+            } else if (invalid_namespace.toXMPP().equals(condition)) {
                 return invalid_namespace;
-            }
-            else if (invalid_xml.toXMPP().equals(condition)) {
+            } else if (invalid_xml.toXMPP().equals(condition)) {
                 return invalid_xml;
-            }
-            else if (not_authorized.toXMPP().equals(condition)) {
+            } else if (not_authorized.toXMPP().equals(condition)) {
                 return not_authorized;
-            }
-            else if (policy_violation.toXMPP().equals(condition)) {
+            } else if (policy_violation.toXMPP().equals(condition)) {
                 return policy_violation;
-            }
-            else if (remote_connection_failed.toXMPP().equals(condition)) {
+            } else if (remote_connection_failed.toXMPP().equals(condition)) {
                 return remote_connection_failed;
-            }
-            else if (resource_constraint.toXMPP().equals(condition)) {
+            } else if (resource_constraint.toXMPP().equals(condition)) {
                 return resource_constraint;
-            }
-            else if (restricted_xml.toXMPP().equals(condition)) {
+            } else if (restricted_xml.toXMPP().equals(condition)) {
                 return restricted_xml;
-            }
-            else if (see_other_host.toXMPP().equals(condition)) {
+            } else if (see_other_host.toXMPP().equals(condition)) {
                 return see_other_host;
-            }
-            else if (system_shutdown.toXMPP().equals(condition)) {
+            } else if (system_shutdown.toXMPP().equals(condition)) {
                 return system_shutdown;
-            }
-            else if (undefined_condition.toXMPP().equals(condition)) {
+            } else if (undefined_condition.toXMPP().equals(condition)) {
                 return undefined_condition;
-            }
-            else if (unsupported_encoding.toXMPP().equals(condition)) {
+            } else if (unsupported_encoding.toXMPP().equals(condition)) {
                 return unsupported_encoding;
-            }
-            else if (unsupported_stanza_type.toXMPP().equals(condition)) {
+            } else if (unsupported_stanza_type.toXMPP().equals(condition)) {
                 return unsupported_stanza_type;
-            }
-            else if (unsupported_version.toXMPP().equals(condition)) {
+            } else if (unsupported_version.toXMPP().equals(condition)) {
                 return unsupported_version;
-            }
-            else if (xml_not_well_formed.toXMPP().equals(condition)) {
+            } else if (xml_not_well_formed.toXMPP().equals(condition)) {
                 return xml_not_well_formed;
-            }
-            else if (not_well_formed.toXMPP().equals(condition)) {
+            } else if (not_well_formed.toXMPP().equals(condition)) {
                 return not_well_formed;
-            }
-            else {
+            } else {
                 throw new IllegalArgumentException("Condition invalid:" + condition);
             }
         }
