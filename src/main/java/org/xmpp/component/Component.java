@@ -38,14 +38,14 @@ public interface Component {
      *
      * @return the name of this component.
      */
-    public String getName();
+    String getName();
 
     /**
      * Returns the description of this component.
      *
      * @return the description of this component.
      */
-    public String getDescription();
+    String getDescription();
 
     /**
      * Processes a packet sent to this Component.
@@ -53,7 +53,7 @@ public interface Component {
      * @param packet the packet.
      * @see ComponentManager#sendPacket(Component, Packet)
      */
-    public void processPacket(Packet packet);
+    void processPacket(Packet packet);
 
     /**
      * Initializes this component with a ComponentManager and the JID
@@ -69,7 +69,7 @@ public interface Component {
      * @param componentManager the component manager.
      * @throws ComponentException if an error occured while initializing the component.
      */
-    public void initialize(JID jid, ComponentManager componentManager) throws ComponentException;
+    void initialize(JID jid, ComponentManager componentManager) throws ComponentException;
 
     /**
      * Notification message indicating that the component will start receiving incoming
@@ -78,11 +78,11 @@ public interface Component {
      *
      * It is likely that most of the component will leave this method empty.
      */
-    public void start();
+    void start();
 
     /**
      * Shuts down this component. All component resources must be released as
      * part of shutdown.
      */
-    public void shutdown();
+    void shutdown();
 }

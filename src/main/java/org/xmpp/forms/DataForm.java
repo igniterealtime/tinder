@@ -251,7 +251,7 @@ public class DataForm extends PacketExtension {
      */
     @SuppressWarnings("unchecked")
     public List<FormField> getFields() {
-        List<FormField> answer = new ArrayList<FormField>();
+        List<FormField> answer = new ArrayList<>();
         for (Iterator<Element> it = element.elementIterator("field"); it.hasNext(); ) {
             answer.add(new FormField(it.next()));
         }

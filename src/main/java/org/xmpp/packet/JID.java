@@ -21,7 +21,6 @@ import gnu.inet.encoding.Stringprep;
 import gnu.inet.encoding.StringprepException;
 
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ConcurrentMap;
 
@@ -303,7 +302,7 @@ public class JID implements Comparable<JID>, Serializable {
                 }
             } catch (Exception ex) {
                 // register the failure in the cache (TINDER-24)
-                NODEPREP_CACHE.put(node, new ValueWrapper<String>(
+                NODEPREP_CACHE.put(node, new ValueWrapper<>(
                     Representation.ILLEGAL));
                 throw new IllegalArgumentException("The input is not a valid JID node: " + node, ex);
             }
@@ -311,12 +310,12 @@ public class JID implements Comparable<JID>, Serializable {
             // Add the result to the cache. As most key/value pairs will contain
             // equal Strings, we use an identifier object to represent this
             // state.
-            NODEPREP_CACHE.put(answer, new ValueWrapper<String>(
+            NODEPREP_CACHE.put(answer, new ValueWrapper<>(
                 Representation.USE_KEY));
             if (!node.equals(answer)) {
                 // If the input differs from the stringprepped result, include
                 // the raw input as a key too. (TINDER-24)
-                NODEPREP_CACHE.put(node, new ValueWrapper<String>(answer));
+                NODEPREP_CACHE.put(node, new ValueWrapper<>(answer));
             }
         } else {
             switch (cachedResult.getRepresentation()) {
@@ -375,7 +374,7 @@ public class JID implements Comparable<JID>, Serializable {
                 }
             } catch (Exception ex) {
                 // register the failure in the cache (TINDER-24)
-                DOMAINPREP_CACHE.put(domain, new ValueWrapper<String>(
+                DOMAINPREP_CACHE.put(domain, new ValueWrapper<>(
                     Representation.ILLEGAL));
                 throw new IllegalArgumentException("The input is not a valid JID domain part: " + domain, ex);
             }
@@ -383,12 +382,12 @@ public class JID implements Comparable<JID>, Serializable {
             // Add the result to the cache. As most key/value pairs will contain
             // equal Strings, we use an identifier object to represent this
             // state.
-            DOMAINPREP_CACHE.put(answer, new ValueWrapper<String>(
+            DOMAINPREP_CACHE.put(answer, new ValueWrapper<>(
                 Representation.USE_KEY));
             if (!domain.equals(answer)) {
                 // If the input differs from the stringprepped result, include
                 // the raw input as a key too. (TINDER-24)
-                DOMAINPREP_CACHE.put(domain, new ValueWrapper<String>(answer));
+                DOMAINPREP_CACHE.put(domain, new ValueWrapper<>(answer));
             }
         } else {
             switch (cachedResult.getRepresentation()) {
@@ -428,8 +427,7 @@ public class JID implements Comparable<JID>, Serializable {
      * @throws IllegalArgumentException
      *             if <tt>resource</tt> is not a valid JID resource.
      */
-    public static String resourceprep(String resource)
-        throws StringprepException {
+    public static String resourceprep(String resource) throws StringprepException {
         if (resource == null) {
             return null;
         }
@@ -450,7 +448,7 @@ public class JID implements Comparable<JID>, Serializable {
                 }
             } catch (Exception ex) {
                 // register the failure in the cache (TINDER-24)
-                RESOURCEPREP_CACHE.put(resource, new ValueWrapper<String>(
+                RESOURCEPREP_CACHE.put(resource, new ValueWrapper<>(
                     Representation.ILLEGAL));
                 throw new IllegalArgumentException("The input is not a valid JID resource: " + resource, ex);
             }
@@ -458,12 +456,12 @@ public class JID implements Comparable<JID>, Serializable {
             // Add the result to the cache. As most key/value pairs will contain
             // equal Strings, we use an identifier object to represent this
             // state.
-            RESOURCEPREP_CACHE.put(answer, new ValueWrapper<String>(
+            RESOURCEPREP_CACHE.put(answer, new ValueWrapper<>(
                 Representation.USE_KEY));
             if (!resource.equals(answer)) {
                 // If the input differs from the stringprepped result, include
                 // the raw input as a key too. (TINDER-24)
-                RESOURCEPREP_CACHE.put(resource, new ValueWrapper<String>(
+                RESOURCEPREP_CACHE.put(resource, new ValueWrapper<>(
                     answer));
             }
         } else {
@@ -612,7 +610,7 @@ public class JID implements Comparable<JID>, Serializable {
         }
 
         // Domain
-        String domain = null;
+        String domain;
         if (atIndex + 1 > jid.length()) {
             throw new IllegalArgumentException("JID with empty domain not valid. Offending value: '" + jid + "'");
         }
@@ -631,7 +629,7 @@ public class JID implements Comparable<JID>, Serializable {
         }
 
         // Resource
-        String resource = null;
+        String resource;
         if (slashIndex + 1 > jid.length() || slashIndex < 0) {
             resource = null;
         } else {
@@ -723,10 +721,8 @@ public class JID implements Comparable<JID>, Serializable {
             sb.append('@');
         }
         sb.append(this.domain);
-        if (this.resource != null) {
-            sb.append('/');
-            sb.append(this.resource);
-        }
+        sb.append('/');
+        sb.append(this.resource);
 
         return sb.toString();
     }

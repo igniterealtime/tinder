@@ -52,7 +52,7 @@ public class IQ extends Packet {
      */
     public IQ() {
         this.element = docFactory.createDocument().addElement("iq");
-        String id = String.valueOf(random.nextInt(1000) + "-" + sequence++);
+        String id = random.nextInt(1000) + "-" + sequence++;
         setType(Type.get);
         setID(id);
     }
@@ -66,7 +66,7 @@ public class IQ extends Packet {
     public IQ(Type type) {
         this.element = docFactory.createDocument().addElement("iq");
         setType(type);
-        String id = String.valueOf(random.nextInt(1000) + "-" + sequence++);
+        String id = random.nextInt(1000) + "-" + sequence++;
         setID(id);
     }
 
@@ -185,8 +185,7 @@ public class IQ extends Packet {
             return null;
         } else {
             // Search for a child element that is in a different namespace.
-            for (int i = 0; i < elements.size(); i++) {
-                Element element = elements.get(i);
+            for (Element element : elements) {
                 String namespace = element.getNamespaceURI();
                 if (!namespace.equals("") && !namespace.equals("jabber:client") &&
                     !namespace.equals("jabber:server")) {
@@ -306,10 +305,8 @@ public class IQ extends Packet {
             Class<? extends PacketExtension> extensionClass = PacketExtension.getExtensionClass(name, namespace);
             if (extensionClass != null) {
                 try {
-                    Constructor<? extends PacketExtension> constructor = extensionClass.getDeclaredConstructor(new Class[] {
-                        Element.class});
-                    return constructor.newInstance(new Object[] {
-                        extensions.get(0)});
+                    Constructor<? extends PacketExtension> constructor = extensionClass.getDeclaredConstructor(Element.class);
+                    return constructor.newInstance(extensions.get(0));
                 } catch (Exception e) {
                     Log.warn("Packet extension (name " + name + ", namespace " + namespace + ") cannot be found.", e);
                 }

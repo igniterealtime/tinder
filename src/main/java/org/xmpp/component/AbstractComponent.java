@@ -191,8 +191,7 @@ public abstract class AbstractComponent implements Component {
      * @see org.xmpp.component.Component#initialize(org.xmpp.packet.JID,
      *      org.xmpp.component.ComponentManager)
      */
-    public final void initialize(final JID jid, final ComponentManager componentManager)
-        throws ComponentException {
+    public final void initialize(final JID jid, final ComponentManager componentManager) throws ComponentException {
         compMan = componentManager;
         this.jid = jid;
 
@@ -207,7 +206,7 @@ public abstract class AbstractComponent implements Component {
         final Packet copy = packet.createCopy();
 
         if (executor == null) {
-
+            throw new IllegalStateException("Unable to initialize and start the executor.");
         }
         try {
             executor.execute(new PacketProcessor(copy));
@@ -483,33 +482,24 @@ public abstract class AbstractComponent implements Component {
         }
         final Type type = iq.getType();
         if (type == Type.get) {
-            if (NAMESPACE_DISCO_INFO.equals(namespace)) {
-                log.trace("(serving component '{}') "
-                        + "Calling #handleDiscoInfo() (packetId {}).",
-                    getName(), iq.getID());
-                return handleDiscoInfo(iq);
-            } else if (NAMESPACE_DISCO_ITEMS.equals(namespace)) {
-                log.trace("(serving component '{}') "
-                        + "Calling #handleDiscoItems() (packetId {}).",
-                    getName(), iq.getID());
-                return handleDiscoItems(iq);
-            } else if (NAMESPACE_XMPP_PING.equals(namespace)) {
-                log.trace("(serving component '{}') "
-                    + "Calling #handlePing() (packetId {}).", getName(), iq
-                    .getID());
-                return handlePing(iq);
-            } else if (NAMESPACE_LAST_ACTIVITY.equals(namespace)) {
-                log.trace("(serving component '{}') "
-                    + "Calling #handleLastActivity() (packetId {}).", getName(), iq
-                    .getID());
-                return handleLastActivity(iq);
-            } else if (NAMESPACE_ENTITY_TIME.equals(namespace)) {
-                log.trace("(serving component '{}') "
-                    + "Calling #handleEntityTime() (packetId {}).", getName(), iq
-                    .getID());
-                return handleEntityTime(iq);
-            } else {
-                return handleIQGet(iq);
+            switch (namespace) {
+                case NAMESPACE_DISCO_INFO:
+                    log.trace("(serving component '{}') Calling #handleDiscoInfo() (packetId {}).", getName(), iq.getID());
+                    return handleDiscoInfo(iq);
+                case NAMESPACE_DISCO_ITEMS:
+                    log.trace("(serving component '{}') Calling #handleDiscoItems() (packetId {}).", getName(), iq.getID());
+                    return handleDiscoItems(iq);
+                case NAMESPACE_XMPP_PING:
+                    log.trace("(serving component '{}') Calling #handlePing() (packetId {}).", getName(), iq .getID());
+                    return handlePing(iq);
+                case NAMESPACE_LAST_ACTIVITY:
+                    log.trace("(serving component '{}') Calling #handleLastActivity() (packetId {}).", getName(), iq .getID());
+                    return handleLastActivity(iq);
+                case NAMESPACE_ENTITY_TIME:
+                    log.trace("(serving component '{}') Calling #handleEntityTime() (packetId {}).", getName(), iq .getID());
+                    return handleEntityTime(iq);
+                default:
+                    return handleIQGet(iq);
             }
         }
         if (type == Type.set) {
@@ -547,8 +537,7 @@ public abstract class AbstractComponent implements Component {
     protected void handleIQError(IQ iq) {
         // Doesn't do anything. Override this method to process IQ error
         // stanzas.
-        log.info("(serving component '{}') IQ stanza "
-            + "of type <tt>error</tt> received: ", getName(), iq.toXML());
+        log.info("(serving component '{}') IQ stanza of type <tt>error</tt> received: ", getName(), iq.toXML());
     }
 
     /**
@@ -654,8 +643,7 @@ public abstract class AbstractComponent implements Component {
      */
     protected IQ handleDiscoInfo(IQ iq) {
         final IQ replyPacket = IQ.createResultIQ(iq);
-        final Element responseElement = replyPacket.setChildElement("query",
-            NAMESPACE_DISCO_INFO);
+        final Element responseElement = replyPacket.setChildElement("query", NAMESPACE_DISCO_INFO);
 
         // identity
         responseElement.addElement("identity").addAttribute("category",
@@ -663,14 +651,10 @@ public abstract class AbstractComponent implements Component {
             discoInfoIdentityCategoryType())
             .addAttribute("name", getName());
         // features
-        responseElement.addElement("feature").addAttribute("var",
-            NAMESPACE_DISCO_INFO);
-        responseElement.addElement("feature").addAttribute("var",
-            NAMESPACE_XMPP_PING);
-        responseElement.addElement("feature").addAttribute("var",
-            NAMESPACE_LAST_ACTIVITY);
-        responseElement.addElement("feature").addAttribute("var",
-            NAMESPACE_ENTITY_TIME);
+        responseElement.addElement("feature").addAttribute("var", NAMESPACE_DISCO_INFO);
+        responseElement.addElement("feature").addAttribute("var", NAMESPACE_XMPP_PING);
+        responseElement.addElement("feature").addAttribute("var", NAMESPACE_LAST_ACTIVITY);
+        responseElement.addElement("feature").addAttribute("var", NAMESPACE_ENTITY_TIME);
         for (final String feature : discoInfoFeatureNamespaces()) {
             responseElement.addElement("feature").addAttribute("var", feature);
         }
@@ -703,8 +687,7 @@ public abstract class AbstractComponent implements Component {
     protected IQ handleLastActivity(IQ iq) {
         final long uptime = (System.currentTimeMillis() - lastStartMillis) / 1000;
         final IQ result = IQ.createResultIQ(iq);
-        result.setChildElement("query", NAMESPACE_LAST_ACTIVITY).addAttribute(
-            "seconds", Long.toString(uptime));
+        result.setChildElement("query", NAMESPACE_LAST_ACTIVITY).addAttribute("seconds", Long.toString(uptime));
         return result;
     }
 
@@ -764,7 +747,7 @@ public abstract class AbstractComponent implements Component {
      *         not been initialized yet.
      */
     public JID getJID() {
-        return jid != null ? jid : null;
+        return jid;
     }
 
     /**
@@ -925,8 +908,7 @@ public abstract class AbstractComponent implements Component {
         try {
             compMan.sendPacket(this, packet);
         } catch (ComponentException e) {
-            log.warn("(serving component '" + getName()
-                + "') Could not send packet!", e);
+            log.warn("(serving component '" + getName() + "') Could not send packet!", e);
         }
     }
 
@@ -1017,8 +999,7 @@ public abstract class AbstractComponent implements Component {
             return true;
         }
         final String domain = from.getDomain();
-        return (domain.equals(getDomain()) || domain
-            .endsWith("." + getDomain()));
+        return (domain.equals(getDomain()) || domain.endsWith("." + getDomain()));
     }
 
     /**
