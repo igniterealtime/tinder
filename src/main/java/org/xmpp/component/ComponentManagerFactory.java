@@ -51,10 +51,9 @@ public class ComponentManagerFactory {
         if (className != null) {
             try {
                 Class c = Class.forName(className);
-                componentManager = (ComponentManager)c.newInstance();
+                componentManager = (ComponentManager) c.newInstance();
                 return componentManager;
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

@@ -21,29 +21,29 @@ package org.xmpp.util;
  */
 public class XMPPConstants {
 
-	/**
-	 * The amount of milliseconds in one second.
-	 */
+    /**
+     * The amount of milliseconds in one second.
+     */
     public static final long SECOND = 1000;
 
-	/**
-	 * The amount of milliseconds in one minute.
-	 */
+    /**
+     * The amount of milliseconds in one minute.
+     */
     public static final long MINUTE = 60 * SECOND;
-    
-	/**
-	 * The amount of milliseconds in one .
-	 */
+
+    /**
+     * The amount of milliseconds in one .
+     */
     public static final long HOUR = 60 * MINUTE;
-    
-	/**
-	 * The amount of milliseconds in one .
-	 */
+
+    /**
+     * The amount of milliseconds in one .
+     */
     public static final long DAY = 24 * HOUR;
-    
-	/**
-	 * The amount of milliseconds in one .
-	 */
+
+    /**
+     * The amount of milliseconds in one .
+     */
     public static final long WEEK = 7 * DAY;
 
     /**

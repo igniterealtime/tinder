@@ -25,9 +25,9 @@ import org.xmpp.packet.StreamError;
  */
 public class ComponentException extends Exception {
 
-	private static final long serialVersionUID = -4133202596762415887L;
-	
-	private StreamError streamError;
+    private static final long serialVersionUID = -4133202596762415887L;
+
+    private StreamError streamError;
 
     public ComponentException() {
         super();

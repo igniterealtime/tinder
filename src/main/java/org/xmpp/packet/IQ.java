@@ -40,7 +40,7 @@ import java.util.Random;
 @NotThreadSafe
 public class IQ extends Packet {
 
-	private static final Logger Log = LoggerFactory.getLogger(Packet.class);
+    private static final Logger Log = LoggerFactory.getLogger(Packet.class);
 
     // Sequence and random number generator used for creating unique ID's.
     private static int sequence = 0;
@@ -130,8 +130,7 @@ public class IQ extends Packet {
         String type = element.attributeValue("type");
         if (type != null) {
             return Type.valueOf(type);
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -143,7 +142,7 @@ public class IQ extends Packet {
      * @see Type
      */
     public void setType(Type type) {
-        element.addAttribute("type", type==null?null:type.toString());
+        element.addAttribute("type", type == null ? null : type.toString());
     }
 
     /**
@@ -184,15 +183,13 @@ public class IQ extends Packet {
         List<Element> elements = element.elements();
         if (elements.isEmpty()) {
             return null;
-        }
-        else {
+        } else {
             // Search for a child element that is in a different namespace.
-            for (int i=0; i<elements.size(); i++) {
+            for (int i = 0; i < elements.size(); i++) {
                 Element element = elements.get(i);
                 String namespace = element.getNamespaceURI();
                 if (!namespace.equals("") && !namespace.equals("jabber:client") &&
-                        !namespace.equals("jabber:server"))
-                {
+                    !namespace.equals("jabber:server")) {
                     return element;
                 }
             }
@@ -222,7 +219,7 @@ public class IQ extends Packet {
      */
     @SuppressWarnings("unchecked")
     public void setChildElement(Element childElement) {
-        for (Iterator<Element> i=element.elementIterator(); i.hasNext(); ) {
+        for (Iterator<Element> i = element.elementIterator(); i.hasNext(); ) {
             element.remove(i.next());
         }
         element.add(childElement);
@@ -252,7 +249,7 @@ public class IQ extends Packet {
      */
     @SuppressWarnings("unchecked")
     public Element setChildElement(String name, String namespace) {
-        for (Iterator<Element> i=element.elementIterator(); i.hasNext(); ) {
+        for (Iterator<Element> i = element.elementIterator(); i.hasNext(); ) {
             element.remove(i.next());
         }
         return element.addElement(name, namespace);
@@ -309,13 +306,12 @@ public class IQ extends Packet {
             Class<? extends PacketExtension> extensionClass = PacketExtension.getExtensionClass(name, namespace);
             if (extensionClass != null) {
                 try {
-                    Constructor<? extends PacketExtension> constructor = extensionClass.getDeclaredConstructor(new Class[]{
+                    Constructor<? extends PacketExtension> constructor = extensionClass.getDeclaredConstructor(new Class[] {
                         Element.class});
-                    return constructor.newInstance(new Object[]{
+                    return constructor.newInstance(new Object[] {
                         extensions.get(0)});
-                }
-                catch (Exception e) {
-                    Log.warn("Packet extension (name "+name+", namespace "+namespace+") cannot be found.", e);
+                } catch (Exception e) {
+                    Log.warn("Packet extension (name " + name + ", namespace " + namespace + ") cannot be found.", e);
                 }
             }
         }
@@ -340,7 +336,7 @@ public class IQ extends Packet {
      * @return true if a child element was removed.
      */
     @SuppressWarnings("unchecked")
-	public boolean deleteExtension(String name, String namespace) {
+    public boolean deleteExtension(String name, String namespace) {
         Element childElement = getChildElement();
         if (childElement == null) {
             return false;
@@ -382,7 +378,7 @@ public class IQ extends Packet {
     public static IQ createResultIQ(IQ iq) {
         if (!(iq.getType() == Type.get || iq.getType() == Type.set)) {
             throw new IllegalArgumentException(
-                    "IQ must be of type 'set' or 'get'. Original IQ: " + iq.toXML());
+                "IQ must be of type 'set' or 'get'. Original IQ: " + iq.toXML());
         }
         IQ result = new IQ(Type.result, iq.getID());
         result.setFrom(iq.getTo());

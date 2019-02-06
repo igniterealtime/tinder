@@ -50,7 +50,7 @@ import org.xmpp.util.XMPPConstants;
  * </ul>
  * <p/>
  * In case the form represents a search, the report will be structured in columns and rows. Use
- * {@link #addReportedField(String,String,FormField.Type)} to set the columns of the report whilst
+ * {@link #addReportedField(String, String, FormField.Type)} to set the columns of the report whilst
  * the report's rows can be configured using {@link #addItemFields(Map)}.
  *
  * @author Gaston Dombiak
@@ -59,9 +59,9 @@ import org.xmpp.util.XMPPConstants;
 public class DataForm extends PacketExtension {
 
     private static final SimpleDateFormat UTC_FORMAT = new SimpleDateFormat(
-            XMPPConstants.XMPP_DELAY_DATETIME_FORMAT);
+        XMPPConstants.XMPP_DELAY_DATETIME_FORMAT);
     private static final FastDateFormat FAST_UTC_FORMAT =
-            FastDateFormat.getInstance(XMPPConstants.XMPP_DELAY_DATETIME_FORMAT,
+        FastDateFormat.getInstance(XMPPConstants.XMPP_DELAY_DATETIME_FORMAT,
             TimeZone.getTimeZone("UTC"));
 
     /**
@@ -107,11 +107,9 @@ public class DataForm extends PacketExtension {
     static String encode(Object object) {
         if (object instanceof String) {
             return object.toString();
-        }
-        else if (object instanceof Boolean) {
+        } else if (object instanceof Boolean) {
             return Boolean.TRUE.equals(object) ? "1" : "0";
-        }
-        else if (object instanceof Date) {
+        } else if (object instanceof Date) {
             return FAST_UTC_FORMAT.format((Date) object);
         }
         return object.toString();
@@ -137,8 +135,7 @@ public class DataForm extends PacketExtension {
         String type = element.attributeValue("type");
         if (type != null) {
             return DataForm.Type.valueOf(type);
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -177,7 +174,7 @@ public class DataForm extends PacketExtension {
     @SuppressWarnings("unchecked")
     public List<String> getInstructions() {
         List<String> answer = new ArrayList<String>();
-        for (Iterator<Element> it = element.elementIterator("instructions"); it.hasNext();) {
+        for (Iterator<Element> it = element.elementIterator("instructions"); it.hasNext(); ) {
             answer.add(it.next().getTextTrim());
         }
         return Collections.unmodifiableList(answer);
@@ -193,10 +190,10 @@ public class DataForm extends PacketExtension {
      * @param instruction the new instruction that explain how to fill out the form.
      */
     public void addInstruction(String instruction) {
-    	if (instruction == null || instruction.trim().length() == 0) {
-    		return;
-    	}
-    	
+        if (instruction == null || instruction.trim().length() == 0) {
+            return;
+        }
+
         element.addElement("instructions").setText(instruction);
     }
 
@@ -205,7 +202,7 @@ public class DataForm extends PacketExtension {
      */
     @SuppressWarnings("unchecked")
     public void clearInstructions() {
-        for (Iterator<Element> it = element.elementIterator("instructions"); it.hasNext();) {
+        for (Iterator<Element> it = element.elementIterator("instructions"); it.hasNext(); ) {
             it.next();
             it.remove();
         }
@@ -221,32 +218,32 @@ public class DataForm extends PacketExtension {
     }
 
     /**
-     * Adds a new field as part of the form. The provided arguments are optional 
+     * Adds a new field as part of the form. The provided arguments are optional
      * (they are allowed to be <tt>null</tt>).
      *
-     * @param variable the unique identifier of the field in the context of the 
+     * @param variable the unique identifier of the field in the context of the
      * 		form. Optional parameter.
-     * @param type an indicative of the format for the data. Optional parameter. 
+     * @param type an indicative of the format for the data. Optional parameter.
      * @param label the label of the question. Optional parameter.
      * @return the newly created field.
      */
     public FormField addField(String variable, String label, FormField.Type type) {
-    	final FormField result = addField();
-    	if (variable != null && variable.trim().length() >= 0) {
-    		result.setVariable(variable);
-    	}
-    	
-    	if (type != null) {
-    		result.setType(type);
-    	}
-    	
-    	if (label != null && label.trim().length() >= 0) {
-    		result.setLabel(label);
-    	}
-    	
-    	return result;
+        final FormField result = addField();
+        if (variable != null && variable.trim().length() >= 0) {
+            result.setVariable(variable);
+        }
+
+        if (type != null) {
+            result.setType(type);
+        }
+
+        if (label != null && label.trim().length() >= 0) {
+            result.setLabel(label);
+        }
+
+        return result;
     }
-    
+
     /**
      * Returns the fields that are part of the form.
      *
@@ -255,7 +252,7 @@ public class DataForm extends PacketExtension {
     @SuppressWarnings("unchecked")
     public List<FormField> getFields() {
         List<FormField> answer = new ArrayList<FormField>();
-        for (Iterator<Element> it = element.elementIterator("field"); it.hasNext();) {
+        for (Iterator<Element> it = element.elementIterator("field"); it.hasNext(); ) {
             answer.add(new FormField(it.next()));
         }
         return answer;
@@ -269,7 +266,7 @@ public class DataForm extends PacketExtension {
      */
     @SuppressWarnings("unchecked")
     public FormField getField(String variable) {
-        for (Iterator<Element> it = element.elementIterator("field"); it.hasNext();) {
+        for (Iterator<Element> it = element.elementIterator("field"); it.hasNext(); ) {
             FormField formField = new FormField(it.next());
             if (variable.equals(formField.getVariable())) {
                 return formField;
@@ -286,7 +283,7 @@ public class DataForm extends PacketExtension {
      */
     @SuppressWarnings("unchecked")
     public boolean removeField(String variable) {
-        for (Iterator<Element> it = element.elementIterator("field"); it.hasNext();) {
+        for (Iterator<Element> it = element.elementIterator("field"); it.hasNext(); ) {
             Element field = it.next();
             String fieldVariable = field.attributeValue("var");
             if (variable.equals(fieldVariable)) {
@@ -333,25 +330,24 @@ public class DataForm extends PacketExtension {
      * @param fields list of <variable,value> to be added as a new item.
      */
     @SuppressWarnings("unchecked")
-    public void addItemFields(Map<String,Object> fields) {
+    public void addItemFields(Map<String, Object> fields) {
         Element item = element.addElement("item");
         // Add a field element to the item element for each row in fields
         for (Entry<String, Object> entry : fields.entrySet()) {
             Element field = item.addElement("field");
             field.addAttribute("var", entry.getKey());
-        	final Object value = entry.getValue();
-        	if (value == null) {
-        		continue;
-        	}
+            final Object value = entry.getValue();
+            if (value == null) {
+                continue;
+            }
             if (value instanceof Collection) {
                 // Add a value element for each entry in the collection
-            	for (Object colValue : (Collection) value) {
-            		if (colValue != null) {
-            			field.addElement("value").setText(encode(colValue));
-            		}
+                for (Object colValue : (Collection) value) {
+                    if (colValue != null) {
+                        field.addElement("value").setText(encode(colValue));
+                    }
                 }
-            }
-            else {
+            } else {
                 field.addElement("value").setText(encode(value));
             }
         }

@@ -115,8 +115,7 @@ public class PacketError {
         String type = element.attributeValue("type");
         if (type != null) {
             return Type.fromXMPP(type);
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -128,7 +127,7 @@ public class PacketError {
      * @see Type
      */
     public void setType(Type type) {
-        element.addAttribute("type", type==null?null:type.toXMPP());
+        element.addAttribute("type", type == null ? null : type.toXMPP());
     }
 
     /**
@@ -139,11 +138,10 @@ public class PacketError {
      */
     @SuppressWarnings("unchecked")
     public Condition getCondition() {
-        for (Iterator<Element> i=element.elementIterator(); i.hasNext(); ) {
+        for (Iterator<Element> i = element.elementIterator(); i.hasNext(); ) {
             Element el = i.next();
             if (el.getNamespaceURI().equals(ERROR_NAMESPACE) &&
-                    !el.getName().equals("text"))
-            {
+                !el.getName().equals("text")) {
                 return Condition.fromXMPP(el.getName());
             }
         }
@@ -153,8 +151,7 @@ public class PacketError {
         if (code != null) {
             try {
                 return Condition.fromLegacyCode(Integer.parseInt(code));
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 // Ignore -- unable to map legacy code into a valid condition
                 // so return null.
             }
@@ -177,11 +174,10 @@ public class PacketError {
         element.addAttribute("code", Integer.toString(condition.getLegacyCode()));
 
         Element conditionElement = null;
-        for (Iterator<Element> i=element.elementIterator(); i.hasNext(); ) {
+        for (Iterator<Element> i = element.elementIterator(); i.hasNext(); ) {
             Element el = i.next();
             if (el.getNamespaceURI().equals(ERROR_NAMESPACE) &&
-                    !el.getName().equals("text"))
-            {
+                !el.getName().equals("text")) {
                 conditionElement = el;
             }
         }
@@ -190,7 +186,7 @@ public class PacketError {
         }
 
         conditionElement = docFactory.createElement(condition.toXMPP(),
-                ERROR_NAMESPACE);
+            ERROR_NAMESPACE);
         element.add(conditionElement);
     }
 
@@ -235,7 +231,7 @@ public class PacketError {
             textElement = docFactory.createElement("text", ERROR_NAMESPACE);
             if (lang != null) {
                 textElement.addAttribute(QName.get("lang", "xml",
-                        "http://www.w3.org/XML/1998/namespace"), lang);
+                    "http://www.w3.org/XML/1998/namespace"), lang);
             }
             element.add(textElement);
         }
@@ -252,22 +248,96 @@ public class PacketError {
         Element textElement = element.element("text");
         if (textElement != null) {
             return textElement.attributeValue(QName.get("lang", "xml",
-                        "http://www.w3.org/XML/1998/namespace"));
+                "http://www.w3.org/XML/1998/namespace"));
         }
         return null;
     }
 
     /**
-     * Sets an application-specific error condition.     *      * @param name the name of the application-specific error condition.     */    public void setApplicationCondition(String name) {        setApplicationCondition(name, null);    }
-        /**     * Sets an application-specific error condition. Optionally, a     * application-specific namespace can be specified to define its     * own application-specific error .     *      * @param name the name of the application-specific error condition.     * @param namespaceURI the namespace of the application.     */    @SuppressWarnings("unchecked")    public void setApplicationCondition(String name, String namespaceURI) {        if (ERROR_NAMESPACE.equals(namespaceURI)) {            throw new IllegalArgumentException();        }
-        Element applicationError = null;        for (Iterator<Element> i=element.elementIterator(); i.hasNext(); ) {
-            Element el = i.next();            if (!el.getNamespaceURI().equals(ERROR_NAMESPACE))            {                applicationError = el;            }        }
-        if (applicationError != null) {            element.remove(applicationError);        }
-        // If name is null, clear the application condition.        if (name == null) {            return;        }
-        if (namespaceURI == null) {            // Set fallback namespace (see XEP-0182)            namespaceURI = "urn:xmpp:errors";        }        applicationError = docFactory.createElement(name, namespaceURI);        element.add(applicationError);    }
-    /**     * Returns the name of the application-specific error condition,     * or <tt>null</tt> if there is no application-specific error.     *     * @return the name of the application-specific error condition, if it exists.     */    @SuppressWarnings("unchecked")    public String getApplicationConditionName() {        for (Iterator<Element> i=element.elementIterator(); i.hasNext(); ) {            Element el = i.next();            if (!el.getNamespaceURI().equals(ERROR_NAMESPACE))            {                return el.getName();            }        }        return null;    }
-        /**     * Returns the namespace of the application-specific error condition,     * or <tt>null</tt> if there is no application-specific error.     *     * @return the namespace of the application-specific error condition, if it exists.     */    @SuppressWarnings("unchecked")    public String getApplicationConditionNamespaceURI() {        for (Iterator<Element> i=element.elementIterator(); i.hasNext(); ) {            Element el = i.next();            if (!el.getNamespaceURI().equals(ERROR_NAMESPACE))            {                return el.getNamespaceURI();            }        }        return null;    }
-    /**     * Returns the DOM4J Element that backs the error. The element is the definitive
+     * Sets an application-specific error condition.
+     *
+     * @param name the name of the application-specific error condition.
+     */
+    public void setApplicationCondition(String name) {
+        setApplicationCondition(name, null);
+    }
+
+    /**
+     * Sets an application-specific error condition. Optionally, a
+     * application-specific namespace can be specified to define its
+     * own application-specific error .
+     *
+     * @param name the name of the application-specific error condition.
+     * @param namespaceURI the namespace of the application.
+     */
+    @SuppressWarnings("unchecked")
+    public void setApplicationCondition(String name, String namespaceURI) {
+        if (ERROR_NAMESPACE.equals(namespaceURI)) {
+            throw new IllegalArgumentException();
+        }
+
+        Element applicationError = null;
+        for (Iterator<Element> i = element.elementIterator(); i.hasNext(); ) {
+
+            Element el = i.next();
+            if (!el.getNamespaceURI().equals(ERROR_NAMESPACE)) {
+                applicationError = el;
+            }
+        }
+
+        if (applicationError != null) {
+            element.remove(applicationError);
+        }
+
+        // If name is null, clear the application condition.
+        if (name == null) {
+            return;
+        }
+
+        if (namespaceURI == null) {
+            // Set fallback namespace (see XEP-0182)
+            namespaceURI = "urn:xmpp:errors";
+        }
+        applicationError = docFactory.createElement(name, namespaceURI);
+        element.add(applicationError);
+    }
+
+    /**
+     * Returns the name of the application-specific error condition,
+     * or <tt>null</tt> if there is no application-specific error.
+     *
+     * @return the name of the application-specific error condition, if it exists.
+     */
+    @SuppressWarnings("unchecked")
+    public String getApplicationConditionName() {
+        for (Iterator<Element> i = element.elementIterator(); i.hasNext(); ) {
+            Element el = i.next();
+            if (!el.getNamespaceURI().equals(ERROR_NAMESPACE)) {
+                return el.getName();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns the namespace of the application-specific error condition,
+     * or <tt>null</tt> if there is no application-specific error.
+     *
+     * @return the namespace of the application-specific error condition, if it exists.
+     */
+    @SuppressWarnings("unchecked")
+    public String getApplicationConditionNamespaceURI() {
+        for (Iterator<Element> i = element.elementIterator(); i.hasNext(); ) {
+            Element el = i.next();
+            if (!el.getNamespaceURI().equals(ERROR_NAMESPACE)) {
+                return el.getNamespaceURI();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns the DOM4J Element that backs the error. The element is the definitive
      * representation of the error and can be manipulated directly to change
      * error contents.
      *
@@ -291,8 +361,7 @@ public class PacketError {
         XMLWriter writer = new XMLWriter(out, OutputFormat.createPrettyPrint());
         try {
             writer.write(element);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             // Ignore.
         }
         return out.toString();
@@ -485,71 +554,49 @@ public class PacketError {
             condition = condition.toLowerCase();
             if (bad_request.toXMPP().equals(condition)) {
                 return bad_request;
-            }
-            else if (conflict.toXMPP().equals(condition)) {
+            } else if (conflict.toXMPP().equals(condition)) {
                 return conflict;
-            }
-            else if (feature_not_implemented.toXMPP().equals(condition)) {
+            } else if (feature_not_implemented.toXMPP().equals(condition)) {
                 return feature_not_implemented;
-            }
-            else if (forbidden.toXMPP().equals(condition)) {
+            } else if (forbidden.toXMPP().equals(condition)) {
                 return forbidden;
-            }
-            else if (gone.toXMPP().equals(condition)) {
+            } else if (gone.toXMPP().equals(condition)) {
                 return gone;
-            }
-            else if (internal_server_error.toXMPP().equals(condition)) {
+            } else if (internal_server_error.toXMPP().equals(condition)) {
                 return internal_server_error;
-            }
-            else if (item_not_found.toXMPP().equals(condition)) {
+            } else if (item_not_found.toXMPP().equals(condition)) {
                 return item_not_found;
-            }
-            else if (jid_malformed.toXMPP().equals(condition)) {
+            } else if (jid_malformed.toXMPP().equals(condition)) {
                 return jid_malformed;
-            }
-            else if (not_acceptable.toXMPP().equals(condition)) {
+            } else if (not_acceptable.toXMPP().equals(condition)) {
                 return not_acceptable;
-            }
-            else if (not_allowed.toXMPP().equals(condition)) {
+            } else if (not_allowed.toXMPP().equals(condition)) {
                 return not_allowed;
-            }
-            else if (not_authorized.toXMPP().equals(condition)) {
+            } else if (not_authorized.toXMPP().equals(condition)) {
                 return not_authorized;
-            }
-            else if (payment_required.toXMPP().equals(condition)) {
+            } else if (payment_required.toXMPP().equals(condition)) {
                 return payment_required;
-            }
-            else if (recipient_unavailable.toXMPP().equals(condition)) {
+            } else if (recipient_unavailable.toXMPP().equals(condition)) {
                 return recipient_unavailable;
-            }
-            else if (redirect.toXMPP().equals(condition)) {
+            } else if (redirect.toXMPP().equals(condition)) {
                 return redirect;
-            }
-            else if (registration_required.toXMPP().equals(condition)) {
+            } else if (registration_required.toXMPP().equals(condition)) {
                 return registration_required;
-            }
-            else if (remote_server_not_found.toXMPP().equals(condition)) {
+            } else if (remote_server_not_found.toXMPP().equals(condition)) {
                 return remote_server_not_found;
-            }
-            else if (remote_server_timeout.toXMPP().equals(condition)) {
+            } else if (remote_server_timeout.toXMPP().equals(condition)) {
                 return remote_server_timeout;
-            }
-            else if (resource_constraint.toXMPP().equals(condition)) {
+            } else if (resource_constraint.toXMPP().equals(condition)) {
                 return resource_constraint;
-            }
-            else if (service_unavailable.toXMPP().equals(condition)) {
+            } else if (service_unavailable.toXMPP().equals(condition)) {
                 return service_unavailable;
-            }
-            else if (subscription_required.toXMPP().equals(condition)) {
+            } else if (subscription_required.toXMPP().equals(condition)) {
                 return subscription_required;
-            }
-            else if (undefined_condition.toXMPP().equals(condition)) {
+            } else if (undefined_condition.toXMPP().equals(condition)) {
                 return undefined_condition;
-            }
-            else if (unexpected_request.toXMPP().equals(condition)) {
+            } else if (unexpected_request.toXMPP().equals(condition)) {
                 return unexpected_request;
-            }
-            else {
+            } else {
                 throw new IllegalArgumentException("Condition invalid:" + condition);
             }
         }
@@ -557,71 +604,49 @@ public class PacketError {
         public static Condition fromLegacyCode(int code) {
             if (bad_request.getLegacyCode() == code) {
                 return bad_request;
-            }
-            else if (conflict.getLegacyCode() == code) {
+            } else if (conflict.getLegacyCode() == code) {
                 return conflict;
-            }
-            else if (feature_not_implemented.getLegacyCode() == code) {
+            } else if (feature_not_implemented.getLegacyCode() == code) {
                 return feature_not_implemented;
-            }
-            else if (forbidden.getLegacyCode() == code) {
+            } else if (forbidden.getLegacyCode() == code) {
                 return forbidden;
-            }
-            else if (gone.getLegacyCode() == code) {
+            } else if (gone.getLegacyCode() == code) {
                 return gone;
-            }
-            else if (internal_server_error.getLegacyCode() == code) {
+            } else if (internal_server_error.getLegacyCode() == code) {
                 return internal_server_error;
-            }
-            else if (item_not_found.getLegacyCode() == code) {
+            } else if (item_not_found.getLegacyCode() == code) {
                 return item_not_found;
-            }
-            else if (jid_malformed.getLegacyCode() == code) {
+            } else if (jid_malformed.getLegacyCode() == code) {
                 return jid_malformed;
-            }
-            else if (not_acceptable.getLegacyCode() == code) {
+            } else if (not_acceptable.getLegacyCode() == code) {
                 return not_acceptable;
-            }
-            else if (not_allowed.getLegacyCode() == code) {
+            } else if (not_allowed.getLegacyCode() == code) {
                 return not_allowed;
-            }
-            else if (not_authorized.getLegacyCode() == code) {
+            } else if (not_authorized.getLegacyCode() == code) {
                 return not_authorized;
-            }
-            else if (payment_required.getLegacyCode() == code) {
+            } else if (payment_required.getLegacyCode() == code) {
                 return payment_required;
-            }
-            else if (recipient_unavailable.getLegacyCode() == code) {
+            } else if (recipient_unavailable.getLegacyCode() == code) {
                 return recipient_unavailable;
-            }
-            else if (redirect.getLegacyCode() == code) {
+            } else if (redirect.getLegacyCode() == code) {
                 return redirect;
-            }
-            else if (registration_required.getLegacyCode() == code) {
+            } else if (registration_required.getLegacyCode() == code) {
                 return registration_required;
-            }
-            else if (remote_server_not_found.getLegacyCode() == code) {
+            } else if (remote_server_not_found.getLegacyCode() == code) {
                 return remote_server_not_found;
-            }
-            else if (remote_server_timeout.getLegacyCode() == code) {
+            } else if (remote_server_timeout.getLegacyCode() == code) {
                 return remote_server_timeout;
-            }
-            else if (resource_constraint.getLegacyCode() == code) {
+            } else if (resource_constraint.getLegacyCode() == code) {
                 return resource_constraint;
-            }
-            else if (service_unavailable.getLegacyCode() == code) {
+            } else if (service_unavailable.getLegacyCode() == code) {
                 return service_unavailable;
-            }
-            else if (subscription_required.getLegacyCode() == code) {
+            } else if (subscription_required.getLegacyCode() == code) {
                 return subscription_required;
-            }
-            else if (undefined_condition.getLegacyCode() == code) {
+            } else if (undefined_condition.getLegacyCode() == code) {
                 return undefined_condition;
-            }
-            else if (unexpected_request.getLegacyCode() == code) {
+            } else if (unexpected_request.getLegacyCode() == code) {
                 return unexpected_request;
-            }
-            else {
+            } else {
                 throw new IllegalArgumentException("Code invalid:" + code);
             }
         }
@@ -729,20 +754,15 @@ public class PacketError {
             type = type.toLowerCase();
             if (cancel.toXMPP().equals(type)) {
                 return cancel;
-            }
-            else if (continue_processing.toXMPP().equals(type)) {
+            } else if (continue_processing.toXMPP().equals(type)) {
                 return continue_processing;
-            }
-            else if (modify.toXMPP().equals(type)) {
+            } else if (modify.toXMPP().equals(type)) {
                 return modify;
-            }
-            else if (auth.toXMPP().equals(type)) {
+            } else if (auth.toXMPP().equals(type)) {
                 return auth;
-            }
-            else if (wait.toXMPP().equals(type)) {
+            } else if (wait.toXMPP().equals(type)) {
                 return wait;
-            }
-            else {
+            } else {
                 throw new IllegalArgumentException("Type invalid:" + type);
             }
         }

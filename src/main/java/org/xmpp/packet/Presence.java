@@ -79,7 +79,7 @@ public class Presence extends Packet {
      * Constructs a new Presence that is a copy of an existing Presence.
      *
      * @param presence the presence packet.
-     * @see #createCopy() 
+     * @see #createCopy()
      */
     private Presence(Presence presence) {
         Element elementCopy = presence.element.createCopy();
@@ -113,8 +113,7 @@ public class Presence extends Packet {
         String type = element.attributeValue("type");
         if (type == null) {
             return null;
-        }
-        else {
+        } else {
             return Type.valueOf(type);
         }
     }
@@ -126,7 +125,7 @@ public class Presence extends Packet {
      * @see Type
      */
     public void setType(Type type) {
-        element.addAttribute("type", type==null?null:type.toString());
+        element.addAttribute("type", type == null ? null : type.toString());
     }
 
     /**
@@ -143,8 +142,7 @@ public class Presence extends Packet {
         String show = element.elementText("show");
         if (show == null) {
             return null;
-        }
-        else {
+        } else {
             return Show.valueOf(show);
         }
     }
@@ -220,12 +218,10 @@ public class Presence extends Packet {
         String priority = element.elementText("priority");
         if (priority == null) {
             return 0;
-        }
-        else {
+        } else {
             try {
                 return Integer.parseInt(priority);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 return 0;
             }
         }
@@ -241,7 +237,7 @@ public class Presence extends Packet {
     public void setPriority(int priority) {
         if (priority < -128 || priority > 128) {
             throw new IllegalArgumentException("Priority value of " + priority +
-                    " is outside the valid range of -128 through 128");
+                " is outside the valid range of -128 through 128");
         }
         Element priorityElement = element.element("priority");
         if (priorityElement == null) {
@@ -270,7 +266,7 @@ public class Presence extends Packet {
      */
     @SuppressWarnings("unchecked")
     public Element getChildElement(String name, String namespace) {
-        for (Iterator<Element> i=element.elementIterator(name); i.hasNext(); ) {
+        for (Iterator<Element> i = element.elementIterator(name); i.hasNext(); ) {
             Element element = i.next();
             if (element.getNamespaceURI().equals(namespace)) {
                 return element;
@@ -369,7 +365,7 @@ public class Presence extends Packet {
          * An error has occurred regarding processing or delivery
          * of a previously-sent presence stanza.
          */
-        error;
+        error
     }
 
     /**
@@ -407,6 +403,6 @@ public class Presence extends Packet {
         /**
          * The entity or resource is busy (dnd = "Do Not Disturb").
          */
-        dnd;
+        dnd
     }
 }

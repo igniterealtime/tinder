@@ -28,7 +28,7 @@ import org.xmpp.packet.Packet;
  * for sub-domains. All XMPP routing at the socket level is done using the
  * primary server domain (<tt>example.com</tt> in the example above); sub-domains are
  * only used for routing within the XMPP server.
- * 
+ *
  * @author Matt Tucker
  */
 public interface Component {
