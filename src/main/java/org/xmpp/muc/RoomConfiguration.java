@@ -32,6 +32,7 @@ import java.util.Map.Entry;
  *
  * Code example:
  * <pre>
+ * {@code
  * // Set the fields and the values.
  * Map<String,Collection<String>> fields = new HashMap<String,Collection<String>>();
  * // Make a non-public room
@@ -45,6 +46,7 @@ import java.util.Map.Entry;
  * conf.setFrom("john@jabber.org/notebook");
  *
  * component.sendPacket(conf);
+ * }
  * </pre>
  *
  * @author Gaston Dombiak

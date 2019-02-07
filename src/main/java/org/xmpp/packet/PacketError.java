@@ -409,7 +409,7 @@ public class PacketError {
         /**
          * The recipient or server can no longer be contacted at this address
          * (the error stanza MAY contain a new address in the XML character
-         * data of the <gone/> element); the associated error type SHOULD be
+         * data of the &lt;gone/&gt; element); the associated error type SHOULD be
          * "modify".
          */
         gone("gone", Type.modify, 302),

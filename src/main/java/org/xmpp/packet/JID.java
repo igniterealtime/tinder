@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2004-2009 Jive Software. All rights reserved.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,7 +37,7 @@ import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap.Builder;
  * required. In simple ABNF form:
  *
  * <ul>
- * <tt>jid = [ node "@" ] domain [ "/" resource ]</tt>
+ * <li>jid = [ node "@" ] domain [ "/" resource ]</li>
  * </ul>
  *
  * Some sample JID's:
@@ -79,13 +79,13 @@ public class JID implements Comparable<JID>, Serializable {
     /**
      * Escapes the node portion of a JID according to "JID Escaping" (XEP-0106).
      * Escaping replaces characters prohibited by node-prep with escape sequences,
-     * as follows:<p>
+     * as follows:
      *
-     * <table border="1">
+     * <table border="1" summary="Escaping rules">
      * <tr><td><b>Unescaped Character</b></td><td><b>Encoded Sequence</b></td></tr>
      * <tr><td>&lt;space&gt;</td><td>\20</td></tr>
      * <tr><td>"</td><td>\22</td></tr>
-     * <tr><td>&</td><td>\26</td></tr>
+     * <tr><td>&amp;</td><td>\26</td></tr>
      * <tr><td>'</td><td>\27</td></tr>
      * <tr><td>/</td><td>\2f</td></tr>
      * <tr><td>:</td><td>\3a</td></tr>
@@ -93,16 +93,19 @@ public class JID implements Comparable<JID>, Serializable {
      * <tr><td>&gt;</td><td>\3e</td></tr>
      * <tr><td>@</td><td>\40</td></tr>
      * <tr><td>\</td><td>\5c</td></tr>
-     * </table><p>
+     * </table>
      *
+     * <p>
      * This process is useful when the node comes from an external source that doesn't
      * conform to nodeprep. For example, a username in LDAP may be "Joe Smith". Because
      * the &lt;space&gt; character isn't a valid part of a node, the username should
      * be escaped to "Joe\20Smith" before being made into a JID (e.g. "joe\20smith@example.com"
-     * after case-folding, etc. has been applied).<p>
-     *
+     * after case-folding, etc. has been applied).
+     * </p>
+     * <p>
      * All node escaping and un-escaping must be performed manually at the appropriate
      * time; the JID class will not escape or un-escape automatically.
+     * </p>
      *
      * @param node the node.
      * @return the escaped version of the node.
@@ -167,13 +170,12 @@ public class JID implements Comparable<JID>, Serializable {
     /**
      * Un-escapes the node portion of a JID according to "JID Escaping" (XEP-0106).<p>
      * Escaping replaces characters prohibited by node-prep with escape sequences,
-     * as follows:<p>
-     *
-     * <table border="1">
+     * as follows:
+     * <table border="1" summary="Escaped characters">
      * <tr><td><b>Unescaped Character</b></td><td><b>Encoded Sequence</b></td></tr>
      * <tr><td>&lt;space&gt;</td><td>\20</td></tr>
      * <tr><td>"</td><td>\22</td></tr>
-     * <tr><td>&</td><td>\26</td></tr>
+     * <tr><td>&amp;</td><td>\26</td></tr>
      * <tr><td>'</td><td>\27</td></tr>
      * <tr><td>/</td><td>\2f</td></tr>
      * <tr><td>:</td><td>\3a</td></tr>
@@ -181,16 +183,18 @@ public class JID implements Comparable<JID>, Serializable {
      * <tr><td>&gt;</td><td>\3e</td></tr>
      * <tr><td>@</td><td>\40</td></tr>
      * <tr><td>\</td><td>\5c</td></tr>
-     * </table><p>
-     *
+     * </table>
+     * <p>
      * This process is useful when the node comes from an external source that doesn't
      * conform to nodeprep. For example, a username in LDAP may be "Joe Smith". Because
      * the &lt;space&gt; character isn't a valid part of a node, the username should
      * be escaped to "Joe\20Smith" before being made into a JID (e.g. "joe\20smith@example.com"
-     * after case-folding, etc. has been applied).<p>
-     *
+     * after case-folding, etc. has been applied).
+     * </p>
+     * <p>
      * All node escaping and un-escaping must be performed manually at the appropriate
      * time; the JID class will not escape or un-escape automatically.
+     * </p>
      *
      * @param node the escaped version of the node.
      * @return the un-escaped version of the node.
@@ -353,6 +357,8 @@ public class JID implements Comparable<JID>, Serializable {
      *             exception wraps an UnsupportedEncodingException.
      * @throws IllegalArgumentException
      *             if <tt>domain</tt> is not a valid JID domain part.
+     * @throws StringprepException
+     *             If the resource name cannot be prepped with this profile.
      */
     public static String domainprep(String domain) throws StringprepException {
         if (domain == null) {
@@ -426,6 +432,8 @@ public class JID implements Comparable<JID>, Serializable {
      *             exception wraps an UnsupportedEncodingException.
      * @throws IllegalArgumentException
      *             if <tt>resource</tt> is not a valid JID resource.
+     * @throws StringprepException
+     *             If the resource name cannot be prepped with this profile.
      */
     public static String resourceprep(String resource) throws StringprepException {
         if (resource == null) {

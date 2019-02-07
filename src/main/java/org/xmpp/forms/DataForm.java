@@ -39,19 +39,21 @@ import org.xmpp.util.XMPPConstants;
 /**
  * Represents a form that could be use for gathering data as well as for reporting data
  * returned from a search.
- * <p/>
+ * <p>
  * The form could be of the following types:
+ * </p>
  * <ul>
- * <li>form -> Indicates a form to fill out.</li>
- * <li>submit -> The form is filled out, and this is the data that is being returned from
+ * <li>form -&gt; Indicates a form to fill out.</li>
+ * <li>submit -&gt; The form is filled out, and this is the data that is being returned from
  * the form.</li>
- * <li>cancel -> The form was cancelled. Tell the asker that piece of information.</li>
- * <li>result -> Data results being returned from a search, or some other query.</li>
+ * <li>cancel -&gt; The form was cancelled. Tell the asker that piece of information.</li>
+ * <li>result -&gt; Data results being returned from a search, or some other query.</li>
  * </ul>
- * <p/>
+ * <p>
  * In case the form represents a search, the report will be structured in columns and rows. Use
  * {@link #addReportedField(String, String, FormField.Type)} to set the columns of the report whilst
  * the report's rows can be configured using {@link #addItemFields(Map)}.
+ * </p>
  *
  * @author Gaston Dombiak
  */
@@ -142,7 +144,7 @@ public class DataForm extends PacketExtension {
 
     /**
      * Sets the description of the data. It is similar to the title on a web page or an X window.
-     * You can put a <title/> on either a form to fill out, or a set of data results.
+     * You can put a &lt;title/&gt; on either a form to fill out, or a set of data results.
      *
      * @param title description of the data.
      */
@@ -156,7 +158,7 @@ public class DataForm extends PacketExtension {
 
     /**
      * Returns the description of the data form. It is similar to the title on a web page or an X
-     * window.  You can put a <title/> on either a form to fill out, or a set of data results.
+     * window.  You can put a &lt;title/&gt; on either a form to fill out, or a set of data results.
      *
      * @return description of the data.
      */
@@ -321,13 +323,13 @@ public class DataForm extends PacketExtension {
 
     /**
      * Adds a new row of items of reported data. For each entry in the <tt>fields</tt> parameter
-     * a <tt>field</tt> element will be added to the <item> element. The variable of the new
+     * a <tt>field</tt> element will be added to the &lt;item&gt; element. The variable of the new
      * <tt>field</tt> will be the key of the entry. The new <tt>field</tt> will have several values
      * if the entry's value is a {@link Collection}. Since the value is of type {@link Object} it
      * is possible to include any type of object as a value. The actual value to include in the
      * data form is the result of the {@link #encode(Object)} method.
      *
-     * @param fields list of <variable,value> to be added as a new item.
+     * @param fields list of &lt;variable,value&gt; to be added as a new item.
      */
     @SuppressWarnings("unchecked")
     public void addItemFields(Map<String, Object> fields) {
