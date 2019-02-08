@@ -47,7 +47,7 @@ public class PacketExtension {
      * Subclasses of PacketExtension should register the element name and namespace that the
      * subclass is using.
      */
-    protected static final Map<QName, Class<? extends PacketExtension>> registeredExtensions = new ConcurrentHashMap<QName, Class<? extends PacketExtension>>();
+    protected static final Map<QName, Class<? extends PacketExtension>> registeredExtensions = new ConcurrentHashMap<>();
 
     protected Element element;
 

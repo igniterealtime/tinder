@@ -102,9 +102,9 @@ public class FastDateFormat {
 
     /**
      * @param pattern {@link java.text.SimpleDateFormat} compatible pattern
+     * @return date format with specified pattern.
      */
-    public static FastDateFormat getInstance(String pattern)
-        throws IllegalArgumentException {
+    public static FastDateFormat getInstance(String pattern) throws IllegalArgumentException {
         return getInstance(pattern, null, null, null);
     }
 
@@ -112,18 +112,18 @@ public class FastDateFormat {
      * @param pattern  {@link java.text.SimpleDateFormat} compatible pattern
      * @param timeZone optional time zone, overrides time zone of formatted
      *                 date
+     * @return date format with specified pattern and timezone.
      */
-    public static FastDateFormat getInstance
-    (String pattern, TimeZone timeZone) throws IllegalArgumentException {
+    public static FastDateFormat getInstance(String pattern, TimeZone timeZone) throws IllegalArgumentException {
         return getInstance(pattern, timeZone, null, null);
     }
 
     /**
      * @param pattern {@link java.text.SimpleDateFormat} compatible pattern
      * @param locale  optional locale, overrides system locale
+     * @return date format with specified pattern and locale.
      */
-    public static FastDateFormat getInstance
-    (String pattern, Locale locale) throws IllegalArgumentException {
+    public static FastDateFormat getInstance(String pattern, Locale locale) throws IllegalArgumentException {
         return getInstance(pattern, null, locale, null);
     }
 
@@ -131,10 +131,9 @@ public class FastDateFormat {
      * @param pattern {@link java.text.SimpleDateFormat} compatible pattern
      * @param symbols optional date format symbols, overrides symbols for
      *                system locale
+     * @return date format with specified pattern and format symbols.
      */
-    public static FastDateFormat getInstance
-    (String pattern, DateFormatSymbols symbols)
-        throws IllegalArgumentException {
+    public static FastDateFormat getInstance(String pattern, DateFormatSymbols symbols) throws IllegalArgumentException {
         return getInstance(pattern, null, null, symbols);
     }
 
@@ -143,10 +142,9 @@ public class FastDateFormat {
      * @param timeZone optional time zone, overrides time zone of formatted
      *                 date
      * @param locale   optional locale, overrides system locale
+     * @return date format with specified pattern, timezone and locale.
      */
-    public static FastDateFormat getInstance
-    (String pattern, TimeZone timeZone, Locale locale)
-        throws IllegalArgumentException {
+    public static FastDateFormat getInstance(String pattern, TimeZone timeZone, Locale locale) throws IllegalArgumentException {
         return getInstance(pattern, timeZone, locale, null);
     }
 
@@ -157,11 +155,10 @@ public class FastDateFormat {
      * @param locale   optional locale, overrides system locale
      * @param symbols  optional date format symbols, overrides symbols for
      *                 provided locale
+     * @return date format with specified pattern, timezone, locale and format symbols.
      */
-    public static synchronized FastDateFormat getInstance
-    (String pattern, TimeZone timeZone, Locale locale,
-     DateFormatSymbols symbols)
-        throws IllegalArgumentException {
+    public static synchronized FastDateFormat getInstance(String pattern, TimeZone timeZone, Locale locale,
+                                                          DateFormatSymbols symbols) throws IllegalArgumentException {
         Object key = pattern;
 
         if (timeZone != null) {
@@ -193,9 +190,9 @@ public class FastDateFormat {
      * @param timeZone optional time zone, overrides time zone of formatted
      *                 date
      * @param locale   optional locale, overrides system locale
+     * @return date format with specified style, timezone and locale.
      */
-    public static synchronized FastDateFormat getDateInstance
-    (Object style, TimeZone timeZone, Locale locale)
+    public static synchronized FastDateFormat getDateInstance(Object style, TimeZone timeZone, Locale locale)
         throws IllegalArgumentException {
         Object key = style;
 
@@ -211,7 +208,7 @@ public class FastDateFormat {
         if (format == null) {
             int ds;
             try {
-                ds = ((Integer) style).intValue();
+                ds = (Integer) style;
             } catch (ClassCastException e) {
                 throw new IllegalArgumentException
                     ("Illegal date style: " + style);
@@ -239,9 +236,9 @@ public class FastDateFormat {
      * @param timeZone optional time zone, overrides time zone of formatted
      *                 date
      * @param locale   optional locale, overrides system locale
+     * @return date format with specified style, timezone and locale.
      */
-    public static synchronized FastDateFormat getTimeInstance
-    (Object style, TimeZone timeZone, Locale locale)
+    public static synchronized FastDateFormat getTimeInstance(Object style, TimeZone timeZone, Locale locale)
         throws IllegalArgumentException {
         Object key = style;
 
@@ -257,7 +254,7 @@ public class FastDateFormat {
         if (format == null) {
             int ts;
             try {
-                ts = ((Integer) style).intValue();
+                ts = (Integer) style;
             } catch (ClassCastException e) {
                 throw new IllegalArgumentException
                     ("Illegal time style: " + style);
@@ -286,9 +283,9 @@ public class FastDateFormat {
      * @param timeZone  optional time zone, overrides time zone of formatted
      *                  date
      * @param locale    optional locale, overrides system locale
+     * @return date format with specified date, time styles, timezone and locale.
      */
-    public static synchronized FastDateFormat getDateTimeInstance
-    (Object dateStyle, Object timeStyle, TimeZone timeZone, Locale locale)
+    public static synchronized FastDateFormat getDateTimeInstance(Object dateStyle, Object timeStyle, TimeZone timeZone, Locale locale)
         throws IllegalArgumentException {
         Object key = new Pair(dateStyle, timeStyle);
 
@@ -305,7 +302,7 @@ public class FastDateFormat {
         if (format == null) {
             int ds;
             try {
-                ds = ((Integer) dateStyle).intValue();
+                ds = (Integer) dateStyle;
             } catch (ClassCastException e) {
                 throw new IllegalArgumentException
                     ("Illegal date style: " + dateStyle);
@@ -313,7 +310,7 @@ public class FastDateFormat {
 
             int ts;
             try {
-                ts = ((Integer) timeStyle).intValue();
+                ts = (Integer) timeStyle;
             } catch (ClassCastException e) {
                 throw new IllegalArgumentException
                     ("Illegal time style: " + timeStyle);
@@ -336,10 +333,7 @@ public class FastDateFormat {
         return format;
     }
 
-    static synchronized String getTimeZoneDisplay(TimeZone tz,
-                                                  boolean daylight,
-                                                  int style,
-                                                  Locale locale) {
+    static synchronized String getTimeZoneDisplay(TimeZone tz, boolean daylight, int style, Locale locale) {
         Object key = new TimeZoneDisplayKey(tz, daylight, style, locale);
         String value = (String) cTimeZoneDisplayCache.get(key);
         if (value == null) {
@@ -360,8 +354,7 @@ public class FastDateFormat {
     /**
      * Returns a list of Rules.
      */
-    private static List parse(String pattern, TimeZone timeZone, Locale locale,
-                              DateFormatSymbols symbols) {
+    private static List parse(String pattern, TimeZone timeZone, Locale locale, DateFormatSymbols symbols) {
         List rules = new ArrayList();
 
         String[] ERAs = symbols.getEras();
@@ -483,7 +476,7 @@ public class FastDateFormat {
     }
 
     private static String parseToken(String pattern, int[] indexRef) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 
         int i = indexRef[0];
         int length = pattern.length();
@@ -567,8 +560,7 @@ public class FastDateFormat {
      * @param timeZone optional time zone, overrides time zone of formatted
      *                 date
      */
-    private FastDateFormat(String pattern, TimeZone timeZone)
-        throws IllegalArgumentException {
+    private FastDateFormat(String pattern, TimeZone timeZone) throws IllegalArgumentException {
         this(pattern, timeZone, null, null);
     }
 
@@ -576,8 +568,7 @@ public class FastDateFormat {
      * @param pattern {@link java.text.SimpleDateFormat} compatible pattern
      * @param locale  optional locale, overrides system locale
      */
-    private FastDateFormat(String pattern, Locale locale)
-        throws IllegalArgumentException {
+    private FastDateFormat(String pattern, Locale locale) throws IllegalArgumentException {
         this(pattern, null, locale, null);
     }
 
@@ -586,8 +577,7 @@ public class FastDateFormat {
      * @param symbols optional date format symbols, overrides symbols for
      *                system locale
      */
-    private FastDateFormat(String pattern, DateFormatSymbols symbols)
-        throws IllegalArgumentException {
+    private FastDateFormat(String pattern, DateFormatSymbols symbols) throws IllegalArgumentException {
         this(pattern, null, null, symbols);
     }
 
@@ -597,8 +587,7 @@ public class FastDateFormat {
      *                 date
      * @param locale   optional locale, overrides system locale
      */
-    private FastDateFormat(String pattern, TimeZone timeZone, Locale locale)
-        throws IllegalArgumentException {
+    private FastDateFormat(String pattern, TimeZone timeZone, Locale locale) throws IllegalArgumentException {
         this(pattern, timeZone, locale, null);
     }
 
@@ -610,8 +599,7 @@ public class FastDateFormat {
      * @param symbols  optional date format symbols, overrides symbols for
      *                 provided locale
      */
-    private FastDateFormat(String pattern, TimeZone timeZone, Locale locale,
-                           DateFormatSymbols symbols)
+    private FastDateFormat(String pattern, TimeZone timeZone, Locale locale, DateFormatSymbols symbols)
         throws IllegalArgumentException {
         if (locale == null) {
             locale = Locale.getDefault();
@@ -668,10 +656,8 @@ public class FastDateFormat {
     }
 
     private StringBuffer applyRules(Calendar calendar, StringBuffer buf) {
-        Rule[] rules = mRules;
-        int len = mRules.length;
-        for (int i = 0; i < len; i++) {
-            rules[i].appendTo(buf, calendar);
+        for (Rule mRule : mRules) {
+            mRule.appendTo(buf, calendar);
         }
         return buf;
     }
@@ -683,11 +669,17 @@ public class FastDateFormat {
     /**
      * Returns the time zone used by this formatter, or null if time zone of
      * formatted dates is used instead.
+     * @return time zone.
      */
     public TimeZone getTimeZone() {
         return mTimeZone;
     }
 
+    /**
+     * Return the locale used by this formatter, or null if locale of
+     * formatted dates is used instead.
+     * @return locale.
+     */
     public Locale getLocale() {
         return mLocale;
     }
@@ -696,6 +688,7 @@ public class FastDateFormat {
      * Returns an estimate for the maximum length date that this date
      * formatter will produce. The actual formatted length will almost always
      * be less than or equal to this amount.
+     * @return maximum length date estimate.
      */
     public int getMaxLengthEstimate() {
         return mMaxLengthEstimate;
@@ -855,7 +848,7 @@ public class FastDateFormat {
                 for (int i = mSize; --i >= digits; ) {
                     buffer.append('0');
                 }
-                buffer.append(Integer.toString(value));
+                buffer.append(value);
             }
         }
     }
@@ -880,7 +873,7 @@ public class FastDateFormat {
                 buffer.append((char) (value / 10 + '0'));
                 buffer.append((char) (value % 10 + '0'));
             } else {
-                buffer.append(Integer.toString(value));
+                buffer.append(value);
             }
         }
     }

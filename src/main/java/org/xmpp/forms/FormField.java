@@ -94,7 +94,7 @@ public class FormField {
      */
     @SuppressWarnings("unchecked")
     public List<Option> getOptions() {
-        List<Option> answer = new ArrayList<Option>();
+        List<Option> answer = new ArrayList<>();
         for (Iterator<Element> it = element.elementIterator("option"); it.hasNext(); ) {
             answer.add(new Option(it.next()));
         }
@@ -103,21 +103,20 @@ public class FormField {
 
     /**
      * Sets an indicative of the format for the data to answer. Valid formats are:
-     * <p/>
      * <ul>
-     * <li>text-single -> single line or word of text
-     * <li>text-private -> instead of showing the user what they typed, you show ***** to
-     * protect it
-     * <li>text-multi -> multiple lines of text entry
-     * <li>list-single -> given a list of choices, pick one
-     * <li>list-multi -> given a list of choices, pick one or more
-     * <li>boolean -> 0 or 1, true or false, yes or no. Default value is 0
-     * <li>fixed -> fixed for putting in text to show sections, or just advertise your web
-     * site in the middle of the form
-     * <li>hidden -> is not given to the user at all, but returned with the questionnaire
-     * <li>jid-single -> Jabber ID - choosing a JID from your roster, and entering one based
-     * on the rules for a JID.
-     * <li>jid-multi -> multiple entries for JIDs
+     * <li>text-single -&gt; single line or word of text</li>
+     * <li>text-private -&gt; instead of showing the user what they typed, you show ***** to
+     * protect it</li>
+     * <li>text-multi -&gt; multiple lines of text entry</li>
+     * <li>list-single -&gt; given a list of choices, pick one</li>
+     * <li>list-multi -&gt; given a list of choices, pick one or more</li>
+     * <li>boolean -&gt; 0 or 1, true or false, yes or no. Default value is 0</li>
+     * <li>fixed -&gt; fixed for putting in text to show sections, or just advertise your web
+     * site in the middle of the form</li>
+     * <li>hidden -&gt; is not given to the user at all, but returned with the questionnaire</li>
+     * <li>jid-single -&gt; Jabber ID - choosing a JID from your roster, and entering one based
+     * on the rules for a JID.</li>
+     * <li>jid-multi -&gt; multiple entries for JIDs</li>
      * </ul>
      *
      * @param type an indicative of the format for the data to answer.
@@ -164,12 +163,14 @@ public class FormField {
     /**
      * Sets a description that provides extra clarification about the question. This information
      * could be presented to the user either in tool-tip, help button, or as a section of text
-     * before the question.<p>
-     * <p/>
+     * before the question.
+     * <p>
      * If the question is of type FIXED then the description should remain empty.
+     * </p>
      * <p>
      * No new description will be set, if the provided argument is <tt>null</tt> or an empty
      * String (although an existing description will be removed).
+     * </p>
      *
      * @param description provides extra clarification about the question.
      */
@@ -237,21 +238,20 @@ public class FormField {
 
     /**
      * Returns an indicative of the format for the data to answer. Valid formats are:
-     * <p/>
      * <ul>
-     * <li>text-single -> single line or word of text
-     * <li>text-private -> instead of showing the user what they typed, you show ***** to
-     * protect it
-     * <li>text-multi -> multiple lines of text entry
-     * <li>list-single -> given a list of choices, pick one
-     * <li>list-multi -> given a list of choices, pick one or more
-     * <li>boolean -> 0 or 1, true or false, yes or no. Default value is 0
-     * <li>fixed -> fixed for putting in text to show sections, or just advertise your web
-     * site in the middle of the form
-     * <li>hidden -> is not given to the user at all, but returned with the questionnaire
-     * <li>jid-single -> Jabber ID - choosing a JID from your roster, and entering one based
-     * on the rules for a JID.
-     * <li>jid-multi -> multiple entries for JIDs
+     * <li>text-single -&gt; single line or word of text</li>
+     * <li>text-private -&gt; instead of showing the user what they typed, you show ***** to
+     * protect it</li>
+     * <li>text-multi -&gt; multiple lines of text entry</li>
+     * <li>list-single -&gt; given a list of choices, pick one</li>
+     * <li>list-multi -&gt; given a list of choices, pick one or more</li>
+     * <li>boolean -&gt; 0 or 1, true or false, yes or no. Default value is 0</li>
+     * <li>fixed -&gt; fixed for putting in text to show sections, or just advertise your web
+     * site in the middle of the form</li>
+     * <li>hidden -&gt; is not given to the user at all, but returned with the questionnaire</li>
+     * <li>jid-single -&gt; Jabber ID - choosing a JID from your roster, and entering one based
+     * on the rules for a JID.</li>
+     * <li>jid-multi -&gt; multiple entries for JIDs</li>
      * </ul>
      *
      * @return format for the data to answer.
@@ -277,9 +277,10 @@ public class FormField {
     /**
      * Returns a description that provides extra clarification about the question. This information
      * could be presented to the user either in tool-tip, help button, or as a section of text
-     * before the question.<p>
-     * <p/>
+     * before the question.
+     * <p>
      * If the question is of type FIXED then the description should remain empty.
+     * </p>
      *
      * @return description that provides extra clarification about the question.
      */
@@ -347,9 +348,9 @@ public class FormField {
 
         /**
          * The field is intended for data description (e.g., human-readable text such as
-         * "section" headers) rather than data gathering or provision. The <value/> child
+         * "section" headers) rather than data gathering or provision. The &lt;value/&gt; child
          * SHOULD NOT contain newlines (the \n and \r characters); instead an application
-         * SHOULD generate multiple fixed fields, each with one <value/> child.
+         * SHOULD generate multiple fixed fields, each with one &lt;value/&gt; child.
          */
         fixed("fixed"),
 

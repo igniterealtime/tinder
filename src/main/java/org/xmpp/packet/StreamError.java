@@ -328,7 +328,7 @@ public class StreamError {
 
         /**
          * The entity has violated some local service policy; the server MAY choose to
-         * specify the policy in the <text/> element or an application-specific condition
+         * specify the policy in the &lt;text/&gt; element or an application-specific condition
          * element.
          */
         policy_violation("policy-violation"),
@@ -393,7 +393,8 @@ public class StreamError {
          * The initiating entity has sent XML that is not well-formed.
          *
          * @deprecated Deprecated by RFC6120 in favor of "not_well_formed"
-         * @see http://xmpp.org/rfcs/rfc6120.html#streams-error-conditions-not-well-formed
+         * @see <a href="http://xmpp.org/rfcs/rfc6120.html#streams-error-conditions-not-well-formed">
+         *     http://xmpp.org/rfcs/rfc6120.html#streams-error-conditions-not-well-formed</a>
          */
         @Deprecated
         xml_not_well_formed("xml-not-well-formed"),

@@ -95,7 +95,7 @@ public class Presence extends Packet {
      * convenience method that is equivalent to:
      *
      * <pre>getType() == null</pre>
-     *
+     * @return true if presense type is "available" else false.
      */
     public boolean isAvailable() {
         return getType() == null;

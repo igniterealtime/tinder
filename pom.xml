@@ -70,6 +70,9 @@
 		<developerConnection>https://github.com/igniterealtime/tinder.git</developerConnection>
 		<url>https://github.com/igniterealtime/tinder</url>
 	</scm>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 	<build>
 		<plugins>
 			<plugin>
@@ -116,10 +119,6 @@
 						<goals>
 							<goal>jar</goal>
 						</goals>
-						<configuration>
-							<!-- TODO: Clean up the Javadoc so the build no longer fails if doclint is enabled -->
-							<doclint>none</doclint>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
