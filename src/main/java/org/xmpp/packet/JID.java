@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2004-2009 Jive Software. All rights reserved.
- * <p>
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,9 +23,11 @@ import gnu.inet.encoding.StringprepException;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 import net.jcip.annotations.Immutable;
 
+import org.xmpp.util.JIDCache;
 import org.xmpp.util.ValueWrapper;
 import org.xmpp.util.ValueWrapper.Representation;
 
@@ -65,14 +67,11 @@ public class JID implements Comparable<JID>, Serializable {
     // Stringprep operations are very expensive. Therefore, we cache node, domain and
     // resource values that have already had stringprep applied so that we can check
     // incoming values against the cache.
-    private static final ConcurrentMap<String, ValueWrapper<String>> NODEPREP_CACHE = new Builder<String, ValueWrapper<String>>()
-        .maximumWeightedCapacity(10000).build();
-    private static final ConcurrentMap<String, ValueWrapper<String>> DOMAINPREP_CACHE = new Builder<String, ValueWrapper<String>>()
-        .maximumWeightedCapacity(500).build();
-    private static final ConcurrentMap<String, ValueWrapper<String>> RESOURCEPREP_CACHE = new Builder<String, ValueWrapper<String>>()
-        .maximumWeightedCapacity(10000).build();
+    public static final JIDCache NODEPREP_CACHE = new JIDCache("JID Node parts", 10000);
+    public static final JIDCache DOMAINPREP_CACHE = new JIDCache("JID Domain parts", 500);
+	public static final JIDCache RESOURCEPREP_CACHE = new JIDCache("JID Resource parts", 10000);
 
-    private final String node;
+	private final String node;
     private final String domain;
     private final String resource;
 
@@ -95,7 +94,6 @@ public class JID implements Comparable<JID>, Serializable {
      * <tr><td>\</td><td>\5c</td></tr>
      * </table>
      *
-     * <p>
      * This process is useful when the node comes from an external source that doesn't
      * conform to nodeprep. For example, a username in LDAP may be "Joe Smith". Because
      * the &lt;space&gt; character isn't a valid part of a node, the username should
