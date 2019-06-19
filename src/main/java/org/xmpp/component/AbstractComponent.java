@@ -39,7 +39,7 @@ import org.xmpp.util.XMPPConstants;
 /**
  * This class provides a default {@link Component} implementation. Most of the
  * default functionality can be overridden by overriding specific methods.
- * <br>
+ *
  * These XMPP features are implemented in the abstract component:
  * <ul>
  * <li>Service Discovery (XEP-0030)</li>
@@ -56,21 +56,21 @@ import org.xmpp.util.XMPPConstants;
  * queue is full, the stanza will be dropped and an exception will be logged. If
  * the stanza was an IQ request stanza, an IQ error stanza
  * (internal-server-error/wait) will be returned.
- * <br>
+ *
  * By default, instances of this class are guaranteed to return an IQ response
  * on every consumed IQ of the <tt>get</tt> or <tt>set</tt> type, as required by
  * the XMPP specification. If the abstract component cannot formulate a valid
  * response and the extending implementation does not provide a response either
  * (by returning <tt>null</tt> on invocations of {@link #handleIQGet(IQ)} and
  * {@link #handleIQSet(IQ)}) an IQ error response is returned.
- * <br>
+ *
  * The behavior described above can be disabled by setting a corresponding flag
  * in one of the constructors. If an instance is configured in such a way,
  * <tt>null</tt> responses provided by the extending implementation are not
  * translated in an IQ error. This allows the extending implementation to
  * respond to IQ requests in an asynchrous manner. It will be up to the
  * extending implementation to ensure that every IQ request is responded to.
- * <br>
+ *
  * Note that instances of this class can be used to implement internal (e.g.
  * Openfire plugins) as well as external components.
  *
@@ -205,7 +205,9 @@ public abstract class AbstractComponent implements Component {
         final Packet copy = packet.createCopy();
 
         if (executor == null) {
-            throw new IllegalStateException("Unable to initialize and start the executor.");
+            String msg = "(serving component '" + getName() + "') Unable to initialize and start component before packet processing.";
+            log.error(msg);
+            throw new IllegalStateException(msg);
         }
         try {
             executor.execute(new PacketProcessor(copy));
@@ -271,8 +273,10 @@ public abstract class AbstractComponent implements Component {
      *            The IQ stanza that was received by this component.
      */
     final private void processIQ(final IQ iq) {
+        if (log.isDebugEnabled()) {
         log.debug("(serving component '{}') Processing IQ (packetId {}): {}",
             new Object[] {getName(), iq.getID(), iq.toXML()});
+        }
 
         IQ response = null;
         final Type type = iq.getType();
@@ -315,32 +319,22 @@ public abstract class AbstractComponent implements Component {
                                 + "was incorrect: " + iq.toXML()
                                 + ". The response was: " + response.toXML());
                         }
+                    if (log.isDebugEnabled()) {
                         log.debug("(serving component '{}') Responding to IQ (packetId {}) with: {}",
                             new Object[] {getName(), iq.getID(), response.toXML()});
+                    }
                     }
                     break;
 
                 case result:
-                    if (servesLocalUsersOnly() && !sentByLocalEntity(iq)) {
-                        log.info("(serving component '{}') Dropping IQ "
-                                + "stanza sent by a user from another domain: {}",
-                            getName(), iq.getFrom());
-                        log.debug("(serving component '{}') Dropping IQ "
-                                + "stanza sent by a user from another domain: {}",
-                            getName(), iq.toXML());
+                if (dropStanza(iq)) {
                         return;
                     }
                     handleIQResult(iq);
                     break;
 
                 case error:
-                    if (servesLocalUsersOnly() && !sentByLocalEntity(iq)) {
-                        log.info("(serving component '{}') Dropping IQ "
-                                + "stanza sent by a user from another domain: {}",
-                            getName(), iq.getFrom());
-                        log.debug("(serving component '{}') Dropping IQ "
-                                + "stanza sent by a user from another domain: {}",
-                            getName(), iq.toXML());
+                if (dropStanza(iq)) {
                         return;
                     }
                     handleIQError(iq);
@@ -364,6 +358,21 @@ public abstract class AbstractComponent implements Component {
         }
     }
 
+    protected boolean dropStanza(IQ iq) {
+        if (servesLocalUsersOnly() && !sentByLocalEntity(iq)) {
+            log.info("(serving component '{}') Dropping IQ "
+                    + "stanza sent by a user from another domain: {}",
+                    getName(), iq.getFrom());
+            if (log.isDebugEnabled()) {
+                log.debug("(serving component '{}') Dropping IQ "
+                        + "stanza sent by a user from another domain: {}",
+                    getName(), iq.toXML());
+            }
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Pre-processes incoming message stanzas. This method checks for validity
      * of the messages (see {@link #servesLocalUsersOnly()}. If the stanza is
@@ -374,15 +383,19 @@ public abstract class AbstractComponent implements Component {
      *            The message stanza to process.
      */
     final private void processMessage(Message message) {
+        if (log.isTraceEnabled()) {
         log.trace("(serving component '{}') Processing message stanza: {}",
             getName(), message.toXML());
+        }
         if (servesLocalUsersOnly() && !sentByLocalEntity(message)) {
             log.info("(serving component '{}') Dropping message "
                     + "stanza sent by a user from another domain: {}",
                 getName(), message.getFrom());
+            if (log.isDebugEnabled()) {
             log.debug("(serving component '{}') Dropping message "
                     + "stanza sent by a user from another domain: {}",
                 getName(), message.toXML());
+            }
             return;
         }
         handleMessage(message);
@@ -398,15 +411,19 @@ public abstract class AbstractComponent implements Component {
      *            The presence stanza to process.
      */
     final private void processPresence(Presence presence) {
+        if (log.isTraceEnabled()) {
         log.trace("(serving component '{}') Processing presence stanza: {}",
             getName(), presence.toXML());
+        }
         if (servesLocalUsersOnly() && !sentByLocalEntity(presence)) {
             log.info("(serving component '{}') Dropping presence "
                     + "stanza sent by a user from another domain: {}",
                 getName(), presence.getFrom());
+            if (log.isDebugEnabled()) {
             log.debug("(serving component '{}') Dropping presence "
                     + "stanza sent by a user from another domain: {}",
                 getName(), presence.toXML());
+            }
             return;
         }
         handlePresence(presence);
@@ -472,9 +489,11 @@ public abstract class AbstractComponent implements Component {
             log.info("(serving component '{}') Returning "
                 + "'not-authorized' IQ error to a user from "
                 + "another domain: {}", getName(), iq.getFrom());
+            if (log.isDebugEnabled()) {
             log.debug("(serving component '{}') Returning "
                 + "'not-authorized' IQ error to a user from "
                 + "another domain: {}", getName(), iq.toXML());
+            }
             final IQ error = IQ.createResultIQ(iq);
             error.setError(Condition.not_authorized);
             return error;
@@ -536,7 +555,10 @@ public abstract class AbstractComponent implements Component {
     protected void handleIQError(IQ iq) {
         // Doesn't do anything. Override this method to process IQ error
         // stanzas.
-        log.info("(serving component '{}') IQ stanza of type <tt>error</tt> received: ", getName(), iq.toXML());
+        if (log.isInfoEnabled()) {
+            log.info("(serving component '{}') IQ stanza "
+               + "of type <tt>error</tt> received: {}", getName(), iq.toXML());
+        }
     }
 
     /**
@@ -885,8 +907,10 @@ public abstract class AbstractComponent implements Component {
                     if (packet instanceof IQ) {
                         final IQ iq = (IQ) packet;
                         if (iq.isRequest()) {
+                            if (log.isDebugEnabled()) {
                             log.debug("Responding 'service unavailable' to "
                                 + "unprocessed stanza: {}", iq.toXML());
+                            }
                             final IQ error = IQ.createResultIQ(iq);
                             error.setError(Condition.service_unavailable);
                             send(error);
