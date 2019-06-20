@@ -103,10 +103,10 @@ public class Presence extends Packet {
 
     /**
      * Returns the type of this presence. If the presence is "available", the
-     * type will be <tt>null</tt> (in XMPP, no value for the type attribute is
+     * type will be <code>null</code> (in XMPP, no value for the type attribute is
      * defined as available).
      *
-     * @return the presence type or <tt>null</tt> if "available".
+     * @return the presence type or <code>null</code> if "available".
      * @see Type
      */
     public Type getType() {
@@ -131,8 +131,8 @@ public class Presence extends Packet {
     /**
      * Returns the presence "show" value, which specifies a particular availability
      * status. If the &lt;show&gt; element is not present, this method will return
-     * <tt>null</tt>. The show value can only be set if the presence type is "avaialble".
-     * A <tt>null</tt> show value is used to represent "available", which is the
+     * <code>null</code>. The show value can only be set if the presence type is "avaialble".
+     * A <code>null</code> show value is used to represent "available", which is the
      * default.
      *
      * @return the presence show value..
@@ -150,7 +150,7 @@ public class Presence extends Packet {
     /**
      * Sets the presence "show" value, which specifies a particular availability
      * status. The show value can only be set if the presence type is "available".
-     * A <tt>null</tt> show value is used to represent "available", which is the
+     * A <code>null</code> show value is used to represent "available", which is the
      * default.
      *
      * @param show the presence show value.
@@ -249,7 +249,7 @@ public class Presence extends Packet {
     /**
      * Returns the first child element of this packet that matches the
      * given name and namespace. If no matching element is found,
-     * <tt>null</tt> will be returned. This is a convenience method to avoid
+     * <code>null</code> will be returned. This is a convenience method to avoid
      * manipulating this underlying packet's Element instance directly.<p>
      *
      * Child elements in extended namespaces are used to extend the features
@@ -261,7 +261,7 @@ public class Presence extends Packet {
      *
      * @param name the element name.
      * @param namespace the element namespace.
-     * @return the first matching child element, or <tt>null</tt> if there
+     * @return the first matching child element, or <code>null</code> if there
      *      is no matching child element.
      */
     @SuppressWarnings("unchecked")
@@ -307,7 +307,7 @@ public class Presence extends Packet {
 
     /**
      * Represents the type of a presence packet. Note: the presence is assumed
-     * to be "available" when the type attribute of the packet is <tt>null</tt>.
+     * to be "available" when the type attribute of the packet is <code>null</code>.
      * The valid types are:
      *
      *  <ul>
@@ -369,7 +369,7 @@ public class Presence extends Packet {
     }
 
     /**
-     * Represents the presence "show" value. Note: a <tt>null</tt> "show" value is the
+     * Represents the presence "show" value. Note: a <code>null</code> "show" value is the
      * default, which means "available". Valid values are:
      *
      * <ul>

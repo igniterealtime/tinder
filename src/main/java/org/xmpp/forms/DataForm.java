@@ -187,7 +187,7 @@ public class DataForm extends PacketExtension {
      * and what the form is about. The dataform could include multiple instructions since each
      * instruction could not contain newlines characters.
      * <p>
-     * Nothing will be set, if the provided argument is <tt>null</tt> or an empty String.
+     * Nothing will be set, if the provided argument is <code>null</code> or an empty String.
      *
      * @param instruction the new instruction that explain how to fill out the form.
      */
@@ -221,7 +221,7 @@ public class DataForm extends PacketExtension {
 
     /**
      * Adds a new field as part of the form. The provided arguments are optional
-     * (they are allowed to be <tt>null</tt>).
+     * (they are allowed to be <code>null</code>).
      *
      * @param variable the unique identifier of the field in the context of the
      * 		form. Optional parameter.
@@ -322,9 +322,9 @@ public class DataForm extends PacketExtension {
     }
 
     /**
-     * Adds a new row of items of reported data. For each entry in the <tt>fields</tt> parameter
-     * a <tt>field</tt> element will be added to the &lt;item&gt; element. The variable of the new
-     * <tt>field</tt> will be the key of the entry. The new <tt>field</tt> will have several values
+     * Adds a new row of items of reported data. For each entry in the <code>fields</code> parameter
+     * a <code>field</code> element will be added to the &lt;item&gt; element. The variable of the new
+     * <code>field</code> will be the key of the entry. The new <code>field</code> will have several values
      * if the entry's value is a {@link Collection}. Since the value is of type {@link Object} it
      * is possible to include any type of object as a value. The actual value to include in the
      * data form is the result of the {@link #encode(Object)} method.

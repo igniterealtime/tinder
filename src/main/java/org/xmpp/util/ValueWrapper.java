@@ -102,7 +102,7 @@ public class ValueWrapper<V> implements Serializable {
     }
 
     /**
-     * Wraps a value while using the <tt>USE_VALUE</tt> representation.
+     * Wraps a value while using the <code>USE_VALUE</code> representation.
      *
      * @param value
      *            The value that is wrapped.
@@ -114,7 +114,7 @@ public class ValueWrapper<V> implements Serializable {
     }
 
     /**
-     * Returns the wrapped value, or <tt>null</tt> if the representation used in
+     * Returns the wrapped value, or <code>null</code> if the representation used in
      * this instance is not USE_VALUE;
      *
      * @return the wrapped value.

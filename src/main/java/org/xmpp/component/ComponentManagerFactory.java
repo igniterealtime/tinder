@@ -22,7 +22,7 @@ package org.xmpp.component;
  *
  *      <li>An external process can set the ComponentManager using
  *      {@link #setComponentManager(ComponentManager)}.
- *      <li>If the component manager is <tt>null</tt>, the factory will check for
+ *      <li>If the component manager is <code>null</code>, the factory will check for
  *      the Java system property "whack.componentManagerClass". The value of the
  *      property should be the fully qualified class name of a ComponentManager
  *      implementation (e.g. com.foo.MyComponentManager). The class must have a default

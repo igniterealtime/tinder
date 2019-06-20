@@ -136,7 +136,7 @@ public class StreamError {
     }
 
     /**
-     * Returns a text description of the error, or <tt>null</tt> if there
+     * Returns a text description of the error, or <code>null</code> if there
      * is no text description.
      *
      * @return the text description of the error.
@@ -159,7 +159,7 @@ public class StreamError {
      * can be specified to indicate the language of the description.
      *
      * @param text the text description of the error.
-     * @param language the language code of the description, or <tt>null</tt> to specify
+     * @param language the language code of the description, or <code>null</code> to specify
      *      no language code.
      */
     public void setText(String text, String language) {
@@ -184,7 +184,7 @@ public class StreamError {
     }
 
     /**
-     * Returns the text description's language code, or <tt>null</tt> if there
+     * Returns the text description's language code, or <code>null</code> if there
      * is no language code associated with the description text.
      *
      * @return the language code of the text description, if it exists.
@@ -236,7 +236,7 @@ public class StreamError {
      * Implementation note: XMPP error conditions use "-" characters in
      * their names such as "bad-request". Because "-" characters are not valid
      * identifier parts in Java, they have been converted to "_" characters in
-     * the  enumeration names, such as <tt>bad_request</tt>. The {@link #toXMPP()} and
+     * the  enumeration names, such as <code>bad_request</code>. The {@link #toXMPP()} and
      * {@link #fromXMPP(String)} methods can be used to convert between the
      * enumertation values and XMPP error code strings.
      */

@@ -24,8 +24,8 @@ import org.xmpp.packet.IQ;
  * functionality, intended to be used by unit tests.
  * 
  * This component will respond to IQ-get requests containing a child element
- * escaped by the namespace <tt>tinder:debug</tt>. If the child element name is
- * <tt>threadname</tt>, a response will be generated that reports the name of
+ * escaped by the namespace <code>tinder:debug</code>. If the child element name is
+ * <code>threadname</code>, a response will be generated that reports the name of
  * the thread used to process the stanza, as shown:
  * 
  * <pre>
@@ -40,7 +40,7 @@ import org.xmpp.packet.IQ;
  * &lt;/iq&gt;
  * </pre>
  * 
- * If the element name is <tt>slowresponse</tt>, an empty response will be
+ * If the element name is <code>slowresponse</code>, an empty response will be
  * generated 4000 milliseconds after the request was delivered to the component.
  * 
  * <pre>

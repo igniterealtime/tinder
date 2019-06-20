@@ -50,7 +50,7 @@ public interface ComponentManager {
 
     /**
      * Sends a packet to the XMPP server. The "from" value of the packet must not be null.
-     * An <tt>IllegalArgumentException</tt> will be thrown when the "from" value is null.<p>
+     * An <code>IllegalArgumentException</code> will be thrown when the "from" value is null.<p>
      *
      * Components are trusted by the server and may use any value in from address. Usually
      * the from address uses the component's address as the domain but this is not required.
@@ -64,10 +64,10 @@ public interface ComponentManager {
 
     /**
      * Sends an IQ packet to the XMPP server and waits to get an IQ of type result or error.
-     * The "from" value of the packet must not be null. An <tt>IllegalArgumentException</tt>
+     * The "from" value of the packet must not be null. An <code>IllegalArgumentException</code>
      * will be thrown when the "from" value is null.<p>
      *
-     * If no answer is received from the server before the specified timeout then <tt>null</tt> will be returned.
+     * If no answer is received from the server before the specified timeout then <code>null</code> will be returned.
      *
      * Components are trusted by the server and may use any value in from address. Usually
      * the from address uses the component's address as the domain but this is not required.
@@ -76,7 +76,7 @@ public interface ComponentManager {
      * @param packet the IQ packet to send.
      * @param timeout the number of milliseconds to wait before returning an IQ error.
      * @return the answer sent by the server. The answer could be an IQ of type result or
-     *         error. <tt>null</tt> will be returned if there is no response from the server.
+     *         error. <code>null</code> will be returned if there is no response from the server.
      * @throws ComponentException if the component connection is lost or unavialble during the time of sending and
      * recieving packets.
      */

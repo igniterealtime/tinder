@@ -31,7 +31,7 @@ import org.dom4j.QName;
  * element. The wrapper provides an easy way to handle the packet extension.<p>
  *
  * Subclasses of this class can be registered using the static variable
- * <tt>registeredExtensions</tt>. The registration process associates the new subclass
+ * <code>registeredExtensions</code>. The registration process associates the new subclass
  * with a given qualified name (ie. element name and namespace). This information will be used by
  * {@link Packet#getExtension(String, String)} for locating the corresponding PacketExtension
  * subclass to return for the requested qualified name. Each PacketExtension must have a public

@@ -111,7 +111,7 @@ public class Message extends Packet {
     }
 
     /**
-     * Returns the subject of this message or <tt>null</tt> if there is no subject..
+     * Returns the subject of this message or <code>null</code> if there is no subject..
      *
      * @return the subject.
      */
@@ -142,7 +142,7 @@ public class Message extends Packet {
     }
 
     /**
-     * Returns the body of this message or <tt>null</tt> if there is no body.
+     * Returns the body of this message or <code>null</code> if there is no body.
      *
      * @return the body.
      */
@@ -173,7 +173,7 @@ public class Message extends Packet {
     /**
      * Returns the thread value of this message, an identifier that is used for
      * tracking a conversation thread ("instant messaging session")
-     * between two entities. If the thread is not set, <tt>null</tt> will be
+     * between two entities. If the thread is not set, <code>null</code> will be
      * returned.
      *
      * @return the thread value.
@@ -208,7 +208,7 @@ public class Message extends Packet {
     /**
      * Returns the first child element of this packet that matches the
      * given name and namespace. If no matching element is found,
-     * <tt>null</tt> will be returned. This is a convenience method to avoid
+     * <code>null</code> will be returned. This is a convenience method to avoid
      * manipulating this underlying packet's Element instance directly.<p>
      *
      * Child elements in extended namespaces are used to extend the features
@@ -220,7 +220,7 @@ public class Message extends Packet {
      *
      * @param name the element name.
      * @param namespace the element namespace.
-     * @return the first matching child element, or <tt>null</tt> if there
+     * @return the first matching child element, or <code>null</code> if there
      *      is no matching child element.
      */
     @SuppressWarnings("unchecked")
