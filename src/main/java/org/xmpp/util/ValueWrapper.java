@@ -29,9 +29,9 @@ import net.jcip.annotations.Immutable;
  * @author Guus der Kinderen, guus.der.kinderen@gmail.com
  */
 @Immutable
-public class ValueWrapper<V> implements Serializable {
+public class ValueWrapper<V extends Serializable> implements Serializable {
 
-    private static final long serialVersionUID = -9054807517127343156L;
+    private static final long serialVersionUID = 3685221890410462582L;
 
     /**
      * Indication of how the key of this cache entry represents the cache value.
@@ -59,8 +59,6 @@ public class ValueWrapper<V> implements Serializable {
          */
         USE_VALUE
     }
-
-    ;
 
     /**
      * The value that is wrapped.
