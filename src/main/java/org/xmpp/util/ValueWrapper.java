@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2004-2009 Jive Software. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -74,23 +74,31 @@ public class ValueWrapper<V> implements Serializable {
     private final Representation representation;
 
     /**
-     * Constructs an empty wrapper. This wrapper either is used to indicate that
-     * the key that maps to this value: cannot be used to generate a valid
-     * value, or, is an exact duplicate of the generated value.
-     *
-     * An {@link IllegalArgumentException} is thrown if the argument is
-     * <tt>USE_VALUE</tt>.
-     *
-     * @param representation
-     *            Key representation indicator.
+	 * Describes the issue that caused the value to be denoted as 'Illegal'.
      */
-    public ValueWrapper(Representation representation) {
-        if (representation == Representation.USE_VALUE) {
-            throw new IllegalArgumentException();
-        }
+	private final String exceptionMessage;
 
-        this.representation = representation;
+	/**
+	 * Constructs an empty wrapper. This wrapper is used to indicate that
+	 * the key that maps to this value is an exact duplicate of the generated value.
+	 */
+	public ValueWrapper() {
+		this.representation = Representation.USE_KEY;
         this.value = null;
+		this.exceptionMessage = null;
+	}
+
+	/**
+	 * Constructs a wrapper that is used to indicate that the key that maps to
+	 * this value cannot be used to generate a valid value
+	 *
+	 * @param exception
+	 *            Describes the invalidity of the key.
+	 */
+	public ValueWrapper(Exception exception) {
+		this.representation = Representation.ILLEGAL;
+		this.value = null;
+		this.exceptionMessage = exception.getMessage();
     }
 
     /**
@@ -102,6 +110,7 @@ public class ValueWrapper<V> implements Serializable {
     public ValueWrapper(V value) {
         this.representation = Representation.USE_VALUE;
         this.value = value;
+		this.exceptionMessage = null;
     }
 
     /**
@@ -117,4 +126,24 @@ public class ValueWrapper<V> implements Serializable {
     public Representation getRepresentation() {
         return representation;
     }
+
+	/**
+	 * Returns the message describing the invalidity of the key that maps
+	 * to this instance.
+	 *
+	 * @return An exception message , possibly null.
+	 */
+	public String getExceptionMessage() {
+		return exceptionMessage;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "ValueWrapper{" +
+				"value=" + value +
+				", representation=" + representation +
+				", exceptionMessage='" + exceptionMessage + '\'' +
+				'}';
+	}
 }
