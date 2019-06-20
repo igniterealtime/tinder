@@ -22,11 +22,11 @@ import org.xmpp.packet.Packet;
 /**
  * Components enhance the functionality of an XMPP server. Components receive
  * all packets addressed to a particular sub-domain. For example,
- * <tt>test_component.example.com</tt>. So, a packet sent to
- * <tt>joe@test_component.example.com</tt> would be delivered to the component.
+ * <code>test_component.example.com</code>. So, a packet sent to
+ * <code>joe@test_component.example.com</code> would be delivered to the component.
  * Note that the sub-domains defined as components are unrelated to DNS entries
  * for sub-domains. All XMPP routing at the socket level is done using the
- * primary server domain (<tt>example.com</tt> in the example above); sub-domains are
+ * primary server domain (<code>example.com</code> in the example above); sub-domains are
  * only used for routing within the XMPP server.
  *
  * @author Matt Tucker
@@ -57,7 +57,7 @@ public interface Component {
 
     /**
      * Initializes this component with a ComponentManager and the JID
-     * that this component is available at (e.g. <tt>service.example.com</tt>). If a
+     * that this component is available at (e.g. <code>service.example.com</code>). If a
      * ComponentException is thrown then the component will not be loaded.<p>
      *
      * The initialization code must not rely on receiving packets from the server since

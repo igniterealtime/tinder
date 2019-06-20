@@ -53,7 +53,7 @@ public class PacketAddressingTest {
 	}
 
 	/**
-	 * To and From addresses should be allowed to be <tt>null</tt>.
+	 * To and From addresses should be allowed to be <code>null</code>.
 	 */
 	@Test
 	public void testAllowNullToJID() throws Exception {
@@ -63,7 +63,7 @@ public class PacketAddressingTest {
 	}
 
 	/**
-	 * To and From addresses should be allowed to be <tt>null</tt>.
+	 * To and From addresses should be allowed to be <code>null</code>.
 	 */
 	@Test
 	public void testAllowNullToString() throws Exception {
@@ -157,7 +157,7 @@ public class PacketAddressingTest {
 	}
 
 	/**
-	 * To and From addresses should be allowed to be <tt>null</tt>.
+	 * To and From addresses should be allowed to be <code>null</code>.
 	 */
 	@Test
 	public void testAllowNullFromJID() throws Exception {
@@ -167,7 +167,7 @@ public class PacketAddressingTest {
 	}
 
 	/**
-	 * To and From addresses should be allowed to be <tt>null</tt>.
+	 * To and From addresses should be allowed to be <code>null</code>.
 	 */
 	@Test
 	public void testAllowNullFromString() throws Exception {

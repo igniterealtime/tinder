@@ -39,9 +39,9 @@ import java.time.Duration;
  *
  * Some sample JID's:
  * <ul>
- * <li><tt>user@example.com</tt></li>
- * <li><tt>user@example.com/home</tt></li>
- * <li><tt>example.com</tt></li>
+ * <li><code>user@example.com</code></li>
+ * <li><code>user@example.com/home</code></li>
+ * <li><code>example.com</code></li>
  * </ul>
  *
  * Each allowable portion of a JID (node, domain, and resource) must not be more
@@ -290,7 +290,7 @@ public class JID implements Comparable<JID>, Serializable {
      *            The raw node value.
      * @return A String based JID node representation
      * @throws IllegalArgumentException
-     *             if <tt>node</tt> is not a valid JID node.
+     *             if <code>node</code> is not a valid JID node.
      */
     public static String nodeprep(String node) {
         if (node == null) {
@@ -346,7 +346,7 @@ public class JID implements Comparable<JID>, Serializable {
      *            The raw domain value.
      * @return A String based JID domain part representation
      * @throws IllegalArgumentException
-     *             if <tt>domain</tt> is not a valid JID domain part.
+     *             if <code>domain</code> is not a valid JID domain part.
      */
     public static String domainprep(String domain) {
         if (domain == null) {
@@ -402,7 +402,7 @@ public class JID implements Comparable<JID>, Serializable {
      *            The raw resource value.
      * @return A String based JID resource representation
      * @throws IllegalArgumentException
-     *             if <tt>resource</tt> is not a valid JID resource.
+     *             if <code>resource</code> is not a valid JID resource.
      */
     public static String resourceprep(String resource) {
         if (resource == null) {
@@ -465,7 +465,7 @@ public class JID implements Comparable<JID>, Serializable {
      * @param jid
      *            a valid JID.
      * @param skipStringPrep
-     *            <tt>true</tt> if stringprep should not be applied.
+     *            <code>true</code> if stringprep should not be applied.
      * @throws IllegalArgumentException
      *             if the JID is not valid.
      */
@@ -481,9 +481,9 @@ public class JID implements Comparable<JID>, Serializable {
      * Constructs a JID given a node, domain, and resource.
      *
      * @param node the node.
-     * @param domain the domain, which must not be <tt>null</tt>.
+     * @param domain the domain, which must not be <code>null</code>.
      * @param resource the resource.
-     * @throws NullPointerException if domain is <tt>null</tt>.
+     * @throws NullPointerException if domain is <code>null</code>.
      * @throws IllegalArgumentException if the JID is not valid.
      */
     public JID(String node, String domain, String resource) {
@@ -495,10 +495,10 @@ public class JID implements Comparable<JID>, Serializable {
      * should be applied or not.
      *
      * @param node the node.
-     * @param domain the domain, which must not be <tt>null</tt>.
+     * @param domain the domain, which must not be <code>null</code>.
      * @param resource the resource.
-     * @param skipStringprep <tt>true</tt> if stringprep should not be applied.
-     * @throws NullPointerException if domain is <tt>null</tt>.
+     * @param skipStringprep <code>true</code> if stringprep should not be applied.
+     * @throws NullPointerException if domain is <code>null</code>.
      * @throws IllegalArgumentException if the JID is not valid.
      */
     public JID(String node, String domain, String resource, boolean skipStringprep) {
@@ -606,7 +606,7 @@ public class JID implements Comparable<JID>, Serializable {
     }
 
     /**
-     * Returns the node, or <tt>null</tt> if this JID does not contain node information.
+     * Returns the node, or <code>null</code> if this JID does not contain node information.
      *
      * @return the node.
      */
@@ -624,7 +624,7 @@ public class JID implements Comparable<JID>, Serializable {
     }
 
     /**
-     * Returns the resource, or <tt>null</tt> if this JID does not contain resource information.
+     * Returns the resource, or <code>null</code> if this JID does not contain resource information.
      *
      * @return the resource.
      */
@@ -634,7 +634,7 @@ public class JID implements Comparable<JID>, Serializable {
 
     /**
      * Returns the String representation of the bare JID, which is the JID with
-     * resource information removed. For example: <tt>username@domain.com</tt>
+     * resource information removed. For example: <code>username@domain.com</code>
      *
      * @return the bare JID.
      */
@@ -650,7 +650,7 @@ public class JID implements Comparable<JID>, Serializable {
 
     /**
      * Returns the bare JID representation of this JID, which is the JID with
-     * resource information removed. For example: <tt>username@domain.com</tt>
+     * resource information removed. For example: <code>username@domain.com</code>
      *
      * @return the bare JID.
      * @see <a href="http://issues.igniterealtime.org/browse/TINDER-68">TINDER-68</a>
@@ -661,7 +661,7 @@ public class JID implements Comparable<JID>, Serializable {
 
     /**
      * Returns the String representation of the full JID, for example:
-     * <tt>username@domain.com/mobile</tt>.
+     * <code>username@domain.com/mobile</code>.
      *
      * If no resource has been provided in the constructor of this object, an
      * IllegalStateException is thrown.
@@ -768,7 +768,7 @@ public class JID implements Comparable<JID>, Serializable {
      *      <li>Resources are normalized using resourceprep (case sensitive).</ul>
      *
      * These normalization rules ensure, for example, that
-     * <tt>User@EXAMPLE.com/home</tt> is considered equal to <tt>user@example.com/home</tt>.
+     * <code>User@EXAMPLE.com/home</code> is considered equal to <code>user@example.com/home</code>.
      *
      * @param jid1 a JID.
      * @param jid2 a JID.

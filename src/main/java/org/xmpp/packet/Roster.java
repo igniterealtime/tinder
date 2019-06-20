@@ -93,7 +93,7 @@ public class Roster extends IQ {
     }
 
     /**
-     * Adds a new item to the roster. The name and groups are set to <tt>null</tt>
+     * Adds a new item to the roster. The name and groups are set to <code>null</code>
      * If the roster packet already contains an item using the same JID, the
      * information in the existing item will be overwritten with the new information.<p>
      *
@@ -116,7 +116,7 @@ public class Roster extends IQ {
     }
 
     /**
-     * Adds a new item to the roster. The name and groups are set to <tt>null</tt>
+     * Adds a new item to the roster. The name and groups are set to <code>null</code>
      * If the roster packet already contains an item using the same JID, the
      * information in the existing item will be overwritten with the new information.<p>
      *
@@ -298,9 +298,9 @@ public class Roster extends IQ {
 
         /**
          * Returns the nickname associated with this item. If no nickname exists,
-         * <tt>null</tt> is returned.
+         * <code>null</code> is returned.
          *
-         * @return the nickname, or <tt>null</tt> if it doesn't exist.
+         * @return the nickname, or <code>null</code> if it doesn't exist.
          */
         public String getName() {
             return name;

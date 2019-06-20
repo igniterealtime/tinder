@@ -47,7 +47,7 @@ public class AbstractComponentServiceDiscovery {
 	private IQ response = null;
 
 	/**
-	 * Makes sure that the <tt>response</tt> field of this class is assigned a
+	 * Makes sure that the <code>response</code> field of this class is assigned a
 	 * fresh response to a service discovery information request.
 	 * 
 	 */

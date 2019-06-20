@@ -74,7 +74,7 @@ public abstract class Packet {
      * Constructs a new Packet. The JID address contained in the XML Element may not be
      * validated. When validation can be skipped then stringprep operations will not be performed
      * on the JIDs to verify that addresses are well-formed. However, when validation cannot be
-     * skipped then <tt>only</tt> the TO address will be verified. The FROM address is assigned by
+     * skipped then <code>only</code> the TO address will be verified. The FROM address is assigned by
      * the server so there is no need to verify it.
      *
      * @param element the XML Element that contains the packet contents.
@@ -117,7 +117,7 @@ public abstract class Packet {
     }
 
     /**
-     * Returns the packet ID, or <tt>null</tt> if the packet does not have an ID.
+     * Returns the packet ID, or <code>null</code> if the packet does not have an ID.
      * Packet ID's are optional, except for IQ packets.
      *
      * @return the packet ID.
@@ -136,11 +136,11 @@ public abstract class Packet {
     }
 
     /**
-     * Returns the XMPP address (JID) that the packet is addressed to, or <tt>null</tt>
+     * Returns the XMPP address (JID) that the packet is addressed to, or <code>null</code>
      * if the "to" attribute is not set. The XMPP protocol often makes the "to"
      * attribute optional, so it does not always need to be set.
      *
-     * @return the XMPP address (JID) that the packet is addressed to, or <tt>null</tt>
+     * @return the XMPP address (JID) that the packet is addressed to, or <code>null</code>
      *      if not set.
      */
     public JID getTo() {
@@ -195,11 +195,11 @@ public abstract class Packet {
     }
 
     /**
-     * Returns the XMPP address (JID) that the packet is from, or <tt>null</tt>
+     * Returns the XMPP address (JID) that the packet is from, or <code>null</code>
      * if the "from" attribute is not set. The XMPP protocol often makes the "from"
      * attribute optional, so it does not always need to be set.
      *
-     * @return the XMPP address that the packet is from, or <tt>null</tt>
+     * @return the XMPP address that the packet is from, or <code>null</code>
      *      if not set.
      */
     public JID getFrom() {
@@ -268,7 +268,7 @@ public abstract class Packet {
 
     /**
      * Returns a {@link PacketExtension} on the first element found in this packet
-     * for the specified <tt>name</tt> and <tt>namespace</tt> or <tt>null</tt> if
+     * for the specified <code>name</code> and <code>namespace</code> or <code>null</code> if
      * none was found.
      *
      * @param name the child element name.
@@ -322,7 +322,7 @@ public abstract class Packet {
     }
 
     /**
-     * Returns the packet error, or <tt>null</tt> if there is no packet error.
+     * Returns the packet error, or <code>null</code> if there is no packet error.
      *
      * @return the packet error.
      */
@@ -359,7 +359,7 @@ public abstract class Packet {
      * method will automatically set the packet "type" attribute to "error".
      * This is a convenience method equivalent to calling:
      *
-     * <tt>setError(new PacketError(condition));</tt>
+     * <code>setError(new PacketError(condition));</code>
      *
      * @param condition the error condition.
      */

@@ -44,7 +44,7 @@ public class FormField {
      * Adds a default value to the question if the question is part of a form to fill out.
      * Otherwise, adds an answered value to the question.
      * <p>
-     * Nothing will be added if the provided argument is <tt>null</tt>.
+     * Nothing will be added if the provided argument is <code>null</code>.
      *
      * @param value a default value or an answered value of the question.
      */
@@ -70,7 +70,7 @@ public class FormField {
      * Adds an available option to the question that the user has in order to answer
      * the question.
      * <p>
-     * If argument 'value' is <tt>null</tt> or an empty String, no option element
+     * If argument 'value' is <code>null</code> or an empty String, no option element
      * will be added.
      *
      * @param label a label that represents the option. Optional argument.
@@ -168,7 +168,7 @@ public class FormField {
      * If the question is of type FIXED then the description should remain empty.
      * </p>
      * <p>
-     * No new description will be set, if the provided argument is <tt>null</tt> or an empty
+     * No new description will be set, if the provided argument is <code>null</code> or an empty
      * String (although an existing description will be removed).
      * </p>
      *
@@ -334,7 +334,7 @@ public class FormField {
      * Implementation note: XMPP error conditions use "-" characters in
      * their names such as "jid-multi". Because "-" characters are not valid
      * identifier parts in Java, they have been converted to "_" characters in
-     * the  enumeration names, such as <tt>jid_multi</tt>. The {@link #toXMPP()} and
+     * the  enumeration names, such as <code>jid_multi</code>. The {@link #toXMPP()} and
      * {@link #fromXMPP(String)} methods can be used to convert between the
      * enumertation values and Type code strings.
      */

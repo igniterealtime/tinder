@@ -281,8 +281,8 @@ public class IQ extends Packet {
 
     /**
      * Returns a {@link PacketExtension} on the first element found in this packet's
-     * child element for the specified <tt>name</tt> and <tt>namespace</tt> or <tt>null</tt> if
-     * none was found. If the IQ packet does not have a child element then <tt>null</tt>
+     * child element for the specified <code>name</code> and <code>namespace</code> or <code>null</code> if
+     * none was found. If the IQ packet does not have a child element then <code>null</code>
      * will be returned.<p>
      *
      * Note: packet extensions on IQ packets are only for use in specialized situations.
@@ -291,7 +291,7 @@ public class IQ extends Packet {
      * @param name the child element name.
      * @param namespace the child element namespace.
      * @return a PacketExtension on the first element found in this packet for the specified
-     *         name and namespace or <tt>null</tt> if none was found.
+     *         name and namespace or <code>null</code> if none was found.
      */
     @SuppressWarnings("unchecked")
     public PacketExtension getExtension(String name, String namespace) {
@@ -319,7 +319,7 @@ public class IQ extends Packet {
      * Deletes the first element whose element name and namespace matches the specified
      * element name and namespace in this packet's child element. If the
      * IQ packet does not have a child element then this method does nothing and returns
-     * <tt>false</tt>.<p>
+     * <code>false</code>.<p>
      *
      * Notice that this method may remove any child element that matches the specified
      * element name and namespace even if that element was not added to the Packet using a

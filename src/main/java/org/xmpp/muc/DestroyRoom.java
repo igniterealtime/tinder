@@ -37,8 +37,8 @@ public class DestroyRoom extends IQ {
     /**
      * Creates a new DestroyRoom with the reason for the destruction and an alternate room JID.
      *
-     * @param alternateJID JID of the alternate room or <tt>null</tt> if none.
-     * @param reason       reason for the destruction or <tt>null</tt> if none.
+     * @param alternateJID JID of the alternate room or <code>null</code> if none.
+     * @param reason       reason for the destruction or <code>null</code> if none.
      */
     public DestroyRoom(JID alternateJID, String reason) {
         super();

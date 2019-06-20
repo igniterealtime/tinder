@@ -58,15 +58,15 @@ import org.xmpp.util.XMPPConstants;
  * (internal-server-error/wait) will be returned.
  *
  * By default, instances of this class are guaranteed to return an IQ response
- * on every consumed IQ of the <tt>get</tt> or <tt>set</tt> type, as required by
+ * on every consumed IQ of the <code>get</code> or <code>set</code> type, as required by
  * the XMPP specification. If the abstract component cannot formulate a valid
  * response and the extending implementation does not provide a response either
- * (by returning <tt>null</tt> on invocations of {@link #handleIQGet(IQ)} and
+ * (by returning <code>null</code> on invocations of {@link #handleIQGet(IQ)} and
  * {@link #handleIQSet(IQ)}) an IQ error response is returned.
  *
  * The behavior described above can be disabled by setting a corresponding flag
  * in one of the constructors. If an instance is configured in such a way,
- * <tt>null</tt> responses provided by the extending implementation are not
+ * <code>null</code> responses provided by the extending implementation are not
  * translated in an IQ error. This allows the extending implementation to
  * respond to IQ requests in an asynchrous manner. It will be up to the
  * extending implementation to ensure that every IQ request is responded to.
@@ -145,7 +145,7 @@ public abstract class AbstractComponent implements Component {
     private final int maxQueueSize;
 
     /**
-     * if <tt>true</tt>, the component will make sure that every request that is
+     * if <code>true</code>, the component will make sure that every request that is
      * received is answered, as specified by the XMPP specification.
      */
     private final boolean enforceIQResult;
@@ -173,7 +173,7 @@ public abstract class AbstractComponent implements Component {
      *            capacity of the queue that holds tasks that are to be executed
      *            by the thread pool.
      * @param enforceIQResult
-     *            if <tt>true</tt>, the component will make sure that every
+     *            if <code>true</code>, the component will make sure that every
      *            request that is received is answered, as specified by the XMPP
      *            specification.
      */
@@ -249,16 +249,16 @@ public abstract class AbstractComponent implements Component {
      * method:
      * <br>
      * <ul>
-     * <li>calls methods to process IQ requests (type <tt>get</tt> and
-     * <tt>set</tt>). If no response to these request are returned, this method
-     * will respond to the request with an IQ stanza of type <tt>error</tt>,
-     * containing an error condition <tt>feature-not-implemented</tt> (this
-     * behavior can be disabled by setting the <tt>enforceIQResult</tt> argument
-     * in the constructor to <tt>false</tt>);</li>
-     * <li>calls methods to process IQ results (type <tt>result</tt> and
-     * <tt>error</tt>). No response to these stanzas are expected;</li>
+     * <li>calls methods to process IQ requests (type <code>get</code> and
+     * <code>set</code>). If no response to these request are returned, this method
+     * will respond to the request with an IQ stanza of type <code>error</code>,
+     * containing an error condition <code>feature-not-implemented</code> (this
+     * behavior can be disabled by setting the <code>enforceIQResult</code> argument
+     * in the constructor to <code>false</code>);</li>
+     * <li>calls methods to process IQ results (type <code>result</code> and
+     * <code>error</code>). No response to these stanzas are expected;</li>
      * <li>returns an IQ stanza of type error, condition 'internal-server-error'
-     * if the processing of an IQ request (type <tt>get</tt> or <tt>set</tt>)
+     * if the processing of an IQ request (type <code>get</code> or <code>set</code>)
      * resulted in an Exception being thrown.</li>
      * </ul>
      * <br>
@@ -430,12 +430,12 @@ public abstract class AbstractComponent implements Component {
     }
 
     /**
-     * Processes IQ request stanzas (IQ stanzas of type <tt>get</tt> or
-     * <tt>set</tt>. This method will, in order:
+     * Processes IQ request stanzas (IQ stanzas of type <code>get</code> or
+     * <code>set</code>. This method will, in order:
      * <br>
      * <ol>
      * <li>check if the stanza is a valid request stanza. If not, an IQ stanza
-     * of type <tt>error</tt>, condition 'bad-request' is returned;</li>
+     * of type <code>error</code>, condition 'bad-request' is returned;</li>
      * <li>process Service Discovery requests by calling
      * {@link #handleDiscoInfo(IQ)} and {@link #handleDiscoItems(IQ)} where
      * appropriate;</li>
@@ -444,14 +444,14 @@ public abstract class AbstractComponent implements Component {
      * </li>
      * </ol>
      * <br>
-     * Note that if this method returns <tt>null</tt>, an IQ stanza of type
-     * <tt>error</tt>, condition <tt>feature-not-implemented</tt> will be
+     * Note that if this method returns <code>null</code>, an IQ stanza of type
+     * <code>error</code>, condition <code>feature-not-implemented</code> will be
      * returned to the sender of the original request. This behavior can be
-     * disabled by setting the <tt>enforceIQResult</tt> argument in the
-     * constructor to <tt>false</tt>.
+     * disabled by setting the <code>enforceIQResult</code> argument in the
+     * constructor to <code>false</code>.
      * <br>
      * Note that if this method throws an Exception, an IQ stanza of type
-     * <tt>error</tt>, condition 'internal-server-error' will be returned to the
+     * <code>error</code>, condition 'internal-server-error' will be returned to the
      * sender of the original request.
      * <br>
      * Note that if you want to add or adjust functionality, you should
@@ -530,12 +530,12 @@ public abstract class AbstractComponent implements Component {
     }
 
     /**
-     * Override this method to handle the IQ stanzas of type <tt>result</tt>
+     * Override this method to handle the IQ stanzas of type <code>result</code>
      * that are received by the component. If you do not override this method,
      * the stanzas are ignored.
      *
      * @param iq
-     *            The IQ stanza of type <tt>result</tt> that was received by
+     *            The IQ stanza of type <code>result</code> that was received by
      *            this component.
      */
     protected void handleIQResult(IQ iq) {
@@ -544,12 +544,12 @@ public abstract class AbstractComponent implements Component {
     }
 
     /**
-     * Override this method to handle the IQ stanzas of type <tt>error</tt> that
+     * Override this method to handle the IQ stanzas of type <code>error</code> that
      * are received by the component. If you do not override this method, the
      * stanzas are ignored.
      *
      * @param iq
-     *            The IQ stanza of type <tt>error</tt> that was received by this
+     *            The IQ stanza of type <code>error</code> that was received by this
      *            component.
      */
     protected void handleIQError(IQ iq) {
@@ -562,26 +562,26 @@ public abstract class AbstractComponent implements Component {
     }
 
     /**
-     * Override this method to handle the IQ stanzas of type <tt>get</tt> that
+     * Override this method to handle the IQ stanzas of type <code>get</code> that
      * could not be processed by the {@link AbstractComponent} implementation.
      * <br>
-     * Note that, as any IQ stanza of type <tt>get</tt> must be replied to,
-     * returning <tt>null</tt> from this method equals returning an IQ error
+     * Note that, as any IQ stanza of type <code>get</code> must be replied to,
+     * returning <code>null</code> from this method equals returning an IQ error
      * stanza of type 'feature-not-implemented' (this behavior can be disabled
-     * by setting the <tt>enforceIQResult</tt> argument in the constructor to
-     * <tt>false</tt>).
+     * by setting the <code>enforceIQResult</code> argument in the constructor to
+     * <code>false</code>).
      * <br>
      * Note that if this method throws an Exception, an IQ stanza of type
-     * <tt>error</tt>, condition 'internal-server-error' will be returned to the
+     * <code>error</code>, condition 'internal-server-error' will be returned to the
      * sender of the original request.
      * <br>
-     * The default implementation of this method returns <tt>null</tt>. It is
+     * The default implementation of this method returns <code>null</code>. It is
      * expected that most child classes will override this method.
      *
      * @param iq
-     *            The IQ request stanza of type <tt>get</tt> that was received
+     *            The IQ request stanza of type <code>get</code> that was received
      *            by this component.
-     * @return the response the to request stanza, or <tt>null</tt> to indicate
+     * @return the response the to request stanza, or <code>null</code> to indicate
      *         'feature-not-available'.
      * @throws Exception
      *          if internal error occurs.
@@ -593,26 +593,26 @@ public abstract class AbstractComponent implements Component {
     }
 
     /**
-     * Override this method to handle the IQ stanzas of type <tt>set</tt> that
+     * Override this method to handle the IQ stanzas of type <code>set</code> that
      * could not be processed by the {@link AbstractComponent} implementation.
      * <br>
-     * Note that, as any IQ stanza of type <tt>set</tt> must be replied to,
-     * returning <tt>null</tt> from this method equals returning an IQ error
+     * Note that, as any IQ stanza of type <code>set</code> must be replied to,
+     * returning <code>null</code> from this method equals returning an IQ error
      * stanza of type 'feature-not-implemented' {this behavior can be disabled
-     * by setting the <tt>enforceIQResult</tt> argument in the constructor to
-     * <tt>false</tt>).
+     * by setting the <code>enforceIQResult</code> argument in the constructor to
+     * <code>false</code>).
      * <br>
      * Note that if this method throws an Exception, an IQ stanza of type
-     * <tt>error</tt>, condition 'internal-server-error' will be returned to the
+     * <code>error</code>, condition 'internal-server-error' will be returned to the
      * sender of the original request.
      * <br>
-     * The default implementation of this method returns <tt>null</tt>. It is
+     * The default implementation of this method returns <code>null</code>. It is
      * expected that most child classes will override this method.
      *
      * @param iq
-     *            The IQ request stanza of type <tt>set</tt> that was received
+     *            The IQ request stanza of type <code>set</code> that was received
      *            by this component.
-     * @return the response the to request stanza, or <tt>null</tt> to indicate
+     * @return the response the to request stanza, or <code>null</code> to indicate
      *         'feature-not-available'.
      * @throws Exception
      *          if internal error occurs.
@@ -625,7 +625,7 @@ public abstract class AbstractComponent implements Component {
 
     /**
      * Default handler of Service Discovery Info requests. Unless overridden,
-     * this method returns <tt>null</tt>, which will result into a
+     * this method returns <code>null</code>, which will result into a
      * 'service-unavailable' response to be returned as a response to the
      * original request.
      *
@@ -639,7 +639,7 @@ public abstract class AbstractComponent implements Component {
 
     /**
      * Default handler of Service Discovery Info requests. Unless overridden,
-     * this method returns an IQ <tt>result</tt> packet that includes:
+     * this method returns an IQ <code>result</code> packet that includes:
      * <br>
      * <ul>
      * <li>One Service Discovery 'Identity'. The attributes of the identity are
@@ -759,7 +759,7 @@ public abstract class AbstractComponent implements Component {
      * address of this component should be a subdomain of the domain returned by
      * this method.
      *
-     * @return The XMPP domain name, or <tt>null</tt> if this component has not been initialized yet.
+     * @return The XMPP domain name, or <code>null</code> if this component has not been initialized yet.
      */
     public String getDomain() {
         return jid != null ? jid.getDomain() : null;
@@ -768,7 +768,7 @@ public abstract class AbstractComponent implements Component {
     /**
      * Returns the XMPP address / Jabber ID (JID) of this component.
      *
-     * @return The JID of this component, or <tt>null</tt> if this component has
+     * @return The JID of this component, or <code>null</code> if this component has
      *         not been initialized yet.
      */
     public JID getJID() {
@@ -853,21 +853,21 @@ public abstract class AbstractComponent implements Component {
 
     /**
      * Checks if the component can only be used by users of the XMPP domain that
-     * the component has registered to. If this method returns <tt>true</tt>,
+     * the component has registered to. If this method returns <code>true</code>,
      * this will happen:
      * <ul>
      * <li>Messages and Presence stanzas are silently ignored.</li>
-     * <li>IQ stanza's of type <tt>result</tt> and <tt>error</tt> are silently
+     * <li>IQ stanza's of type <code>result</code> and <code>error</code> are silently
      * ignored.</li>
-     * <li>IQ stanza's of type <tt>get</tt> or <tt>set</tt> are responded to
-     * with a IQ <tt>error</tt> response, type 'cancel', condition
+     * <li>IQ stanza's of type <code>get</code> or <code>set</code> are responded to
+     * with a IQ <code>error</code> response, type 'cancel', condition
      * 'not-allowed'.
      * </ul>
-     * Note that by default, this method returns <tt>false</tt>. You can
+     * Note that by default, this method returns <code>false</code>. You can
      * override this method to change the behavior.
      *
-     * @return <tt>true</tt> if this component serves local users only, <tt>
-     *         false</tt> otherwise.
+     * @return <code>true</code> if this component serves local users only, <code>
+     *         false</code> otherwise.
      */
     public boolean servesLocalUsersOnly() {
         return false;
@@ -885,7 +885,7 @@ public abstract class AbstractComponent implements Component {
 
     /**
      * Cleans up the queue, by dropping all packets from the queue. Queued IQ
-     * stanzas of type <tt>get</tt> and <tt>set</tt> are responded to by a
+     * stanzas of type <code>get</code> and <code>set</code> are responded to by a
      * 'recipient-unavailable' error, to indicate that this component is
      * temporarily unavailable.
      */
@@ -1015,8 +1015,8 @@ public abstract class AbstractComponent implements Component {
      *
      * @param packet
      *            The packet for which to send the sender.
-     * @return <tt>true</tt> if the stanza was sent by something inside the
-     *         local XMPP domain, <tt>false</tt> otherwise.
+     * @return <code>true</code> if the stanza was sent by something inside the
+     *         local XMPP domain, <code>false</code> otherwise.
      */
     private boolean sentByLocalEntity(final Packet packet) {
         final JID from = packet.getFrom();

@@ -8,8 +8,8 @@ import org.junit.Test;
 /**
  * When composing JIDs, two delimiter characters can be used:
  * <ul>
- * <li><tt>@</tt> (at)</li>
- * <li><tt>/</tt> (forward slash)</li>
+ * <li><code>@</code> (at)</li>
+ * <li><code>/</code> (forward slash)</li>
  * </ul>
  * 
  * Tests in this class verify that usage of those characters as part of the JID is processed correctly.
