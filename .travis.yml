@@ -10,8 +10,7 @@ before_install:
 - cp target/ci-tooling/maven-settings-for-tinder.xml $HOME/.m2/settings.xml
 deploy:
   provider: script
-  script: mvn deploy --settings target/ci-tooling/maven-settings-for-tinder.xml  -P
-    ci
+  script: mvn deploy --settings target/ci-tooling/maven-settings-for-tinder.xml -P ci
   skip_cleanup: true
   on:
     all_branches: true
