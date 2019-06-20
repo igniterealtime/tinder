@@ -95,7 +95,7 @@ public class JID implements Comparable<JID>, Serializable {
      * Escaping replaces characters prohibited by node-prep with escape sequences,
      * as follows:
      *
-     * <table border="1">
+     * <table border="1" summary="Escaping rules">
      * <tr><td><b>Unescaped Character</b></td><td><b>Encoded Sequence</b></td></tr>
      * <tr><td>&lt;space&gt;</td><td>\20</td></tr>
      * <tr><td>"</td><td>\22</td></tr>
@@ -182,7 +182,7 @@ public class JID implements Comparable<JID>, Serializable {
      * Un-escapes the node portion of a JID according to "JID Escaping" (XEP-0106).
      * Escaping replaces characters prohibited by node-prep with escape sequences,
      * as follows:
-     * <table border="1">
+     * <table border="1" summary="Escaped characters">
      * <tr><td><b>Unescaped Character</b></td><td><b>Encoded Sequence</b></td></tr>
      * <tr><td>&lt;space&gt;</td><td>\20</td></tr>
      * <tr><td>"</td><td>\22</td></tr>
