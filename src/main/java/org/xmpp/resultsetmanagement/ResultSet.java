@@ -21,6 +21,7 @@ import org.dom4j.Element;
 import org.dom4j.QName;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * A result set representation as described in XEP-0059. A result set is a
@@ -47,7 +48,7 @@ public abstract class ResultSet<E extends Result> extends AbstractCollection<E> 
     private final static Collection<String> validRequestFields = new ArrayList<>();
 
     static {
-        validRequestFields.add("max"); // required
+        validRequestFields.add("max");
         validRequestFields.add("before");
         validRequestFields.add("after");
         validRequestFields.add("index");
@@ -255,7 +256,8 @@ public abstract class ResultSet<E extends Result> extends AbstractCollection<E> 
                 "The 'rsmElement' argument must be a valid, non-null RSM element.");
         }
 
-        final int max = Integer.parseInt(rsmElement.element("max").getText());
+        final Element maxEl = rsmElement.element( "max" );
+        final int max = maxEl == null ? Integer.MAX_VALUE : Integer.parseInt( maxEl.getText() );
 
         if (max == 0) {
             // this is a request for a resultset count.
@@ -268,42 +270,80 @@ public abstract class ResultSet<E extends Result> extends AbstractCollection<E> 
         final Element indexElement = rsmElement.element("index");
 
         // Identify the pointer object in this set. This is the object before
-        // (or after) the first (respectivly last) element of the subset that
+        // (or after) the first (respectively last) element of the subset that
         // should be returned. If no pointer is specified, the pointer is said
-        // to be before or after the first respectivly last element of the set.
-        String pointerUID = null; // by default, the pointer is before the
-        // first element of the set.
+        // to be before or after the first respectively last element of the set.
+        String afterPointerUID = null;
+        String beforePointerUID = null;
 
         // by default, the search list is forward oriented.
         boolean isForwardOriented = true;
 
         if (afterElement != null) {
-            pointerUID = afterElement.getText();
-        } else if (beforeElement != null) {
-            pointerUID = beforeElement.getText();
-            isForwardOriented = false;
-        } else if (indexElement != null) {
+            afterPointerUID = afterElement.getText();
+        }
+        if (beforeElement != null) {
+            beforePointerUID = beforeElement.getText();
+            if ( afterPointerUID == null ) {
+                isForwardOriented = false;
+            }
+        }
+
+        if (indexElement != null) {
             final int index = Integer.parseInt(indexElement.getText());
             if (index > 0) {
-                pointerUID = getUID(index - 1);
+                afterPointerUID = getUID(index - 1);
             }
         }
 
-        if (pointerUID != null && pointerUID.equals("")) {
-            pointerUID = null;
+        if (afterPointerUID != null && afterPointerUID.equals("")) {
+            afterPointerUID = null;
+        }
+        if (beforePointerUID != null && beforePointerUID.equals("")) {
+            beforePointerUID = null;
         }
 
+        List<E> result;
         if (isForwardOriented) {
-            if (pointerUID == null) {
-                return getFirst(max);
+            if (afterPointerUID == null) {
+                result = getFirst(max);
+            } else {
+                result = getAfter( afterPointerUID, max );
             }
-            return getAfter(pointerUID, max);
+            if (beforePointerUID != null) {
+                // limit result to everything before the pointer.
+                final List<E> subList = new ArrayList<>(result.size());
+                for (final E e : result) {
+                    if ( e.getUID().equals( beforePointerUID ) ) {
+                        break;
+                    }
+                    subList.add( e );
+                }
+                result = subList;
+            }
+        } else {
+            // backwards oriented
+            if (beforePointerUID == null) {
+                result = getLast(max);
+            } else {
+                result = getBefore( beforePointerUID, max );
+            }
+            if (afterPointerUID != null) {
+                // limit result to everything after the pointer.
+                final List<E> subList = new ArrayList<>(result.size());
+                Collections.reverse( result ); // iterate backwards.
+                for (final E e : result) {
+                    if ( e.getUID().equals( beforePointerUID ) ) {
+                        break;
+                    }
+                    subList.add( e );
+                }
+                result = subList;
+                Collections.reverse( result ); // correct for backwards iteration.
+            }
         }
 
-        if (pointerUID == null) {
-            return getLast(max);
-        }
-        return getBefore(pointerUID, max);
+        return result;
     }
 
     /**
@@ -370,29 +410,25 @@ public abstract class ResultSet<E extends Result> extends AbstractCollection<E> 
         }
 
         final Element maxElement = rsmElement.element("max");
-        if (maxElement == null) {
-            // The 'max' element in an RSM request must be available
-            return false;
-        }
-
-        final String sMax = maxElement.getText();
-        if (sMax == null || sMax.length() == 0) {
-            // max element must contain a value.
-            return false;
-        }
-
-        try {
-            if (Integer.parseInt(sMax) < 0) {
-                // must be a postive integer.
+        if (maxElement != null) {
+            final String sMax = maxElement.getText();
+            if (sMax == null || sMax.isEmpty()) {
+                // the 'max' element must have content.
                 return false;
             }
-        } catch (NumberFormatException e) {
-            // the value of 'max' must be an integer value.
-            return false;
+            try {
+                if (Integer.parseInt(sMax) < 0) {
+                    // must be a positive integer.
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                // the value of 'max' must be an integer value.
+                return false;
+            }
         }
 
         List<Element> allElements = rsmElement.elements();
-        int optionalElements = 0;
+        final Set<String> allNames = new HashSet<>();
         for (Element element : allElements) {
             final String name = element.getName();
             if (!validRequestFields.contains(name)) {
@@ -400,19 +436,12 @@ public abstract class ResultSet<E extends Result> extends AbstractCollection<E> 
                 return false;
             }
 
-            if (!name.equals("max")) {
-                optionalElements++;
-            }
-
-            if (optionalElements > 1) {
-                // only one optional element is allowed.
-                return false;
-            }
+            allNames.add( name );
 
             if (name.equals("index")) {
                 final String value = element.getText();
                 if (value == null || value.equals("")) {
-                    // index elements must have a numberic value.
+                    // index elements must have a numeric value.
                     return false;
                 }
                 try {
@@ -425,6 +454,11 @@ public abstract class ResultSet<E extends Result> extends AbstractCollection<E> 
                     return false;
                 }
             }
+        }
+
+        // Can't combine before/after with 'index'
+        if (allNames.contains( "index" ) && ( allNames.contains( "before" ) || allNames.contains( "after" ) ) ) {
+            return false;
         }
 
         return true;
