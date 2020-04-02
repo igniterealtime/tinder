@@ -13,6 +13,7 @@ deploy:
   script: mvn deploy --settings target/ci-tooling/maven-settings-for-tinder.xml -P ci
   skip_cleanup: true
   on:
+    repo: igniterealtime/tinder
     all_branches: true
 env:
   global:
