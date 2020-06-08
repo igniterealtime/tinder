@@ -1023,8 +1023,8 @@ public abstract class AbstractComponent implements Component {
         if (from == null) {
             return true;
         }
-        final String domain = from.getDomain();
-        return (domain.equals(getDomain()) || domain.endsWith("." + getDomain()));
+        final String fromDomain = from.getDomain();
+        return (fromDomain.equals(getDomain()) || getDomain().endsWith("." + fromDomain));
     }
 
     /**
