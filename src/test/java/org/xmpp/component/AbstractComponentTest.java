@@ -411,4 +411,140 @@ public class AbstractComponentTest {
 		assertEquals(Type.result, result.getType());
 		// TODO although this test verifies that a result is produced, it also needs to verify the correctness of the content of the result.
 	}
+
+    /**
+     * This test verifies that the component accepts a stanza sent by a user on the local domain when the property
+     * AbstractComponent#servesLocalUsersOnly is true.
+     *
+     * @see <a href="https://issues.igniterealtime.org/browse/TINDER-76">TINDER-76</a>
+     */
+    @Test
+    public void testLocalOnlyShouldAllowLocalFrom() throws Exception {
+        // setup
+        final DummyAbstractComponent component = new DummyAbstractComponent() {
+            @Override
+            public boolean servesLocalUsersOnly()
+            {
+                return true;
+            }
+        };
+
+        component.initialize(new JID("sub.domain"), null);
+
+        final IQ request = new IQ(Type.get);
+        request.setChildElement("ping", AbstractComponent.NAMESPACE_ENTITY_TIME);
+        request.setFrom("user@domain");
+        request.setTo(component.jid);
+
+        // do magic
+        component.start();
+        component.processPacket(request);
+
+        // verify
+        final IQ result = (IQ) component.getSentPacket();
+        assertNotNull(result);
+        assertEquals(Type.result, result.getType());
+    }
+
+    /**
+     * This test verifies that the component rejects a stanza sent by a user <em>not</em> on the local domain when the property
+     * AbstractComponent#servesLocalUsersOnly is true.
+     *
+     * @see <a href="https://issues.igniterealtime.org/browse/TINDER-76">TINDER-76</a>
+     */
+    @Test
+    public void testLocalOnlyShouldRejectNonLocalFrom() throws Exception {
+	    // setup
+        final DummyAbstractComponent component = new DummyAbstractComponent() {
+            @Override
+            public boolean servesLocalUsersOnly()
+            {
+                return true;
+            }
+        };
+
+        component.initialize(new JID("sub.domain"), null);
+
+        final IQ request = new IQ(Type.get);
+        request.setChildElement("ping", AbstractComponent.NAMESPACE_ENTITY_TIME);
+        request.setFrom("user@from.address");
+        request.setTo(component.jid);
+
+        // do magic
+        component.start();
+        component.processPacket(request);
+
+        // verify
+        final IQ result = (IQ) component.getSentPacket();
+        assertNotNull(result);
+        assertEquals(Type.error, result.getType());
+    }
+
+    /**
+     * This test verifies that the component accepts a stanza sent by a user on the local domain when the property
+     * AbstractComponent#servesLocalUsersOnly is false.
+     *
+     * @see <a href="https://issues.igniterealtime.org/browse/TINDER-76">TINDER-76</a>
+     */
+    @Test
+    public void testNonLocalOnlyShouldAllowLocalFrom() throws Exception {
+        // setup
+        final DummyAbstractComponent component = new DummyAbstractComponent() {
+            @Override
+            public boolean servesLocalUsersOnly()
+            {
+                return false;
+            }
+        };
+
+        component.initialize(new JID("sub.domain"), null);
+
+        final IQ request = new IQ(Type.get);
+        request.setChildElement("ping", AbstractComponent.NAMESPACE_ENTITY_TIME);
+        request.setFrom("user@domain");
+        request.setTo(component.jid);
+
+        // do magic
+        component.start();
+        component.processPacket(request);
+
+        // verify
+        final IQ result = (IQ) component.getSentPacket();
+        assertNotNull(result);
+        assertEquals(Type.result, result.getType());
+    }
+
+    /**
+     * This test verifies that the component accepts a stanza sent by a user <em>not</em> on the local domain when the property
+     * AbstractComponent#servesLocalUsersOnly is false.
+     *
+     * @see <a href="https://issues.igniterealtime.org/browse/TINDER-76">TINDER-76</a>
+     */
+    @Test
+    public void testNonLocalOnlyShouldAllowNonLocalFrom() throws Exception {
+        // setup
+        final DummyAbstractComponent component = new DummyAbstractComponent() {
+            @Override
+            public boolean servesLocalUsersOnly()
+            {
+                return false;
+            }
+        };
+
+        component.initialize(new JID("sub.domain"), null);
+
+        final IQ request = new IQ(Type.get);
+        request.setChildElement("ping", AbstractComponent.NAMESPACE_ENTITY_TIME);
+        request.setFrom("user@from.address");
+        request.setTo(component.jid);
+
+        // do magic
+        component.start();
+        component.processPacket(request);
+
+        // verify
+        final IQ result = (IQ) component.getSentPacket();
+        assertNotNull(result);
+        assertEquals(Type.result, result.getType());
+    }
 }
