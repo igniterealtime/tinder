@@ -1,6 +1,7 @@
 Tinder
 ========
-[![Build Status](https://travis-ci.org/igniterealtime/tinder.svg?branch=master)](https://travis-ci.org/igniterealtime/Tinder)  [![Project Stats](https://www.openhub.net/p/Tinder/widgets/project_thin_badge.gif)](https://www.openhub.net/p/Tinder)
+
+[![Build Status](https://github.com/igniterealtime/tinder/workflows/Java%20CI/badge.svg)](https://github.com/igniterealtime/tinder/actions)
 
 About
 -----
