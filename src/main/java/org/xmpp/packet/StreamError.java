@@ -470,7 +470,7 @@ public class StreamError {
             }
         }
 
-        private String value;
+        private final String value;
 
         private Condition(String value) {
             this.value = value;
