@@ -264,8 +264,8 @@ public abstract class AbstractComponent implements Component {
      * <br>
      * Note that if you want to add or adjust functionality, you should
      * <strong>not</strong> override this method. Instead, you probably want to
-     * override any of these methods: {@link #handleIQGet()},
-     * {@link #handleIQSet()}, {@link #handleIQResult(IQ)},
+     * override any of these methods: {@link #handleIQGet(IQ)},
+     * {@link #handleIQSet(IQ)}, {@link #handleIQResult(IQ)},
      * {@link #handleIQError(IQ)} {@link #handleDiscoInfo(IQ)} and/or
      * {@link #handleDiscoItems(IQ)}
      *
@@ -407,7 +407,7 @@ public abstract class AbstractComponent implements Component {
      * found to be legitimate, it is forwarded to
      * {@link #handlePresence(Presence)}.
      *
-     * @param message
+     * @param presence
      *            The presence stanza to process.
      */
     final private void processPresence(Presence presence) {
@@ -439,8 +439,8 @@ public abstract class AbstractComponent implements Component {
      * <li>process Service Discovery requests by calling
      * {@link #handleDiscoInfo(IQ)} and {@link #handleDiscoItems(IQ)} where
      * appropriate;</li>
-     * <li>call the abstract methods {@link #handleIQGet()} or
-     * {@link #handleIQSet()} if the above actions did not apply to the request.
+     * <li>call the abstract methods {@link #handleIQGet(IQ)} or
+     * {@link #handleIQSet(IQ)} if the above actions did not apply to the request.
      * </li>
      * </ol>
      * <br>
@@ -456,8 +456,8 @@ public abstract class AbstractComponent implements Component {
      * <br>
      * Note that if you want to add or adjust functionality, you should
      * <strong>not</strong> override this method. Instead, you probably want to
-     * override any of these methods: {@link #handleIQGet()},
-     * {@link #handleIQSet()}, {@link #handleDiscoInfo(IQ)} and/or
+     * override any of these methods: {@link #handleIQGet(IQ)},
+     * {@link #handleIQSet(IQ)}, {@link #handleDiscoInfo(IQ)} and/or
      * {@link #handleDiscoItems(IQ)}
      *
      * @param iq
