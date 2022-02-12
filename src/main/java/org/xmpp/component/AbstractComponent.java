@@ -234,7 +234,7 @@ public abstract class AbstractComponent implements Component {
      * @param packet
      *            The stanza that will be processed.
      */
-    final private void processQueuedPacket(final Packet packet) {
+    private void processQueuedPacket(final Packet packet) {
         if (packet instanceof IQ) {
             processIQ((IQ) packet);
         } else if (packet instanceof Message) {
@@ -272,7 +272,7 @@ public abstract class AbstractComponent implements Component {
      * @param iq
      *            The IQ stanza that was received by this component.
      */
-    final private void processIQ(final IQ iq) {
+    private void processIQ(final IQ iq) {
         if (log.isDebugEnabled()) {
         log.debug("(serving component '{}') Processing IQ (packetId {}): {}",
             new Object[] {getName(), iq.getID(), iq.toXML()});
@@ -382,7 +382,7 @@ public abstract class AbstractComponent implements Component {
      * @param message
      *            The message stanza to process.
      */
-    final private void processMessage(Message message) {
+    private void processMessage(Message message) {
         if (log.isTraceEnabled()) {
         log.trace("(serving component '{}') Processing message stanza: {}",
             getName(), message.toXML());
@@ -410,7 +410,7 @@ public abstract class AbstractComponent implements Component {
      * @param presence
      *            The presence stanza to process.
      */
-    final private void processPresence(Presence presence) {
+    private void processPresence(Presence presence) {
         if (log.isTraceEnabled()) {
         log.trace("(serving component '{}') Processing presence stanza: {}",
             getName(), presence.toXML());
@@ -465,7 +465,7 @@ public abstract class AbstractComponent implements Component {
      * @return Response to the request, or null to indicate a
      *         'feature-not-implemented' error.
      */
-    final private IQ processIQRequest(IQ iq) throws Exception {
+    private IQ processIQRequest(IQ iq) throws Exception {
         log.debug("(serving component '{}') Processing IQ "
             + "request (packetId {}).", getName(), iq.getID());
 
