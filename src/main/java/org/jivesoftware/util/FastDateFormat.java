@@ -614,7 +614,7 @@ public class FastDateFormat {
         }
 
         List rulesList = parse(pattern, timeZone, locale, symbols);
-        mRules = (Rule[]) rulesList.toArray(new Rule[rulesList.size()]);
+        mRules = (Rule[]) rulesList.toArray(new Rule[0]);
 
         int len = 0;
         for (int i = mRules.length; --i >= 0; ) {
