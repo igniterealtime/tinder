@@ -21,7 +21,6 @@ import org.dom4j.Element;
 import org.dom4j.QName;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * A result set representation as described in XEP-0059. A result set is a
