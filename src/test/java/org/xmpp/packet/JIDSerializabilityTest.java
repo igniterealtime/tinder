@@ -31,9 +31,9 @@ import org.junit.Test;
  * Various tests that verify the serializability of JID instances.
  * 
  * @author Guus der Kinderen, guus.der.kinderen@gmail.com
- * @see Based on <a
+ * @see <a
  *      href="http://www.ibm.com/developerworks/library/j-serialtest.html"
- *      >Testing object serialization</a>
+ *      >Based on Testing object serialization</a>
  */
 public class JIDSerializabilityTest {
 
