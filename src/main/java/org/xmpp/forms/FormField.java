@@ -435,7 +435,7 @@ public class FormField {
             }
         }
 
-        private String value;
+        private final String value;
 
         private Type(String value) {
             this.value = value;

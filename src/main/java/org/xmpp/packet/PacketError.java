@@ -651,9 +651,9 @@ public class PacketError {
             }
         }
 
-        private String value;
-        private int code;
-        private Type defaultType;
+        private final String value;
+        private final int code;
+        private final Type defaultType;
 
         private Condition(String value, Type defaultType, int code) {
             this.value = value;
