@@ -331,7 +331,6 @@ public class DataForm extends PacketExtension {
      *
      * @param fields list of &lt;variable,value&gt; to be added as a new item.
      */
-    @SuppressWarnings("unchecked")
     public void addItemFields(Map<String, Object> fields) {
         Element item = element.addElement("item");
         // Add a field element to the item element for each row in fields

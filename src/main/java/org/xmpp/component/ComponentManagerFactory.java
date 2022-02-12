@@ -40,7 +40,6 @@ public class ComponentManagerFactory {
      *
      * @return a ComponentManager instance.
      */
-    @SuppressWarnings("unchecked")
     public static synchronized ComponentManager getComponentManager() {
         if (componentManager != null) {
             return componentManager;
