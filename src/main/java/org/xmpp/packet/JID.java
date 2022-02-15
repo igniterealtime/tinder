@@ -531,7 +531,7 @@ public class JID implements Comparable<JID>, Serializable {
                 if (resource != null) {
                     buf.append("/").append(resource);
                 }
-                throw new IllegalArgumentException("Illegal JID: " + buf.toString(), e);
+                throw new IllegalArgumentException("Illegal JID: " + buf, e);
             }
         }
     }
@@ -675,7 +675,7 @@ public class JID implements Comparable<JID>, Serializable {
         if (this.resource == null) {
             throw new IllegalStateException("This JID was instantiated "
                 + "without a resource identifier. A full "
-                + "JID representation is not available for: " + toString());
+                + "JID representation is not available for: " + this);
         }
         final StringBuilder sb = new StringBuilder();
         if (this.node != null) {
