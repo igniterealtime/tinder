@@ -422,7 +422,7 @@ public class IQ extends Packet {
          * An error has occurred regarding processing or delivery of a
          * previously-sent get or set.
          */
-        error;
+        error
 
     }
 }

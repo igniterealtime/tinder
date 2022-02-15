@@ -304,6 +304,6 @@ public class Message extends Packet {
         /**
          * Indicates a messaging error.
          */
-        error;
+        error
     }
 }

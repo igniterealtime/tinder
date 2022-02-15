@@ -148,9 +148,9 @@ public class FormFieldGetSetTest {
 		} else {
 			fail();
 		}
-	};
+	}
 
-	/**
+    /**
 	 * Test method for {@link org.xmpp.forms.FormField#setRequired(boolean)} and
 	 * {@link org.xmpp.forms.FormField#isRequired()}.
 	 */
