@@ -229,7 +229,8 @@ public class FormField {
      */
     @SuppressWarnings("unchecked")
     public String getFirstValue() {
-        for (Iterator<Element> it = element.elementIterator("value"); it.hasNext(); ) {
+        final Iterator<Element> it = element.elementIterator("value");
+        if (it.hasNext()) {
             return it.next().getTextTrim();
         }
 
