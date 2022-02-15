@@ -344,7 +344,7 @@ public class Roster extends IQ {
             if (name != null) {
                 buf.append(" name=\"").append(name).append("\"");
             }
-            buf.append(" subscrption=\"").append(subscription).append("\"");
+            buf.append(" subscription=\"").append(subscription).append("\"");
             if (groups == null || groups.isEmpty()) {
                 buf.append("/>");
             } else {
