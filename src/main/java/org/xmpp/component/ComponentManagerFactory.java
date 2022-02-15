@@ -49,7 +49,7 @@ public class ComponentManagerFactory {
         String className = System.getProperty("whack.componentManagerClass");
         if (className != null) {
             try {
-                Class c = Class.forName(className);
+                Class<?> c = Class.forName(className);
                 componentManager = (ComponentManager) c.newInstance();
                 return componentManager;
             } catch (Exception e) {
