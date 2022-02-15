@@ -73,7 +73,7 @@ public class DummyAbstractComponent extends AbstractComponent {
 	 * will block for up to two seconds if no packets have been sent yet.
 	 * 
 	 * @return A sent packet.
-	 * @throws InterruptedException
+	 * @throws InterruptedException if interrupted while waiting
 	 */
 	public Packet getSentPacket() throws InterruptedException {
 		return queue.poll(2, TimeUnit.SECONDS);
