@@ -261,11 +261,11 @@ public class Roster extends IQ {
      */
     public static class Item {
 
-        private JID jid;
-        private String name;
-        private Ask ask;
-        private Subscription subscription;
-        private Collection<String> groups;
+        private final JID jid;
+        private final String name;
+        private final Ask ask;
+        private final Subscription subscription;
+        private final Collection<String> groups;
 
         /**
          * Constructs a new roster item.

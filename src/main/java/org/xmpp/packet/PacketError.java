@@ -38,9 +38,9 @@ public class PacketError {
 
     private static final String ERROR_NAMESPACE = "urn:ietf:params:xml:ns:xmpp-stanzas";
 
-    private static DocumentFactory docFactory = DocumentFactory.getInstance();
+    private static final DocumentFactory docFactory = DocumentFactory.getInstance();
 
-    private Element element;
+    private final Element element;
 
     /**
      * Construcs a new PacketError with the specified condition. The error
@@ -767,7 +767,7 @@ public class PacketError {
             }
         }
 
-        private String value;
+        private final String value;
 
         private Type(String value) {
             this.value = value;

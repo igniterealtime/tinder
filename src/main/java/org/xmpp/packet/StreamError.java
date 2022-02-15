@@ -38,9 +38,9 @@ public class StreamError {
 
     private static final String ERROR_NAMESPACE = "urn:ietf:params:xml:ns:xmpp-streams";
 
-    private static DocumentFactory docFactory = DocumentFactory.getInstance();
+    private static final DocumentFactory docFactory = DocumentFactory.getInstance();
 
-    private Element element;
+    private final Element element;
 
     /**
      * Construcs a new StreamError with the specified condition.

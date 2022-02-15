@@ -34,7 +34,7 @@ import java.util.List;
 @NotThreadSafe
 public class FormField {
 
-    private Element element;
+    private final Element element;
 
     FormField(Element element) {
         this.element = element;
@@ -303,7 +303,7 @@ public class FormField {
      * @author Gaston Dombiak
      */
     public static class Option {
-        private Element element;
+        private final Element element;
 
         private Option(Element element) {
             this.element = element;

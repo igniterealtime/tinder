@@ -44,7 +44,7 @@ public class IQ extends Packet {
 
     // Sequence and random number generator used for creating unique ID's.
     private static int sequence = 0;
-    private static Random random = new Random();
+    private static final Random random = new Random();
 
     /**
      * Constructs a new IQ with an automatically generated ID and a type
