@@ -18,6 +18,9 @@ package org.xmpp.forms;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -32,7 +35,6 @@ import net.jcip.annotations.NotThreadSafe;
 
 import org.dom4j.Element;
 import org.dom4j.QName;
-import org.jivesoftware.util.FastDateFormat;
 import org.xmpp.packet.PacketExtension;
 import org.xmpp.util.XMPPConstants;
 
@@ -62,9 +64,9 @@ public class DataForm extends PacketExtension {
 
     private static final SimpleDateFormat UTC_FORMAT = new SimpleDateFormat(
         XMPPConstants.XMPP_DELAY_DATETIME_FORMAT);
-    private static final FastDateFormat FAST_UTC_FORMAT =
-        FastDateFormat.getInstance(XMPPConstants.XMPP_DELAY_DATETIME_FORMAT,
-            TimeZone.getTimeZone("UTC"));
+    private static final DateTimeFormatter FAST_UTC_FORMAT =
+        DateTimeFormatter.ofPattern(XMPPConstants.XMPP_DELAY_DATETIME_FORMAT)
+            .withZone(ZoneId.from(ZoneOffset.UTC));
 
     /**
      * Element name of the packet extension.
@@ -112,7 +114,7 @@ public class DataForm extends PacketExtension {
         } else if (object instanceof Boolean) {
             return Boolean.TRUE.equals(object) ? "1" : "0";
         } else if (object instanceof Date) {
-            return FAST_UTC_FORMAT.format((Date) object);
+            return FAST_UTC_FORMAT.format(((Date) object).toInstant());
         }
         return object.toString();
     }
