@@ -112,7 +112,7 @@ public class ResultSetImpl<E extends Result> extends ResultSet<E> {
         List<E> sortedResults = null;
         if (comparator != null) {
             sortedResults = new ArrayList<>(results);
-            Collections.sort(sortedResults, comparator);
+            sortedResults.sort(comparator);
         }
 
         int index = 0;
