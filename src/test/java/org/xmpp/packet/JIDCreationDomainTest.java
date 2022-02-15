@@ -56,56 +56,46 @@ public class JIDCreationDomainTest {
 			fail("Domain identifiers should be a required part of "
 					+ "a JID. No exception occurred while trying to "
 					+ "leave out a domain identifier");
-		} catch (IllegalArgumentException ex) {
-			// expected
-		} catch (NullPointerException ex) {
+		} catch (IllegalArgumentException | NullPointerException ex) {
 			// expected
 		}
 
-		try {
+        try {
 			new JID(null, null, null);
 			fail("Domain identifiers should be a required part of "
 					+ "a JID. No exception occurred while trying to "
 					+ "leave out a domain identifier");
-		} catch (IllegalArgumentException ex) {
-			// expected
-		} catch (NullPointerException ex) {
+		} catch (IllegalArgumentException | NullPointerException ex) {
 			// expected
 		}
-		
-		try {
+
+        try {
 			new JID(NODE, null, null);
 			fail("Domain identifiers should be a required part of "
 					+ "a JID. No exception occurred while trying to "
 					+ "leave out a domain identifier");
-		} catch (IllegalArgumentException ex) {
-			// expected
-		} catch (NullPointerException ex) {
+		} catch (IllegalArgumentException | NullPointerException ex) {
 			// expected
 		}
 
-		try {
+        try {
 			new JID(null, null, RESOURCE);
 			fail("Domain identifiers should be a required part of "
 					+ "a JID. No exception occurred while trying to "
 					+ "leave out a domain identifier");
-		} catch (IllegalArgumentException ex) {
-			// expected
-		} catch (NullPointerException ex) {
+		} catch (IllegalArgumentException | NullPointerException ex) {
 			// expected
 		}
-		
-		try {
+
+        try {
 			new JID(NODE, null, RESOURCE);
 			fail("Domain identifiers should be a required part of "
 					+ "a JID. No exception occurred while trying to "
 					+ "leave out a domain identifier");
-		} catch (IllegalArgumentException ex) {
-			// expected
-		} catch (NullPointerException ex) {
+		} catch (IllegalArgumentException | NullPointerException ex) {
 			// expected
 		}
-	}
+    }
 
 	/**
 	 * The maximum size of the domain identifier is 1023 bytes (note: bytes, not
