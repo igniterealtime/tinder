@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2004-2009 Jive Software. All rights reserved.
+ * Copyright (C) 2004-2009 Jive Software, 2022 Ignite Realtime Foundation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -231,7 +231,7 @@ public class DataForm extends PacketExtension {
      */
     public FormField addField(String variable, String label, FormField.Type type) {
         final FormField result = addField();
-        if (variable != null && variable.trim().length() >= 0) {
+        if (variable != null && !variable.trim().isEmpty()) {
             result.setVariable(variable);
         }
 
@@ -239,7 +239,7 @@ public class DataForm extends PacketExtension {
             result.setType(type);
         }
 
-        if (label != null && label.trim().length() >= 0) {
+        if (label != null && !label.trim().isEmpty()) {
             result.setLabel(label);
         }
 
