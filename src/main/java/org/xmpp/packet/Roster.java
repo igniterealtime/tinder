@@ -338,7 +338,7 @@ public class Roster extends IQ {
         }
 
         public String toString() {
-            StringBuffer buf = new StringBuffer();
+            final StringBuilder buf = new StringBuilder();
             buf.append("<item ");
             buf.append("jid=\"").append(jid).append("\"");
             if (name != null) {
