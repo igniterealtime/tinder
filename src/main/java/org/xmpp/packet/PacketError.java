@@ -655,7 +655,7 @@ public class PacketError {
         private final int code;
         private final Type defaultType;
 
-        private Condition(String value, Type defaultType, int code) {
+        Condition(String value, Type defaultType, int code) {
             this.value = value;
             this.defaultType = defaultType;
             this.code = code;
@@ -769,7 +769,7 @@ public class PacketError {
 
         private final String value;
 
-        private Type(String value) {
+        Type(String value) {
             this.value = value;
         }
 
