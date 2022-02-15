@@ -90,7 +90,7 @@ public class AbstractComponentServiceDiscovery {
 
 			final Attribute name = element.attribute("name");
 			if (name != null && name.getValue().equals(comp.getName())) {
-				// succes!
+				// success!
 				return;
 			}
 		}
@@ -115,7 +115,7 @@ public class AbstractComponentServiceDiscovery {
 			final Element element = iter.next();
 			final Attribute attr = element.attribute("var");
 			if (attr != null && attr.getValue().equals(DISCOINFONS)) {
-				// succes!
+				// success!
 				return;
 			}
 		}
@@ -139,7 +139,7 @@ public class AbstractComponentServiceDiscovery {
 			final Element element = iter.next();
 			final Attribute attr = element.attribute("var");
 			if (attr != null && attr.getValue().equals("urn:xmpp:ping")) {
-				// succes!
+				// success!
 				return;
 			}
 		}
@@ -163,7 +163,7 @@ public class AbstractComponentServiceDiscovery {
 			final Element element = iter.next();
 			final Attribute attr = element.attribute("var");
 			if (attr != null && attr.getValue().equals("jabber:iq:last")) {
-				// succes!
+				// success!
 				return;
 			}
 		}
@@ -187,7 +187,7 @@ public class AbstractComponentServiceDiscovery {
 			final Element element = iter.next();
 			final Attribute attr = element.attribute("var");
 			if (attr != null && attr.getValue().equals("urn:xmpp:time")) {
-				// succes!
+				// success!
 				return;
 			}
 		}
