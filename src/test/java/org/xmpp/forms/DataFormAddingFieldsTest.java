@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2004-2009 Jive Software. All rights reserved.
+ * Copyright (C) 2004-2009 Jive Software. 2022 Ignite Realtime Foundation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ public class DataFormAddingFieldsTest {
 	}
 
 	/**
-	 * Test adding a empty field.
+	 * Test adding an empty field.
 	 */
 	@Test
 	public void testValidBehaviorAddingEmptyField() throws Exception {
@@ -125,4 +125,134 @@ public class DataFormAddingFieldsTest {
 			fail("Can't add a fixed field without a variable attribute.");
 		}
 	}
+
+    /**
+     * Verifies the XML serialization of a field created with {@link DataForm#addField(String, String, FormField.Type)}
+     * when all optional parameters are non-null.
+     */
+    @Test
+    public void testSimpleField() throws Exception
+    {
+        // Setup test fixture.
+        final String variable = "testvar";
+        final String label = "Test Label";
+        final FormField.Type type = FormField.Type.text_single;
+
+        // Execute system under test.
+        form.addField(variable, label, type);
+
+        // Verify result.
+        assertTrue("Not matching expectation: " + form.getElement().asXML(), form.getElement().element("field").asXML().contains("var=\"testvar\""));
+        assertTrue("Not matching expectation: " + form.getElement().asXML(), form.getElement().element("field").asXML().contains("label=\"Test Label\""));
+        assertTrue("Not matching expectation: " + form.getElement().asXML(), form.getElement().element("field").asXML().contains("type=\"text-single\""));
+    }
+
+    /**
+     * Verifies the XML serialization of a field created with {@link DataForm#addField(String, String, FormField.Type)}
+     * when the optional 'variable' parameter is set to null.
+     */
+    @Test
+    public void testNullVariable() throws Exception
+    {
+        // Setup test fixture.
+        final String variable = null;
+        final String label = "Test Label";
+        final FormField.Type type = FormField.Type.text_single;
+
+        // Execute system under test.
+        form.addField(variable, label, type);
+
+        // Verify result.
+        assertFalse("Not matching expectation: " + form.getElement().asXML(), form.getElement().element("field").asXML().contains("var=\""));
+        assertTrue("Not matching expectation: " + form.getElement().asXML(), form.getElement().element("field").asXML().contains("label=\"Test Label\""));
+        assertTrue("Not matching expectation: " + form.getElement().asXML(), form.getElement().element("field").asXML().contains("type=\"text-single\""));
+    }
+
+    /**
+     * Verifies the XML serialization of a field created with {@link DataForm#addField(String, String, FormField.Type)}
+     * when the optional 'variable' parameter is set to an empty string.
+     *
+     * @see <a href="https://igniterealtime.atlassian.net/jira/software/c/projects/TINDER/issues/TINDER-82">TINDER-82</a>
+     */
+    @Test
+    public void testEmptyVariable() throws Exception
+    {
+        // Setup test fixture.
+        final String variable = "";
+        final String label = "Test Label";
+        final FormField.Type type = FormField.Type.text_single;
+
+        // Execute system under test.
+        form.addField(variable, label, type);
+
+        // Verify result.
+        assertFalse("Not matching expectation: " + form.getElement().asXML(), form.getElement().element("field").asXML().contains("var=\""));
+        assertTrue("Not matching expectation: " + form.getElement().asXML(), form.getElement().element("field").asXML().contains("label=\"Test Label\""));
+        assertTrue("Not matching expectation: " + form.getElement().asXML(), form.getElement().element("field").asXML().contains("type=\"text-single\""));
+    }
+
+    /**
+     * Verifies the XML serialization of a field created with {@link DataForm#addField(String, String, FormField.Type)}
+     * when the optional 'label' parameter is set to null.
+     */
+    @Test
+    public void testNullLabel() throws Exception
+    {
+        // Setup test fixture.
+        final String variable = "testvar";
+        final String label = null;
+        final FormField.Type type = FormField.Type.text_single;
+
+        // Execute system under test.
+        form.addField(variable, label, type);
+
+        // Verify result.
+        assertTrue("Not matching expectation: " + form.getElement().asXML(), form.getElement().element("field").asXML().contains("var=\"testvar\""));
+        assertFalse("Not matching expectation: " + form.getElement().asXML(), form.getElement().element("field").asXML().contains("label=\""));
+        assertTrue("Not matching expectation: " + form.getElement().asXML(), form.getElement().element("field").asXML().contains("type=\"text-single\""));
+    }
+
+    /**
+     * Verifies the XML serialization of a field created with {@link DataForm#addField(String, String, FormField.Type)}
+     * when the optional 'label' parameter is set to an empty string.
+     *
+     * @see <a href="https://igniterealtime.atlassian.net/jira/software/c/projects/TINDER/issues/TINDER-82">TINDER-82</a>
+     */
+    @Test
+    public void testEmptyLabel() throws Exception
+    {
+        // Setup test fixture.
+        final String variable = "testvar";
+        final String label = "";
+        final FormField.Type type = FormField.Type.text_single;
+
+        // Execute system under test.
+        form.addField(variable, label, type);
+
+        // Verify result.
+        assertTrue("Not matching expectation: " + form.getElement().asXML(), form.getElement().element("field").asXML().contains("var=\"testvar\""));
+        assertFalse("Not matching expectation: " + form.getElement().asXML(), form.getElement().element("field").asXML().contains("label=\""));
+        assertTrue("Not matching expectation: " + form.getElement().asXML(), form.getElement().element("field").asXML().contains("type=\"text-single\""));
+    }
+
+    /**
+     * Verifies the XML serialization of a field created with {@link DataForm#addField(String, String, FormField.Type)}
+     * when the optional 'type' parameter is set to null.
+     */
+    @Test
+    public void testNullType() throws Exception
+    {
+        // Setup test fixture.
+        final String variable = "testvar";
+        final String label = "Test Label";
+        final FormField.Type type = null;
+
+        // Execute system under test.
+        form.addField(variable, label, type);
+
+        // Verify result.
+        assertTrue("Not matching expectation: " + form.getElement().asXML(), form.getElement().element("field").asXML().contains("var=\"testvar\""));
+        assertTrue("Not matching expectation: " + form.getElement().asXML(), form.getElement().element("field").asXML().contains("label=\"Test Label\""));
+        assertFalse("Not matching expectation: " + form.getElement().asXML(), form.getElement().element("field").asXML().contains("type=\""));
+    }
 }
