@@ -411,7 +411,7 @@ public class Roster extends IQ {
          * the resource that initiated the removal of success and 4) send unavailable presence from
          * all of the user's available resources to the contact.
          */
-        remove;
+        remove
     }
 
     /**
@@ -437,6 +437,6 @@ public class Roster extends IQ {
          * The roster owner has asked to the roster item to unsubscribe from it's
          * presence but has not received confirmation.
          */
-        unsubscribe;
+        unsubscribe
     }
 }

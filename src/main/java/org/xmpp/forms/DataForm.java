@@ -382,6 +382,6 @@ public class DataForm extends PacketExtension {
          * The forms-processing entity is returning data (e.g., search results) to the
          * forms-submitting entity, or the data is a generic data set.
          */
-        result;
+        result
     }
 }
