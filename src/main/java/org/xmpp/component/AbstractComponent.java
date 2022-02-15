@@ -274,8 +274,8 @@ public abstract class AbstractComponent implements Component {
      */
     private void processIQ(final IQ iq) {
         if (log.isDebugEnabled()) {
-        log.debug("(serving component '{}') Processing IQ (packetId {}): {}",
-            new Object[] {getName(), iq.getID(), iq.toXML()});
+            log.debug("(serving component '{}') Processing IQ (packetId {}): {}",
+                getName(), iq.getID(), iq.toXML());
         }
 
         IQ response = null;
@@ -319,10 +319,10 @@ public abstract class AbstractComponent implements Component {
                                 + "was incorrect: " + iq.toXML()
                                 + ". The response was: " + response.toXML());
                         }
-                    if (log.isDebugEnabled()) {
-                        log.debug("(serving component '{}') Responding to IQ (packetId {}) with: {}",
-                            new Object[] {getName(), iq.getID(), response.toXML()});
-                    }
+                        if (log.isDebugEnabled()) {
+                            log.debug("(serving component '{}') Responding to IQ (packetId {}) with: {}",
+                                getName(), iq.getID(), response.toXML());
+                        }
                     }
                     break;
 
