@@ -660,7 +660,7 @@ public abstract class AbstractComponent implements Component {
      * </ul>
      * <br>
      * Note that you should include the 'Service Discovery Items' feature if
-     * {@link #handleDiscoInfo(IQ)} returns a non-null value.
+     * {@link #handleDiscoItems(IQ)} returns a non-null value.
      *
      * @param iq
      *            The Service Discovery 'info' request stanza.
