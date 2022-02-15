@@ -343,7 +343,7 @@ public class DataForm extends PacketExtension {
             }
             if (value instanceof Collection) {
                 // Add a value element for each entry in the collection
-                for (Object colValue : (Collection) value) {
+                for (Object colValue : (Collection<?>) value) {
                     if (colValue != null) {
                         field.addElement("value").setText(encode(colValue));
                     }
