@@ -175,7 +175,7 @@ public class DataForm extends PacketExtension {
      */
     @SuppressWarnings("unchecked")
     public List<String> getInstructions() {
-        List<String> answer = new ArrayList<String>();
+        List<String> answer = new ArrayList<>();
         for (Iterator<Element> it = element.elementIterator("instructions"); it.hasNext(); ) {
             answer.add(it.next().getTextTrim());
         }

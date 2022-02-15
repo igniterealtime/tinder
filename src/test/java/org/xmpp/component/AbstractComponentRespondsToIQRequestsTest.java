@@ -222,7 +222,7 @@ public class AbstractComponentRespondsToIQRequestsTest {
 		// setup
 		final DummyAbstractComponent component = new SlowRespondingThreadNameComponent();
 
-		final List<IQ> requests = new ArrayList<IQ>();
+		final List<IQ> requests = new ArrayList<>();
 
 		// There are 17 threads. The first 17 requests will take a long time, so
 		// that we can queue enough requests to cause an overflow of the queue.

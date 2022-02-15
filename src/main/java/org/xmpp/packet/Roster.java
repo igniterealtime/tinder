@@ -222,7 +222,7 @@ public class Roster extends IQ {
      */
     @SuppressWarnings("unchecked")
     public Collection<Item> getItems() {
-        Collection<Item> items = new ArrayList<Item>();
+        Collection<Item> items = new ArrayList<>();
         Element query = element.element(new QName("query", Namespace.get("jabber:iq:roster")));
         if (query != null) {
             for (Iterator<Element> i = query.elementIterator("item"); i.hasNext(); ) {
@@ -231,7 +231,7 @@ public class Roster extends IQ {
                 String name = item.attributeValue("name");
                 String ask = item.attributeValue("ask");
                 String subscription = item.attributeValue("subscription");
-                Collection<String> groups = new ArrayList<String>();
+                Collection<String> groups = new ArrayList<>();
                 for (Iterator<Element> j = item.elementIterator("group"); j.hasNext(); ) {
                     Element group = j.next();
                     groups.add(group.getText().trim());
