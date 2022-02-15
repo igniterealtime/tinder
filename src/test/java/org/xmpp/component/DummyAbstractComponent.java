@@ -35,7 +35,7 @@ import org.xmpp.packet.Packet;
  */
 public class DummyAbstractComponent extends AbstractComponent {
 
-	private final BlockingQueue<Packet> queue = new LinkedBlockingQueue<Packet>();
+	private final BlockingQueue<Packet> queue = new LinkedBlockingQueue<>();
 
 	/*
 	 * (non-Javadoc)

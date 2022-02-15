@@ -214,7 +214,7 @@ public class FormField {
      */
     @SuppressWarnings("unchecked")
     public List<String> getValues() {
-        List<String> answer = new ArrayList<String>();
+        List<String> answer = new ArrayList<>();
         for (Iterator<Element> it = element.elementIterator("value"); it.hasNext(); ) {
             answer.add(it.next().getTextTrim());
         }
