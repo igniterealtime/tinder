@@ -20,6 +20,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Iterator;
+import java.util.Objects;
 
 import org.dom4j.Attribute;
 import org.dom4j.Element;
@@ -83,12 +84,12 @@ public class AbstractComponentServiceDiscovery {
 		while (iter.hasNext()) {
 			final Element element = iter.next();
 			final Attribute category = element.attribute("category");
-			if (category == null || category.getValue() != "component") {
+			if (category == null || !category.getValue().equals("component")) {
 				continue;
 			}
 
 			final Attribute name = element.attribute("name");
-			if (name != null && name.getValue() == comp.getName()) {
+			if (name != null && name.getValue().equals(comp.getName())) {
 				// succes!
 				return;
 			}
@@ -113,7 +114,7 @@ public class AbstractComponentServiceDiscovery {
 		while (iter.hasNext()) {
 			final Element element = iter.next();
 			final Attribute attr = element.attribute("var");
-			if (attr != null && attr.getValue() == DISCOINFONS) {
+			if (attr != null && attr.getValue().equals(DISCOINFONS)) {
 				// succes!
 				return;
 			}
@@ -137,7 +138,7 @@ public class AbstractComponentServiceDiscovery {
 		while (iter.hasNext()) {
 			final Element element = iter.next();
 			final Attribute attr = element.attribute("var");
-			if (attr != null && attr.getValue() == "urn:xmpp:ping") {
+			if (attr != null && attr.getValue().equals("urn:xmpp:ping")) {
 				// succes!
 				return;
 			}
@@ -161,7 +162,7 @@ public class AbstractComponentServiceDiscovery {
 		while (iter.hasNext()) {
 			final Element element = iter.next();
 			final Attribute attr = element.attribute("var");
-			if (attr != null && attr.getValue() == "jabber:iq:last") {
+			if (attr != null && attr.getValue().equals("jabber:iq:last")) {
 				// succes!
 				return;
 			}
@@ -185,7 +186,7 @@ public class AbstractComponentServiceDiscovery {
 		while (iter.hasNext()) {
 			final Element element = iter.next();
 			final Attribute attr = element.attribute("var");
-			if (attr != null && attr.getValue() == "urn:xmpp:time") {
+			if (attr != null && attr.getValue().equals("urn:xmpp:time")) {
 				// succes!
 				return;
 			}
@@ -229,9 +230,9 @@ public class AbstractComponentServiceDiscovery {
 		while (iter.hasNext()) {
 			final Element element = iter.next();
 			final Attribute attr = element.attribute("var");
-			if (attr != null && attr.getValue() == ns1) {
+			if (attr != null && attr.getValue().equals(ns1)) {
 				has1 = true;
-			} else if (attr != null && attr.getValue() == ns2) {
+			} else if (attr != null && attr.getValue().equals(ns2)) {
 				has2 = true;
 			}
 		}
