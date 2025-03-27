@@ -5,7 +5,7 @@ Tinder
 
 About
 -----
-[Tinder] is a Java based XMPP library, providing an implementation for XMPP stanzas and components. Tinders origins lie in code that's shared between Jive Software's [Openfire] and Whack implementations. The implementation that's provided in Tinder hasn't been written again from scratch. Instead, code has been moved from the original projects into Tinder, preserving al of the existing features and functionality. Most of the code that's now in Tinder is based on the org.xmpp package implementation that previously existed in Openfire and Whack. This is the code that defines classes such as Packet, JID, IQ, Component and their extensions. Additionally, some multi-purpose code (such as the DataForm and Result Set Management implementations) have been moved to Tinder as well.
+[Tinder] is a Java based XMPP library, providing an implementation for XMPP stanzas and components. Tinders origins lie in code that's shared between Ignite Realtime's [Openfire] and Whack implementations. The implementation that's provided in Tinder hasn't been written again from scratch. Instead, code has been moved from the original projects into Tinder, preserving al of the existing features and functionality. Most of the code that's now in Tinder is based on the org.xmpp package implementation that previously existed in Openfire and Whack. This is the code that defines classes such as Packet, JID, IQ, Component and their extensions. Additionally, some multi-purpose code (such as the DataForm and Result Set Management implementations) have been moved to Tinder as well.
 
 Resources
 ---------
