@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns="http://usefulinc.com/ns/doap#"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:schema="https://schema.org/"
+         xmlns:xmpp="https://linkmauve.fr/ns/xmpp-doap#">
+    <Project>
+
+        <name>Tinder</name>
+        <short-name>tinder</short-name>
+
+        <shortdesc xml:lang="en">XMPP Library</shortdesc>
+        <description xml:lang="en">
+            Tinder is a Java based XMPP library, providing an implementation for XMPP stanzas and components. Tinders origins lie in code that's shared between Ignite Realtime's
+            Openfire and Whack implementations. The implementation that's provided in Tinder hasn't been written again from scratch. Instead, code has been moved from the original
+            projects into Tinder, preserving al of the existing features and functionality. Most of the code that's now in Tinder is based on the 'org.xmpp' package implementation
+            that previously existed in Openfire and Whack. This is the code that defines classes such as Packet, JID, IQ, Component and their extensions. Additionally, some
+            multi-purpose code (such as the DataForm and Result Set Management implementations) have been moved to Tinder as well.
+        </description>
+
+        <homepage rdf:resource="https://www.igniterealtime.org/projects/tinder/"/>
+        <schema:logo rdf:resource="https://www.igniterealtime.org/fans/logo-openfire-notext.svg"/>
+
+        <download-page rdf:resource="https://www.igniterealtime.org/downloads/"/>
+        <support-forum rdf:resource="https://discourse.igniterealtime.org/"/>
+
+        <bug-database rdf:resource="https://igniterealtime.atlassian.net/projects/TINDER/issues"/>
+        <category rdf:resource="https://linkmauve.fr/ns/xmpp-doap#category-xmpp"/>
+        <category rdf:resource="https://linkmauve.fr/ns/xmpp-doap#category-jabber"/>
+        <category rdf:resource="https://linkmauve.fr/ns/xmpp-doap#category-library"/>
+        <license rdf:resource="http://usefulinc.com/doap/licenses/asl20"/>
+
+        <programming-language>Java</programming-language>
+
+        <repository>
+            <GitRepository>
+                <location rdf:resource="https://github.com/igniterealtime/tinder.git"/>
+                <browse rdf:resource="https://github.com/igniterealtime/tinder"/>
+            </GitRepository>
+        </repository>
+
+        <implements rdf:resource="https://xmpp.org/rfcs/rfc6120.html"/>
+        <implements rdf:resource="https://xmpp.org/rfcs/rfc6121.html"/>
+        <implements rdf:resource="https://xmpp.org/rfcs/rfc6122.html"/>
+        <implements>
+            <xmpp:SupportedXep>
+                <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0004.html"/>
+            </xmpp:SupportedXep>
+        </implements>
+        <implements>
+            <xmpp:SupportedXep>
+                <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0045.html"/>
+            </xmpp:SupportedXep>
+        </implements>
+        <implements>
+            <xmpp:SupportedXep>
+                <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0059.html"/>
+            </xmpp:SupportedXep>
+        </implements>
+    </Project>
+</rdf:RDF>
