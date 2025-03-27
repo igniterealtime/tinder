@@ -17,8 +17,8 @@
 package org.xmpp.util;
 
 import com.github.benmanes.caffeine.cache.Weigher;
-import org.checkerframework.checker.index.qual.NonNegative;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A Weigher that weights cache entries that contains JID parts. The weights
@@ -26,6 +26,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
  *
  * @author Guus der Kinderen, guus.der.kinderen@gmail.com
  */
+@NullMarked
 public class JIDWeigher implements Weigher<String, ValueWrapper<String>>
 {
     /**
@@ -37,7 +38,7 @@ public class JIDWeigher implements Weigher<String, ValueWrapper<String>>
      * @return the weight of the entry; must be non-negative
      */
     @Override
-    public @NonNegative int weigh( @NonNull final String key, @NonNull final ValueWrapper<String> value )
+    public int weigh(final String key, final ValueWrapper<String> value)
     {
         int result = 0;
         result += sizeOfString( key );
@@ -51,7 +52,7 @@ public class JIDWeigher implements Weigher<String, ValueWrapper<String>>
      * @param string the String to determine the size of.
      * @return the size of a String.
      */
-    public static int sizeOfString(String string) {
+    public static int sizeOfString(@Nullable String string) {
         if (string == null) {
             return 0;
         }
@@ -64,7 +65,7 @@ public class JIDWeigher implements Weigher<String, ValueWrapper<String>>
      * @param value the object to determine the size of.
      * @return the size of the object.
      */
-    public static int sizeOfValueWrapper(ValueWrapper<String> value) {
+    public static int sizeOfValueWrapper(@Nullable ValueWrapper<String> value) {
         if (value == null) {
             return 0;
         }
