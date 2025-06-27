@@ -739,7 +739,7 @@ public class JID implements Comparable<JID>, Serializable {
         if (resource != null) {
             return resource.equals(jid.resource);
         }
-        // Otherwise, jid.resource must be null.
+        // Otherwise, resource is null, so jid.resource needs to be as well if equal.
         else return jid.resource == null;
         // Passed all checks, so equal.
     }
