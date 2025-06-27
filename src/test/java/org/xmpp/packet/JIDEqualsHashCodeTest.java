@@ -41,6 +41,18 @@ public class JIDEqualsHashCodeTest extends EqualsHashCodeTestCase {
 		return new JID("edon@niamod/ecrouser");
 	}
 
+	public void testNullOtherResource() throws Exception {
+		// Setup fixture.
+		final JID a = new JID( "node", "domain", "resource" );
+		final JID b = new JID( "node", "domain", null );
+
+		// Execute system under test.
+		final boolean areEqual = a.equals( b );
+
+		// Verify results.
+		Assert.assertFalse( areEqual );
+	}
+
 	public void testNullResource() throws Exception {
 		// Setup fixture.
 		final JID a = new JID( "node", "domain", null );
