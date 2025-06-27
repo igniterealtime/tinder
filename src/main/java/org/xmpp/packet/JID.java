@@ -720,28 +720,27 @@ public class JID implements Comparable<JID>, Serializable {
         if (this == object) {
             return true;
         }
-        JID jid = (JID) object;
+        JID otherJID = (JID) object;
         // Node. If node isn't null, compare.
         if (node != null) {
-            if (!node.equals(jid.node)) {
+            if (!node.equals(otherJID.node)) {
                 return false;
             }
         }
-        // Otherwise, jid.node must be null.
-        else if (jid.node != null) {
+        // Otherwise, otherJID.node must be null.
+        else if (otherJID.node != null) {
             return false;
         }
         // Compare domain, which must be null.
-        if (!domain.equals(jid.domain)) {
+        if (!domain.equals(otherJID.domain)) {
             return false;
         }
         // Resource. If resource isn't null, compare.
         if (resource != null) {
-            return resource.equals(jid.resource);
+            return resource.equals(otherJID.resource);
         }
-        // Otherwise, resource is null, so jid.resource needs to be as well if equal.
-        else return jid.resource == null;
-        // Passed all checks, so equal.
+        // Otherwise, resource is null, so otherJID.resource needs to be as well to be equal.
+        else return otherJID.resource == null;
     }
 
     public int compareTo(JID jid) {
