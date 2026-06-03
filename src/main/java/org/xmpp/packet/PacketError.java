@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2004-2009 Jive Software. All rights reserved.
+ * Copyright (C) 2004-2009 Jive Software, 2026 Ignite Realtime Foundation. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -465,6 +465,16 @@ public class PacketError {
         payment_required("payment-required", Type.auth, 402),
 
         /**
+         * The entity has violated some local service policy (e.g., a message
+         * contains words that are prohibited by the service) and the server MAY
+         * choose to specify the policy in the &lt;text/&gt; element or in an
+         * application-specific condition element; the associated error type
+         * SHOULD be "modify" or "wait" depending on the policy being violated.
+         * As per RFC 6120, Section 8.3.3.12.
+         */
+        policy_violation("policy-violation", Type.modify, 403),
+
+        /**
          * The intended recipient is temporarily unavailable; the associated
          * error type SHOULD be "wait" (note: an application MUST NOT return
          * this error if doing so would provide information about the intended
@@ -576,6 +586,8 @@ public class PacketError {
                 return not_authorized;
             } else if (payment_required.toXMPP().equals(condition)) {
                 return payment_required;
+            } else if (policy_violation.toXMPP().equals(condition)) {
+                return policy_violation;
             } else if (recipient_unavailable.toXMPP().equals(condition)) {
                 return recipient_unavailable;
             } else if (redirect.toXMPP().equals(condition)) {
