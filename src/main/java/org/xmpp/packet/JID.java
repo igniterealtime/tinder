@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2004-2009 Jive Software. All rights reserved.
+ * Copyright (C) 2004-2026 Jive Software. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -115,6 +115,10 @@ public class JID implements Comparable<JID>, Serializable {
      * be escaped to "Joe\20Smith" before being made into a JID (e.g. "joe\20smith@example.com"
      * after case-folding, etc. has been applied).
      *
+     * Only the characters listed above are escaped. Other characters that node-prep prohibits,
+     * such as tabs, line breaks or non-ASCII space characters, are left unchanged, as XEP-0106
+     * does not allow them to be escaped.
+     *
      * All node escaping and un-escaping must be performed manually at the appropriate
      * time; the JID class will not escape or un-escape automatically.
      *
@@ -130,6 +134,9 @@ public class JID implements Comparable<JID>, Serializable {
         for (int i = 0, n = node.length(); i < n; i++) {
             final char c = node.charAt(i);
             switch (c) {
+                case ' ':
+                    buf.append("\\20");
+                    break;
                 case '"':
                     buf.append("\\22");
                     break;
@@ -166,13 +173,8 @@ public class JID implements Comparable<JID>, Serializable {
                         buf.append(c);
                     }
                     break;
-                default: {
-                    if (Character.isWhitespace(c)) {
-                        buf.append("\\20");
-                    } else {
-                        buf.append(c);
-                    }
-                }
+                default:
+                    buf.append(c);
             }
         }
         return buf.toString();
