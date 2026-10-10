@@ -126,13 +126,23 @@ public class JID implements Comparable<JID>, Serializable {
      * All node escaping and un-escaping must be performed manually at the appropriate
      * time; the JID class will not escape or un-escape automatically.
      *
+     * XEP-0106 does not allow an escaped node to start or end with the escaped space (\20), and
+     * defines no alternative representation. Therefore, a node that starts or ends with a space
+     * cannot be escaped. This restriction applies to escaping only: a node that starts or ends
+     * with \20 (for example, one created by other software) remains valid, and can be used in a
+     * JID and unescaped.
+     *
      * @param node the node.
      * @return the escaped version of the node.
+     * @throws IllegalArgumentException if {@code node} starts or ends with a space.
      * @see <a href="http://xmpp.org/extensions/xep-0106.html">XEP-0106: JID Escaping</a>
      */
     public static String escapeNode(String node) {
         if (node == null) {
             return null;
+        }
+        if (node.startsWith(" ") || node.endsWith(" ")) {
+            throw new IllegalArgumentException("The input '" + node + "' cannot be escaped: it starts or ends with a space, and XEP-0106 does not allow an escaped node to start or end with \\20.");
         }
         final StringBuilder buf = new StringBuilder(node.length() + 8);
         for (int i = 0, n = node.length(); i < n; i++) {
