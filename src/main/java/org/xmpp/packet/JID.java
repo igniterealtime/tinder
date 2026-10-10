@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2004-2009 Jive Software. All rights reserved.
+ * Copyright (C) 2004-2026 Jive Software. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -108,6 +108,10 @@ public class JID implements Comparable<JID>, Serializable {
      * <tr><td>@</td><td>\40</td></tr>
      * <tr><td>\</td><td>\5c</td></tr>
      * </table>
+     *
+     * A backslash is escaped only when it is followed by 20, 22, 26, 27, 2f, 3a, 3c, 3e, 40 or
+     * 5c, so that it is not mistaken for the start of an escape sequence. Any other backslash is
+     * left unchanged.
      *
      * This process is useful when the node comes from an external source that doesn't
      * conform to nodeprep. For example, a username in LDAP may be "Joe Smith". Because
