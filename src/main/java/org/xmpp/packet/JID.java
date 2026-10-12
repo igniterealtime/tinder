@@ -358,6 +358,10 @@ public class JID implements Comparable<JID>, Serializable {
      * the provided argument cannot be represented as a valid JID domain part
      * (e.g. if Stringprepping fails).
      *
+     * As defined in RFC 6122, section 2.2, a single trailing label separator
+     * (dot) is stripped before any other processing, and a domain that is empty
+     * (after stripping, or after Nameprep) is not valid.
+     *
      * @param domain
      *            The raw domain value.
      * @return A String based JID domain part representation
@@ -371,7 +375,23 @@ public class JID implements Comparable<JID>, Serializable {
 
         final ValueWrapper<String> cachedResult = DOMAINPREP_CACHE.get(domain, k -> {
             try {
-                final String answer = Stringprep.nameprep(IDNA.toASCII(k), false);
+                // Strip a single trailing label separator before any other processing (RFC 6122, section 2.2).
+                String value = k;
+                if (!value.isEmpty() && isLabelSeparator(value.charAt(value.length() - 1))) {
+                    value = value.substring(0, value.length() - 1);
+                }
+                if (value.isEmpty()) {
+                    return new ValueWrapper<>( new IllegalArgumentException("Domain cannot be empty." ) );
+                }
+                if (isLabelSeparator(value.charAt(value.length() - 1))) {
+                    return new ValueWrapper<>( new IllegalArgumentException("Domain cannot end with an empty label." ) );
+                }
+
+                final String answer = Stringprep.nameprep(IDNA.toASCII(value), false);
+                // Nameprep can map characters to nothing, which can leave an empty domain (RFC 6122, section 2.2).
+                if ( answer.isEmpty() ) {
+                    return new ValueWrapper<>( new IllegalArgumentException("Domain cannot be empty (after nameprepping)." ) );
+                }
                 // Validate field is not greater than 1023 bytes. UTF-8 characters use one to four bytes.
                 if ( answer.getBytes( StandardCharsets.UTF_8 ).length > 1023 ) {
                     return new ValueWrapper<>( new IllegalArgumentException("Domain cannot be larger than 1023 bytes (after nameprepping). Size is " + answer.getBytes( StandardCharsets.UTF_8 ).length + " bytes." ) );
@@ -406,6 +426,17 @@ public class JID implements Comparable<JID>, Serializable {
                 // should not occur.
                 throw new IllegalStateException("The implementation of JID#domainprep(String) is broken.");
         }
+    }
+
+    /**
+     * Checks if a character is a label separator, as defined in RFC 3490, section 3.1.
+     *
+     * @param c the character to check.
+     * @return true if the character is a label separator, otherwise false.
+     */
+    private static boolean isLabelSeparator(final char c)
+    {
+        return c == '\u002E' || c == '\u3002' || c == '\uFF0E' || c == '\uFF61';
     }
 
     /**
@@ -589,9 +620,6 @@ public class JID implements Comparable<JID>, Serializable {
 
         // Domain
         String domain;
-        if (atIndex + 1 > jid.length()) {
-            throw new IllegalArgumentException("JID with empty domain not valid. Offending value: '" + jid + "'");
-        }
         if (atIndex < 0) {
             if (slashIndex > 0) {
                 domain = jid.substring(0, slashIndex);
