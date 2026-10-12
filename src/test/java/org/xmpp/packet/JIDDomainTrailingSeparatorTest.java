@@ -47,9 +47,9 @@ public class JIDDomainTrailingSeparatorTest
 	{
 		return Arrays.asList(new Object[][] {
 			{ '.', "002E" }, // FULL STOP
-			{ '。', "3002" }, // IDEOGRAPHIC FULL STOP
-			{ '．', "FF0E" }, // FULLWIDTH FULL STOP
-			{ '｡', "FF61" }, // HALFWIDTH IDEOGRAPHIC FULL STOP
+			{ '\u3002', "3002" }, // IDEOGRAPHIC FULL STOP
+			{ '\uFF0E', "FF0E" }, // FULLWIDTH FULL STOP
+			{ '\uFF61', "FF61" }, // HALFWIDTH IDEOGRAPHIC FULL STOP
 		});
 	}
 

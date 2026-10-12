@@ -48,7 +48,7 @@ public class JIDEmptyDomainTest
 			{ ".", "." }, // The domain is empty after stripping the trailing label separator.
 			{ "juliet@.", "juliet@." }, // The domain is empty after stripping the trailing label separator.
 			{ "juliet@./phone", "juliet@./phone" }, // The domain is empty after stripping the trailing label separator.
-			{ "juliet@。", "juliet@\\u3002" }, // IDEOGRAPHIC FULL STOP is a label separator too (RFC 3490, section 3.1).
+			{ "juliet@\u3002", "juliet@\\u3002" }, // IDEOGRAPHIC FULL STOP is a label separator too (RFC 3490, section 3.1).
 			{ "juliet@example.org..", "juliet@example.org.." }, // Only one label separator is stripped; an empty label remains.
 		});
 	}
