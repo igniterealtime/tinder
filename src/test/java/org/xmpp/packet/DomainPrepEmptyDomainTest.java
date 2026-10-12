@@ -44,9 +44,9 @@ public class DomainPrepEmptyDomainTest
 		return Arrays.asList(new Object[][] {
 			{ "", "(empty string)" }, // A domain must not be zero bytes in length (RFC 6122, section 2.2).
 			{ ".", "." }, // Empty after stripping the trailing label separator (RFC 6122, section 2.2).
-			{ "。", "\\u3002" }, // IDEOGRAPHIC FULL STOP is a label separator (RFC 3490, section 3.1); empty after stripping.
-			{ "­", "\\u00AD" }, // SOFT HYPHEN is mapped to nothing by Nameprep (RFC 3454, table B.1), leaving an empty domain.
-			{ "­.", "\\u00AD." }, // Empty after stripping the trailing label separator and applying Nameprep.
+			{ "\u3002", "\\u3002" }, // IDEOGRAPHIC FULL STOP is a label separator (RFC 3490, section 3.1); empty after stripping.
+			{ "\u00AD", "\\u00AD" }, // SOFT HYPHEN is mapped to nothing by Nameprep (RFC 3454, table B.1), leaving an empty domain.
+			{ "\u00AD.", "\\u00AD." }, // Empty after stripping the trailing label separator and applying Nameprep.
 			{ "example.org..", "example.org.." }, // Only one label separator is stripped; an empty label remains.
 		});
 	}
