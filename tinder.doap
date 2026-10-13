@@ -44,16 +44,37 @@
         <implements>
             <xmpp:SupportedXep>
                 <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0004.html"/>
+                <xmpp:version>2.13.2</xmpp:version>
+                <xmpp:status>partial</xmpp:status>
+                <xmpp:since>1.0.0</xmpp:since>
+                <xmpp:note xml:lang="en">Provides an API to create and read data forms and their fields. Reported fields and items can be added, but cannot be read through the API. Field values are not validated against their field type.</xmpp:note>
             </xmpp:SupportedXep>
         </implements>
         <implements>
             <xmpp:SupportedXep>
                 <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0045.html"/>
+                <xmpp:version>1.35.5</xmpp:version>
+                <xmpp:status>partial</xmpp:status>
+                <xmpp:since>1.0.0</xmpp:since>
+                <xmpp:note xml:lang="en">Provides stanzas for joining and leaving a room, sending a mediated invitation, submitting a room configuration and destroying a room. Other parts of the protocol are not implemented.</xmpp:note>
             </xmpp:SupportedXep>
         </implements>
         <implements>
             <xmpp:SupportedXep>
                 <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0059.html"/>
+                <xmpp:version>1.0</xmpp:version>
+                <xmpp:status>partial</xmpp:status>
+                <xmpp:since>1.0.0</xmpp:since>
+                <xmpp:note xml:lang="en">Implements the responding entity: applying a request to a result set, and generating the response. There is no API for building a request.</xmpp:note>
+            </xmpp:SupportedXep>
+        </implements>
+        <implements>
+            <xmpp:SupportedXep>
+                <xmpp:xep rdf:resource="https://xmpp.org/extensions/xep-0106.html"/>
+                <xmpp:version>1.1</xmpp:version>
+                <xmpp:status>complete</xmpp:status>
+                <xmpp:since>1.0.0</xmpp:since>
+                <xmpp:note xml:lang="en">Implements version 1.1, the last version that is based on stringprep (RFC 6122), which Tinder uses for JIDs. Version 1.1.1 replaces stringprep with PRECIS (RFC 7622). Since 2.2.0, characters other than those defined by this XEP are no longer escaped, and a node that starts or ends with a space is rejected by JID.escapeNode.</xmpp:note>
             </xmpp:SupportedXep>
         </implements>
     </Project>
