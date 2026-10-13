@@ -57,7 +57,7 @@ jobs:
       - name: Conditionally Deploy to Igniterealtime Archiva
         id: deploy
         if: ${{ contains(github.repository, 'igniterealtime/') && ( ( github.event_name == 'push' && github.ref == 'refs/heads/main' ) || contains(github.ref, 'refs/tags/') ) && matrix.java == '11' }}
-        run: mvn -B deploy --settings target/ci-tooling/maven-settings-for-tinder.xml -P ci
+        run: mvn -B deploy -Dmaven.resolver.transport=wagon --settings target/ci-tooling/maven-settings-for-tinder.xml
         env:
           CI_DEPLOY_USERNAME: ${{ secrets.IGNITE_REALTIME_MAVEN_USERNAME }}
           CI_DEPLOY_PASSWORD: ${{ secrets.IGNITE_REALTIME_MAVEN_PASSWORD }}
