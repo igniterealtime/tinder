@@ -133,7 +133,8 @@ public class JIDStringprepExhaustiveTest
 		{
 			if (rejectedOnTheirOwn == null) {
 				final List<Character> result = new ArrayList<>();
-				for (char c = 0; c < Character.MAX_VALUE; c++) {
+				for (int value = Character.MIN_VALUE; value <= Character.MAX_VALUE; value++) {
+					final char c = (char) value;
 					if (!Character.isSurrogate(c) && positionalCharacters.indexOf(c) < 0 && rejects(String.valueOf(c))) {
 						result.add(c);
 					}

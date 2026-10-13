@@ -86,6 +86,12 @@
                 </configuration>
             </plugin>
             <plugin>
+                <!-- Pinned to a version that runs tests on the JUnit Platform (older versions of Maven default to one that does not). -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.4</version>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.8.0</version>
