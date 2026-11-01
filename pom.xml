@@ -159,7 +159,7 @@
             <!-- Runs the existing JUnit 4 tests on the JUnit Platform. -->
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
-            <version>5.14.1</version>
+            <version>6.1.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
